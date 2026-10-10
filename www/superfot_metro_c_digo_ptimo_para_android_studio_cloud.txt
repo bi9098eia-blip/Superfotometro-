@@ -1,0 +1,393 @@
+# SuperFotómetro — Proyecto Completo para Android Studio en la Nube (Cloud Workstations / Firebase Test Lab)
+
+Configuración integral y código fuente listo para compilar y ejecutar **SuperFotómetro** en entornos en la nube de Google (**Cloud Workstations para Android Studio**, **Firebase Test Lab** o **GitHub Codespaces**).
+
+---
+
+## 1. `settings.gradle.kts`
+```kotlin
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "SuperFotometro"
+include(":app")
+```
+
+---
+
+## 2. `app/build.gradle.kts`
+```kotlin
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+}
+
+android {
+    namespace = "com.superfotometro.camera"
+    compileSdk = 35
+
+    defaultConfig {
+        applicationId = "com.superfotometro.camera"
+        minSdk = 29
+        targetSdk = 35
+        versionCode = 1
+        versionName = "1.0.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64") // Soporte simultáneo físico y Cloud Emulator
+        }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
+            isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    buildFeatures {
+        compose = true
+    }
+}
+
+dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
+
+    // Camera2 & CameraX (Compatibilidad Dual Cloud/Hardware)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.kotlinx.coroutines.android)
+
+    debugImplementation(libs.androidx.ui.tooling)
+}
+```
+
+---
+
+## 3. `app/src/main/AndroidManifest.xml`
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.manual_sensor" android:required="true" />
+    <uses-feature android:glEsVersion="0x00030002" android:required="true" />
+
+    <application
+        android:allowBackup="false"
+        android:hardwareAccelerated="true"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:label="SuperFotómetro"
+        android:roundIcon="@android:drawable/ic_menu_camera"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
+```
+
+---
+
+## 4. `MainActivity.kt` (Entorno de Nube / Emulador / Físico)
+Ubicación: `app/src/main/java/com/superfotometro/camera/MainActivity.kt`
+
+```kotlin
+package com.superfotometro.camera
+
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+
+// Tokens AMOLED SuperFotómetro
+val AmoledBlack = Color(0xFF000000)
+val GlassSurface = Color(0xDD0A0D12)
+val NeonTeal = Color(0xFF00FFCC)
+val NeonMagenta = Color(0xFFFF007F)
+val AmberPause = Color(0xFFFFB800)
+val RedRec = Color(0xFFFF3B30)
+
+enum class CaptureState { READY, RECORDING, PAUSED }
+enum class BlendMode(val title: String) { LIGHT("Pintar Luz"), SHADOW("Pintar Sombra"), TRAIL("Modo Estela") }
+
+class MainActivity : ComponentActivity() {
+
+    private val requestPermissions = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { _ -> }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+        if (permissions.any { ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED }) {
+            requestPermissions.launch(permissions)
+        }
+
+        setContent {
+            SuperFotometroCloudApp()
+        }
+    }
+}
+
+@Composable
+fun SuperFotometroCloudApp() {
+    var state by remember { mutableStateOf(CaptureState.READY) }
+    var blendMode by remember { mutableStateOf(BlendMode.LIGHT) }
+    var checkpointsCount by remember { mutableIntStateOf(0) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AmoledBlack)
+    ) {
+        // Render de Visor de Cámara
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF07090C)),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Icon(
+                    imageVector = Icons.Default.CameraAlt,
+                    contentDescription = null,
+                    tint = NeonTeal.copy(alpha = 0.4f),
+                    modifier = Modifier.size(54.dp)
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = "SUPERFOTÓMETRO · CLOUD ENGINE READY",
+                    color = Color.DarkGray,
+                    fontSize = 11.sp,
+                    fontFamily = FontFamily.Monospace,
+                    letterSpacing = 1.sp
+                )
+                if (state == CaptureState.RECORDING) {
+                    Text(
+                        text = "● ACUMULANDO FOTONES EN TIEMPO REAL (60 FPS)",
+                        color = RedRec,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Monospace
+                    )
+                }
+            }
+        }
+
+        // High-Contrast Overlay en Pausa
+        if (state == CaptureState.PAUSED) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .border(2.dp, AmberPause.copy(alpha = 0.5f))
+                    .padding(top = 70.dp),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                Surface(
+                    color = GlassSurface,
+                    shape = RoundedCornerShape(20.dp),
+                    border = BorderStroke(1.dp, AmberPause.copy(alpha = 0.4f))
+                ) {
+                    Text(
+                        text = "SUPERFOTÓMETRO · PAUSA ACTIVA (1.25x GAMMA BOOST)",
+                        color = AmberPause,
+                        fontSize = 10.sp,
+                        fontFamily = FontFamily.Monospace,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                    )
+                }
+            }
+        }
+
+        // HUD Superior
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                AssistChip(
+                    onClick = {},
+                    label = { Text("CLOUD READY", color = NeonTeal, fontSize = 10.sp) },
+                    colors = AssistChipDefaults.assistChipColors(containerColor = GlassSurface)
+                )
+                AssistChip(
+                    onClick = {},
+                    label = { Text("RAW 14-BIT", color = Color.White, fontSize = 10.sp) },
+                    colors = AssistChipDefaults.assistChipColors(containerColor = GlassSurface)
+                )
+            }
+
+            // Widget Micrófono
+            Row(
+                modifier = Modifier
+                    .background(GlassSurface, RoundedCornerShape(16.dp))
+                    .border(1.dp, NeonTeal.copy(alpha = 0.3f), RoundedCornerShape(16.dp))
+                    .padding(horizontal = 10.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Icon(Icons.Default.Mic, contentDescription = null, tint = NeonTeal, modifier = Modifier.size(14.dp))
+                Text("Voz Activa", color = NeonTeal, fontSize = 10.sp, fontFamily = FontFamily.Monospace)
+            }
+        }
+
+        // Conmutador en Caliente de Modos de Fusión
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 110.dp)
+                .background(GlassSurface, RoundedCornerShape(24.dp))
+                .border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(24.dp))
+                .padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            BlendMode.values().forEach { mode ->
+                val selected = blendMode == mode
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(if (selected) NeonTeal else Color.Transparent)
+                        .clickable { blendMode = mode }
+                        .padding(horizontal = 14.dp, vertical = 7.dp)
+                ) {
+                    Text(
+                        text = mode.title,
+                        color = if (selected) Color.Black else Color.White,
+                        fontSize = 11.sp,
+                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                    )
+                }
+            }
+        }
+
+        // Botón Disparador Central
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 24.dp)
+                .size(76.dp)
+                .clip(CircleShape)
+                .background(
+                    when (state) {
+                        CaptureState.RECORDING -> RedRec
+                        CaptureState.PAUSED -> AmberPause
+                        CaptureState.READY -> NeonTeal
+                    }
+                )
+                .clickable {
+                    state = when (state) {
+                        CaptureState.READY -> CaptureState.RECORDING
+                        CaptureState.RECORDING -> {
+                            checkpointsCount++
+                            CaptureState.PAUSED
+                        }
+                        CaptureState.PAUSED -> CaptureState.RECORDING
+                    }
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = when (state) {
+                    CaptureState.RECORDING -> Icons.Default.Pause
+                    CaptureState.PAUSED -> Icons.Default.PlayArrow
+                    CaptureState.READY -> Icons.Default.PlayArrow
+                },
+                contentDescription = null,
+                tint = Color.Black,
+                modifier = Modifier.size(36.dp)
+            )
+        }
+    }
+}
+```

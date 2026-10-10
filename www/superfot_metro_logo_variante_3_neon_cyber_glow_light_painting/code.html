@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="neonSphere" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00FFCC" stop-opacity="0.4"/>
+      <stop offset="40%" stop-color="#00FFCC" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="laserBeam" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF007F"/>
+      <stop offset="50%" stop-color="#9D00FF"/>
+      <stop offset="100%" stop-color="#00FFCC"/>
+    </linearGradient>
+    <filter id="intenseGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Fondo Pitch Black AMOLED -->
+  <rect width="512" height="512" rx="112" fill="#05070A"/>
+  <rect width="512" height="512" rx="112" fill="none" stroke="#00FFCC" stroke-opacity="0.35" stroke-width="3"/>
+
+  <!-- Resplandor general de cámara de noche -->
+  <circle cx="270" cy="275" r="160" fill="url(#neonSphere)"/>
+
+  <!-- CUERPO DE LA CÁMARA (Líneas luminosas estilo wireframe de neón) -->
+  <g filter="url(#intenseGlow)">
+    <!-- Silueta exterior del chasis de la cámara -->
+    <rect x="96" y="160" width="320" height="230" rx="32" fill="#0A0E14" stroke="#00FFCC" stroke-width="10"/>
+
+    <!-- Prisma superior estriado (del boceto) -->
+    <polygon points="214,160 238,114 294,114 316,160" fill="#070A0F" stroke="#00FFCC" stroke-width="9" stroke-linejoin="round"/>
+    <line x1="250" y1="124" x2="258" y2="152" stroke="#00FFCC" stroke-width="4.5"/>
+    <line x1="266" y1="124" x2="274" y2="152" stroke="#00FFCC" stroke-width="4.5"/>
+    <line x1="282" y1="124" x2="290" y2="152" stroke="#00FFCC" stroke-width="4.5"/>
+
+    <!-- Dial izquierdo -->
+    <rect x="130" y="130" width="46" height="30" rx="6" fill="#070A0F" stroke="#00FFCC" stroke-width="8"/>
+    <!-- Disparador derecho -->
+    <rect x="344" y="136" width="40" height="24" rx="6" fill="#070A0F" stroke="#00FFCC" stroke-width="8"/>
+    <rect x="356" y="118" width="16" height="18" rx="4" fill="#00FFCC"/>
+
+    <!-- Placa base de apoyo inferior -->
+    <line x1="110" y1="390" x2="402" y2="390" stroke="#00FFCC" stroke-width="9" stroke-linecap="round"/>
+    
+    <!-- Visor telemétrico -->
+    <rect x="126" y="186" width="62" height="34" rx="8" fill="#05070A" stroke="#00FFCC" stroke-width="7"/>
+    <rect x="136" y="194" width="22" height="18" rx="4" fill="#00FFCC"/>
+  </g>
+
+  <!-- LENTE CENTRAL CON MALLA Y HAZ DE LUZ DE LIGHT PAINTING -->
+  <g filter="url(#intenseGlow)">
+    <!-- Aro exterior concéntrico -->
+    <circle cx="270" cy="275" r="95" fill="#0C1017" stroke="#00FFCC" stroke-width="12"/>
+    <!-- Aro de enfoque punteado -->
+    <circle cx="270" cy="275" r="78" fill="none" stroke="#00FFCC" stroke-width="5" stroke-dasharray="14 8"/>
+    <!-- Cristal con enrejado del boceto -->
+    <circle cx="270" cy="275" r="62" fill="#06080C" stroke="#00FFCC" stroke-width="7"/>
+
+    <!-- Retícula del boceto -->
+    <g stroke="#00FFCC" stroke-width="3.5" opacity="0.85">
+      <line x1="225" y1="255" x2="315" y2="255"/>
+      <line x1="215" y1="275" x2="325" y2="275"/>
+      <line x1="225" y1="295" x2="315" y2="295"/>
+      <line x1="250" y1="230" x2="250" y2="320"/>
+      <line x1="270" y1="220" x2="270" y2="330"/>
+      <line x1="290" y1="230" x2="290" y2="320"/>
+    </g>
+  </g>
+
+  <!-- ESTELA DE LIGHT PAINTING (Efecto dinámico de pintura con luz que envuelve la lente) -->
+  <path d="M 140 370 C 120 260 210 170 300 190 C 390 210 400 310 290 330 C 230 340 180 320 185 270 C 190 220 260 220 280 250" 
+        fill="none" stroke="url(#laserBeam)" stroke-width="11" stroke-linecap="round" filter="url(#intenseGlow)"/>
+
+  <!-- Punto de brillo estelar en la punta de la estela -->
+  <circle cx="280" cy="250" r="9" fill="#FFFFFF" filter="url(#intenseGlow)"/>
+  <circle cx="280" cy="250" r="4" fill="#00FFCC"/>
+</svg>

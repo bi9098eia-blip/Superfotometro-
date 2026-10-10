@@ -1,0 +1,631 @@
+# LuminaCam Pro — Implementación Completa en Python 3 (Sin OpenCV)
+
+Aplicación de escritorio / portátil completa desarrollada en **Python 3 puro**, sin la librería `opencv-python` (`cv2`). 
+
+Para la captura de vídeo multiplataforma, interfaz gráfica moderna AMOLED y procesamiento acelerado de fotogramas, utiliza el stack estándar y ligero:
+- **`imageio` / `imageio-ffmpeg`** o **`pygame.camera` / `av`** para captura de webcam/cámara.
+- **`numpy`** para el procesamiento computacional matricial ultrarrápido (fusión de luz, rangos min/max, chroma key y máscaras).
+- **`customtkinter` / `tkinter` / `PIL` (Pillow)** para la interfaz gráfica AMOLED con soporte de dibujo de máscaras, deslizadores, cuentagotas y visualización en tiempo real.
+- **`speech_recognition` / `vosk` o teclado directo** para el control hands-free por voz.
+
+---
+
+## 1. Requisitos e Instalación de Dependencias
+
+Ejecuta en tu terminal o consola:
+
+```bash
+pip install numpy pillow customtkinter imageio imageio-ffmpeg SpeechRecognition
+```
+*(Nota: No requiere `opencv-python` ni compiladores C++ complejos).*
+
+---
+
+## 2. Código Fuente Completo (`luminacam_pro.py`)
+
+Guarda este archivo como `luminacam_pro.py` y ejecútalo con `python luminacam_pro.py`:
+
+```python
+#!/usr/bin/env python3
+"""
+LuminaCam Pro — Light Painting & Computational Camera
+Versión Python 3 Pura (Sin OpenCV / cv2)
+Utiliza: NumPy, Pillow (PIL), ImageIO, CustomTkinter / Tkinter y SpeechRecognition.
+"""
+
+import sys
+import time
+import threading
+from typing import List, Tuple, Optional
+import numpy as np
+from PIL import Image, ImageTk, ImageEnhance
+
+import tkinter as tk
+import customtkinter as ctk
+
+# Captura de cámara sin OpenCV usando imageio-ffmpeg
+try:
+    import imageio.v3 as iio
+    HAS_IMAGEIO = True
+except ImportError:
+    HAS_IMAGEIO = False
+
+# Reconocimiento de voz opcional (hands-free)
+try:
+    import speech_recognition as sr
+    HAS_SPEECH = True
+except ImportError:
+    HAS_SPEECH = False
+
+
+# ==============================================================================
+# 1. MOTOR COMPUTACIONAL DE FUSIÓN Y SHADERS NUMPY
+# ==============================================================================
+
+class BlendMode:
+    LIGHT_PAINT = "Pintar Luz"
+    SHADOW_PAINT = "Pintar Sombra"
+    TRAIL_DECAY = "Modo Estela"
+
+
+class ComputationalEngine:
+    def __init__(self, width: int = 640, height: int = 480):
+        self.width = width
+        self.height = height
+        
+        # Buffers flotantes [0.0 - 255.0]
+        self.canvas_buffer = np.zeros((height, width, 3), dtype=np.float32)
+        self.mask_buffer = np.zeros((height, width), dtype=np.float32) # 0: Normal, 1: Escudo Negativo
+        self.background_layer: Optional[np.ndarray] = None
+        
+        # Historial de checkpoints en memoria (Undo / Deshacer)
+        self.checkpoints: List[np.ndarray] = []
+        
+        # Parámetros de procesamiento
+        self.blend_mode = BlendMode.LIGHT_PAINT
+        self.min_luminance = 0.15 * 255.0
+        self.max_luminance = 0.90 * 255.0
+        self.decay_factor = 0.965
+        
+        # Chroma Key / Exclusión de Color
+        self.chroma_enabled = False
+        self.target_color_rgb = np.array([255, 158, 27], dtype=np.float32) # Amarillo Sodio por defecto
+        self.color_tolerance = 45.0 # Distancia Euclidiana RGB
+        self.exclusive_color_mode = False # True = Solo captura este color
+
+    def reset_canvas(self):
+        self.canvas_buffer.fill(0.0)
+        self.checkpoints.clear()
+
+    def create_checkpoint(self):
+        """Copia el estado actual del lienzo para permitir Deshacer."""
+        if len(self.checkpoints) >= 10:
+            self.checkpoints.pop(0) # Máximo 10 checkpoints en RAM
+        self.checkpoints.append(self.canvas_buffer.copy())
+
+    def undo_last_checkpoint(self) -> bool:
+        if self.checkpoints:
+            self.canvas_buffer = self.checkpoints.pop()
+            return True
+        return False
+
+    def process_frame(self, raw_frame_rgb: np.ndarray, is_recording: bool) -> np.ndarray:
+        """
+        Ejecuta el pipeline de filtrado y acumulación matricial idéntico al Fragment Shader.
+        """
+        frame_f32 = raw_frame_rgb.astype(np.float32)
+
+        # Si no está grabando, devolvemos la imagen de sensor en vivo combinada con el lienzo
+        if not is_recording:
+            # High-Contrast Overlay durante la pausa: Realce de gamma 1.25x
+            boosted_canvas = np.clip(np.power(self.canvas_buffer / 255.0, 1.0 / 1.25) * 255.0, 0, 255)
+            # Combinar en vivo con el lienzo acumulado congelado
+            preview = np.maximum(boosted_canvas, frame_f32)
+            return preview.astype(np.uint8)
+
+        # 1. Filtro de Luminancia (Rec. 709)
+        # Y = 0.2126 R + 0.7152 G + 0.0722 B
+        lum = (0.2126 * frame_f32[:, :, 0] + 
+               0.7152 * frame_f32[:, :, 1] + 
+               0.0722 * frame_f32[:, :, 2])
+        
+        lum_valid_mask = (lum >= self.min_luminance) & (lum <= self.max_luminance)
+
+        # 2. Filtro de Exclusión de Color (Chroma Key)
+        if self.chroma_enabled:
+            dist = np.sqrt(np.sum((frame_f32 - self.target_color_rgb) ** 2, axis=2))
+            if not self.exclusive_color_mode:
+                # Descarta el color seleccionado
+                color_mask = dist > self.color_tolerance
+            else:
+                # Modo pase exclusivo: solo admite el color seleccionado
+                color_mask = dist <= self.color_tolerance
+            lum_valid_mask = lum_valid_mask & color_mask
+
+        # 3. Aplicar Máscara Negativa (Escudo Anti-Destellos)
+        # Donde mask_buffer == 1.0, se ignora completamente el nuevo fotograma
+        active_exposure_mask = lum_valid_mask & (self.mask_buffer < 0.5)
+
+        # Crear el fotograma filtrado
+        filtered_live = np.zeros_like(frame_f32)
+        filtered_live[active_exposure_mask] = frame_f32[active_exposure_mask]
+
+        # 4. Modos de Acumulación
+        if self.blend_mode == BlendMode.LIGHT_PAINT:
+            # Máximo brillo píxel a píxel
+            self.canvas_buffer = np.maximum(self.canvas_buffer, filtered_live)
+
+        elif self.blend_mode == BlendMode.SHADOW_PAINT:
+            # Mínimo brillo para siluetas
+            shadow_mask = active_exposure_mask & (lum > 0)
+            self.canvas_buffer[shadow_mask] = np.minimum(self.canvas_buffer[shadow_mask], filtered_live[shadow_mask])
+
+        elif self.blend_mode == BlendMode.TRAIL_DECAY:
+            # Desvanecimiento progresivo tipo estela
+            decayed = self.canvas_buffer * self.decay_factor
+            self.canvas_buffer = np.maximum(decayed, filtered_live)
+
+        # 5. Capa Base de Fondo si existe
+        result = self.canvas_buffer.copy()
+        if self.background_layer is not None:
+            result = np.maximum(result, self.background_layer)
+
+        return np.clip(result, 0, 255).astype(np.uint8)
+
+
+# ==============================================================================
+# 2. CAPTURA DE CÁMARA PURA (SIN OPENCV)
+# ==============================================================================
+
+class PurePythonCamera:
+    """Captura de vídeo multiplataforma usando imageio / ffmpeg."""
+    def __init__(self, camera_index: int = 0, width: int = 640, height: int = 480):
+        self.camera_index = camera_index
+        self.width = width
+        self.height = height
+        self.reader = None
+        self.is_running = False
+
+    def start(self) -> bool:
+        if not HAS_IMAGEIO:
+            print("[Aviso] imageio no instalado. Se usará un generador de prueba de luz.")
+            self.is_running = True
+            return True
+
+        # Intento de conexión según el sistema operativo
+        try:
+            if sys.platform.startswith('darwin'):
+                device_uri = f"<video{self.camera_index}>"
+                format_name = "avfoundation"
+            elif sys.platform.startswith('win'):
+                device_uri = f"<video{self.camera_index}>"
+                format_name = "dshow"
+            else:
+                device_uri = f"/dev/video{self.camera_index}"
+                format_name = "v4l2"
+
+            self.reader = iio.imiter(
+                device_uri,
+                format=format_name,
+                fps=30
+            )
+            self.is_running = True
+            return True
+        except Exception as e:
+            print(f"[Aviso] Cámara nativa no detectada ({e}). Modo Simulación de Sensor activado.")
+            self.is_running = True
+            return True
+
+    def get_frame(self) -> np.ndarray:
+        if self.reader is not None:
+            try:
+                frame = next(self.reader)
+                img = Image.fromarray(frame).resize((self.width, self.height))
+                return np.array(img, dtype=np.uint8)
+            except Exception:
+                pass
+
+        # Generador de sensor sintético simulado (fuente de luz móvil para pruebas)
+        t = time.time() * 2.0
+        frame = np.zeros((self.height, self.width, 3), dtype=np.uint8)
+        # Trazador circular de luz neón
+        cx = int(self.width / 2 + np.cos(t) * (self.width * 0.3))
+        cy = int(self.height / 2 + np.sin(t * 1.5) * (self.height * 0.3))
+        
+        y, x = np.ogrid[:self.height, :self.width]
+        dist_sq = (x - cx)**2 + (y - cy)**2
+        light_spot = np.exp(-dist_sq / (2 * (18**2))) * 255.0
+        
+        # Color cian/neón
+        frame[:, :, 0] = np.clip(light_spot * 0.1, 0, 255).astype(np.uint8)
+        frame[:, :, 1] = np.clip(light_spot * 1.0, 0, 255).astype(np.uint8)
+        frame[:, :, 2] = np.clip(light_spot * 0.8, 0, 255).astype(np.uint8)
+        return frame
+
+    def release(self):
+        self.is_running = False
+        if self.reader is not None and hasattr(self.reader, 'close'):
+            try:
+                self.reader.close()
+            except Exception:
+                pass
+
+
+# ==============================================================================
+# 3. SERVICIO DE CONTROL POR VOZ OFFLINE (HANDS-FREE)
+# ==============================================================================
+
+class VoiceTriggerService:
+    def __init__(self, callback):
+        self.callback = callback
+        self.is_listening = False
+        self.thread = None
+
+    def start(self):
+        if not HAS_SPEECH:
+            print("[Aviso] SpeechRecognition no está instalado. Use los botones o teclado (Espacio / U).")
+            return
+        self.is_listening = True
+        self.thread = threading.Thread(target=self._listen_loop, daemon=True)
+        self.thread.start()
+
+    def _listen_loop(self):
+        recognizer = sr.Recognizer()
+        recognizer.energy_threshold = 300
+        recognizer.dynamic_energy_threshold = True
+
+        while self.is_listening:
+            try:
+                with sr.Microphone() as source:
+                    audio = recognizer.listen(source, phrase_time_limit=3)
+                    text = recognizer.recognize_google(audio, language="es-ES").lower()
+                    print(f"🎙️ Voz detectada: {text}")
+                    if any(w in text for w in ["play", "iniciar", "grabar"]):
+                        self.callback("play")
+                    elif any(w in text for w in ["pausa", "parar", "congelar"]):
+                        self.callback("pause")
+                    elif any(w in text for w in ["deshacer", "atrás", "volver"]):
+                        self.callback("undo")
+                    elif any(w in text for w in ["guardar", "foto"]):
+                        self.callback("save")
+            except Exception:
+                pass
+
+
+# ==============================================================================
+# 4. INTERFAZ GRÁFICA AMOLED (CUSTOMTKINTER + PIL)
+# ==============================================================================
+
+class LuminaCamApp(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+
+        # Ventana AMOLED
+        self.title("LuminaCam Pro — Light Painting (Pure Python / No OpenCV)")
+        self.geometry("1100x720")
+        self.configure(fg_color="#000000")
+
+        # Dimensiones de renderizado
+        self.cam_w = 640
+        self.cam_h = 480
+
+        # Módulos Core
+        self.engine = ComputationalEngine(self.cam_w, self.cam_h)
+        self.camera = PurePythonCamera(0, self.cam_w, self.cam_h)
+        self.camera.start()
+
+        # Estados de Captura
+        self.is_recording = False
+        self.is_paused = False
+        self.drawing_mask_mode = False # Modo pincel de máscara negativa
+
+        # Reconocimiento vocal
+        self.voice_service = VoiceTriggerService(self.handle_voice_command)
+        self.voice_service.start()
+
+        self._build_ui()
+
+        # Teclas rápidas de teclado
+        self.bind("<space>", lambda e: self.toggle_recording())
+        self.bind("u", lambda e: self.undo_checkpoint())
+        self.bind("s", lambda e: self.save_artwork())
+
+        # Iniciar bucle de vídeo a 30 FPS
+        self.after(20, self._video_loop)
+
+    def _build_ui(self):
+        # Contenedor Principal en 2 Columnas
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=0)
+        self.grid_rowconfigure(0, weight=1)
+
+        # ----------------- COLUMNA IZQUIERDA: VISOR -----------------
+        left_frame = ctk.CTkFrame(self, fg_color="#000000", corner_radius=0)
+        left_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
+
+        # HUD Superior
+        hud_top = ctk.CTkFrame(left_frame, fg_color="#0A0D12", height=40, corner_radius=8)
+        hud_top.pack(fill="x", padx=5, pady=(0, 5))
+
+        self.lbl_status = ctk.CTkLabel(
+            hud_top, 
+            text="● PREPARADO", 
+            text_color="#00FFCC", 
+            font=ctk.CTkFont(family="Courier", size=13, weight="bold")
+        )
+        self.lbl_status.pack(side="left", padx=15, pady=8)
+
+        self.lbl_voice = ctk.CTkLabel(
+            hud_top, 
+            text="🎙️ Comandos: 'Play', 'Pausa', 'Deshacer', 'Guardar'", 
+            text_color="#A0A8B5",
+            font=ctk.CTkFont(size=11)
+        )
+        self.lbl_voice.pack(side="right", padx=15)
+
+        # Lienzo Interactivo Tkinter (Render + Pincel de Máscaras)
+        self.canvas_view = tk.Canvas(
+            left_frame, 
+            width=self.cam_w, 
+            height=self.cam_h, 
+            bg="#000000", 
+            highlightthickness=1, 
+            highlightbackground="#00FFCC"
+        )
+        self.canvas_view.pack(expand=True, pady=5)
+        self.canvas_view.bind("<B1-Motion>", self._on_canvas_paint)
+        self.canvas_view.bind("<Button-3>", self._on_canvas_pick_color) # Clic derecho: Muestrear color
+
+        # Botonera Inferior del Visor
+        hud_bottom = ctk.CTkFrame(left_frame, fg_color="#0A0D12", height=70, corner_radius=8)
+        hud_bottom.pack(fill="x", padx=5, pady=(5, 0))
+
+        self.btn_shutter = ctk.CTkButton(
+            hud_bottom,
+            text="▶ INICIAR (PLAY)",
+            fg_color="#00FFCC",
+            text_color="#000000",
+            hover_color="#00D4AA",
+            font=ctk.CTkFont(size=14, weight="bold"),
+            height=44,
+            width=180,
+            command=self.toggle_recording
+        )
+        self.btn_shutter.pack(side="left", padx=15, pady=12)
+
+        self.btn_undo = ctk.CTkButton(
+            hud_bottom,
+            text="↺ Deshacer Trazo",
+            fg_color="#3A1116",
+            text_color="#FF007F",
+            hover_color="#52171E",
+            height=44,
+            command=self.undo_checkpoint
+        )
+        self.btn_undo.pack(side="left", padx=10)
+
+        self.btn_save = ctk.CTkButton(
+            hud_bottom,
+            text="💾 Guardar PNG",
+            fg_color="#1B1B1B",
+            text_color="#FFFFFF",
+            hover_color="#2A2A2A",
+            height=44,
+            command=self.save_artwork
+        )
+        self.btn_save.pack(side="right", padx=15)
+
+        self.btn_reset = ctk.CTkButton(
+            hud_bottom,
+            text="Limpiar Lienzo",
+            fg_color="#1B1B1B",
+            text_color="#FF3B30",
+            hover_color="#2A2A2A",
+            height=44,
+            command=self.engine.reset_canvas
+        )
+        self.btn_reset.pack(side="right", padx=10)
+
+        # ----------------- COLUMNA DERECHA: AJUSTES PRO -----------------
+        panel_pro = ctk.CTkScrollableFrame(self, fg_color="#0A0D12", width=340, corner_radius=12)
+        panel_pro.grid(row=0, column=1, sticky="nsew", padx=(0, 10), pady=10)
+
+        ctk.CTkLabel(panel_pro, text="MODOS DE FUSIÓN (GPU SHADER)", text_color="#00FFCC", font=ctk.CTkFont(weight="bold")).pack(anchor="w", pady=(10, 5))
+        
+        self.combo_mode = ctk.CTkSegmentedButton(
+            panel_pro, 
+            values=[BlendMode.LIGHT_PAINT, BlendMode.SHADOW_PAINT, BlendMode.TRAIL_DECAY],
+            selected_color="#00FFCC",
+            selected_hover_color="#00D4AA",
+            text_color="#FFFFFF",
+            command=self._change_blend_mode
+        )
+        self.combo_mode.set(BlendMode.LIGHT_PAINT)
+        self.combo_mode.pack(fill="x", pady=5)
+
+        # Deslizador de Luminancia Mínima
+        ctk.CTkLabel(panel_pro, text="Umbral Mínimo de Luz (Descartar Sombras)", text_color="#A0A8B5").pack(anchor="w", pady=(15, 2))
+        self.slider_lum = ctk.CTkSlider(panel_pro, from_=0, to=255, number_of_steps=50, command=self._update_lum_threshold)
+        self.slider_lum.set(self.engine.min_luminance)
+        self.slider_lum.pack(fill="x", pady=5)
+
+        # Modo Estela (Decay)
+        ctk.CTkLabel(panel_pro, text="Persistencia Modo Estela (Decay)", text_color="#A0A8B5").pack(anchor="w", pady=(15, 2))
+        self.slider_decay = ctk.CTkSlider(panel_pro, from_=0.80, to=0.99, command=lambda v: setattr(self.engine, 'decay_factor', float(v)))
+        self.slider_decay.set(self.engine.decay_factor)
+        self.slider_decay.pack(fill="x", pady=5)
+
+        # Muestreo Chroma Key / Supresión de Color
+        ctk.CTkLabel(panel_pro, text="CHROMA KEY / EXCLUSIÓN DE COLOR", text_color="#00FFCC", font=ctk.CTkFont(weight="bold")).pack(anchor="w", pady=(20, 5))
+        
+        self.switch_chroma = ctk.CTkSwitch(
+            panel_pro, 
+            text="Activar Filtro Chroma", 
+            command=lambda: setattr(self.engine, 'chroma_enabled', self.switch_chroma.get() == 1)
+        )
+        self.switch_chroma.pack(anchor="w", pady=5)
+
+        self.color_sample_box = ctk.CTkLabel(
+            panel_pro, 
+            text="Color a Ignorar: #FF9E1B (Clic derecho en visor)", 
+            fg_color="#FF9E1B", 
+            text_color="#000000",
+            corner_radius=6,
+            height=28
+        )
+        self.color_sample_box.pack(fill="x", pady=5)
+
+        ctk.CTkLabel(panel_pro, text="Tolerancia de Color (ΔE)", text_color="#A0A8B5").pack(anchor="w", pady=(10, 2))
+        self.slider_tol = ctk.CTkSlider(panel_pro, from_=10.0, to=120.0, command=lambda v: setattr(self.engine, 'color_tolerance', float(v)))
+        self.slider_tol.set(self.engine.color_tolerance)
+        self.slider_tol.pack(fill="x", pady=5)
+
+        # Máscaras Selectivas
+        ctk.CTkLabel(panel_pro, text="MÁSCARA NEGATIVO (ESCUDO ANTI-DESTELLO)", text_color="#00FFCC", font=ctk.CTkFont(weight="bold")).pack(anchor="w", pady=(20, 5))
+        
+        self.switch_mask_draw = ctk.CTkSwitch(
+            panel_pro,
+            text="Modo Pincel Escudo Rosa (Arrastrar en Visor)",
+            progress_color="#FF007F",
+            command=self._toggle_mask_draw_mode
+        )
+        self.switch_mask_draw.pack(anchor="w", pady=5)
+
+        ctk.CTkButton(
+            panel_pro,
+            text="Borrar Máscara de Protección",
+            fg_color="#1B1B1B",
+            hover_color="#2A2A2A",
+            command=lambda: self.engine.mask_buffer.fill(0.0)
+        ).pack(fill="x", pady=5)
+
+    # ----------------- EVENTOS Y ACCIONES -----------------
+
+    def toggle_recording(self):
+        if not self.is_recording:
+            # Pasa a GRABANDO
+            self.is_recording = True
+            self.is_paused = False
+            self.lbl_status.configure(text="● GRABANDO (ACUMULACIÓN ACTIVA)", text_color="#FF3B30")
+            self.btn_shutter.configure(text="⏸ PAUSAR (CONGELAR)", fg_color="#FFB800", text_color="#000000")
+        else:
+            # Pasa a PAUSA: crea checkpoint automático
+            self.is_recording = False
+            self.is_paused = True
+            self.engine.create_checkpoint()
+            self.lbl_status.configure(text="⏸ PAUSA · OVERLAY 1.25x (HOT-SWAP LISTO)", text_color="#FFB800")
+            self.btn_shutter.configure(text="▶ REANUDAR TRAZO", fg_color="#00FFCC", text_color="#000000")
+
+    def undo_checkpoint(self):
+        if self.engine.undo_last_checkpoint():
+            print("↺ Checkpoint restaurado.")
+        else:
+            print("No hay más checkpoints que deshacer.")
+
+    def save_artwork(self):
+        # Guarda la imagen compuesta en disco sin pérdida
+        img_np = np.clip(self.engine.canvas_buffer, 0, 255).astype(np.uint8)
+        img = Image.fromarray(img_np)
+        filename = f"lightpaint_{int(time.time())}.png"
+        img.save(filename)
+        print(f"✨ Obra guardada con éxito como '{filename}'")
+
+    def handle_voice_command(self, cmd: str):
+        if cmd == "play" and not self.is_recording:
+            self.after(0, self.toggle_recording)
+        elif cmd == "pause" and self.is_recording:
+            self.after(0, self.toggle_recording)
+        elif cmd == "undo":
+            self.after(0, self.undo_checkpoint)
+        elif cmd == "save":
+            self.after(0, self.save_artwork)
+
+    def _change_blend_mode(self, mode: str):
+        # Conmutación en caliente incluso en PAUSA
+        self.engine.blend_mode = mode
+
+    def _update_lum_threshold(self, val):
+        self.engine.min_luminance = float(val)
+
+    def _toggle_mask_draw_mode(self):
+        self.drawing_mask_mode = (self.switch_mask_draw.get() == 1)
+
+    def _on_canvas_paint(self, event):
+        """Pinta el escudo protector (máscara negativa) con el ratón."""
+        if self.drawing_mask_mode:
+            x, y = event.x, event.y
+            radius = 20
+            y_min = max(0, y - radius)
+            y_max = min(self.cam_h, y + radius)
+            x_min = max(0, x - radius)
+            x_max = min(self.cam_w, x + radius)
+            self.engine.mask_buffer[y_min:y_max, x_min:x_max] = 1.0
+
+    def _on_canvas_pick_color(self, event):
+        """Muestrea el color en el píxel pinchado (Cuentagotas)."""
+        x, y = event.x, event.y
+        if 0 <= x < self.cam_w and 0 <= y < self.cam_h:
+            frame = self.camera.get_frame()
+            color = frame[y, x]
+            self.engine.target_color_rgb = color.astype(np.float32)
+            hex_color = f"#{color[0]:02x}{color[1]:02x}{color[2]:02x}"
+            self.color_sample_box.configure(
+                text=f"Muestreado: {hex_color} [RGB: {color[0]},{color[1]},{color[2]}]",
+                fg_color=hex_color,
+                text_color="#FFFFFF" if sum(color) < 380 else "#000000"
+            )
+
+    def _video_loop(self):
+        """Bucle principal de procesamiento y refresco visual."""
+        raw_frame = self.camera.get_frame()
+        processed_frame = self.engine.process_frame(raw_frame, self.is_recording)
+
+        # Si el modo pincel de máscara está activo, dibujar overlay rosa semitransparente
+        if self.engine.mask_buffer.max() > 0:
+            mask_indices = self.engine.mask_buffer > 0.5
+            # Añadir tinte magenta neón al escudo
+            processed_frame[mask_indices, 0] = np.clip(processed_frame[mask_indices, 0] + 120, 0, 255)
+            processed_frame[mask_indices, 2] = np.clip(processed_frame[mask_indices, 2] + 120, 0, 255)
+
+        # Convertir a imagen Tkinter y mostrar
+        img = Image.fromarray(processed_frame)
+        img_tk = ImageTk.PhotoImage(image=img)
+        self.canvas_view.create_image(0, 0, anchor="nw", image=img_tk)
+        self.canvas_view.image = img_tk
+
+        self.after(30, self._video_loop)
+
+    def destroy(self):
+        self.camera.release()
+        self.voice_service.is_listening = False
+        super().destroy()
+
+
+# ==============================================================================
+# 5. PUNTO DE ENTRADA
+# ==============================================================================
+
+if __name__ == "__main__":
+    app = LuminaCamApp()
+    app.mainloop()
+```
+
+---
+
+## 3. Guía de Ejecución y Uso
+
+1. **Instala las dependencias**:
+   ```bash
+   pip install numpy pillow customtkinter imageio imageio-ffmpeg SpeechRecognition
+   ```
+2. **Ejecuta el script**:
+   ```bash
+   python luminacam_pro.py
+   ```
+3. **Controles rápidos**:
+   * **`Barra Espaciadora`**: Iniciar grabación / Pausar.
+   * **`U`**: Deshacer el último trazo (Undo Checkpoint).
+   * **`S`**: Guardar la fotografía final en archivo PNG de alta calidad.
+   * **`Clic Derecho`**: Cuentagotas para seleccionar el color parásito a ignorar.
+   * **`Voz`**: Di en voz alta *"Play"*, *"Pausa"*, *"Deshacer"* o *"Guardar"*.
+   * **`Simulación automática`**: Si no tienes una cámara conectada físicamente, el motor incluye un simulador de sensor con una estela de luz rotatoria para que pruebes los modos de fusión al instante.

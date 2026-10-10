@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bodyV2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#141B22"/>
+      <stop offset="100%" stop-color="#080C10"/>
+    </linearGradient>
+    <linearGradient id="cyanLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00E5FF"/>
+      <stop offset="100%" stop-color="#00FFCC"/>
+    </linearGradient>
+    <radialGradient id="lensRingGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00FFCC" stop-opacity="0.3"/>
+      <stop offset="85%" stop-color="#00FFCC" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Fondo Dark AMOLED con esquinas redondeadas -->
+  <rect width="512" height="512" rx="112" fill="#080B0F"/>
+  <rect width="512" height="512" rx="112" fill="none" stroke="#00FFCC" stroke-opacity="0.2" stroke-width="2"/>
+
+  <!-- CHATARRA MECÁNICA SUPERIOR SIMPLIFICADA (Del boceto) -->
+  <!-- Dial Izquierdo -->
+  <rect x="136" y="120" width="46" height="36" rx="8" fill="#141E28" stroke="#00FFCC" stroke-width="8"/>
+  <line x1="150" y1="120" x2="150" y2="140" stroke="#00FFCC" stroke-width="4"/>
+  <line x1="168" y1="120" x2="168" y2="140" stroke="#00FFCC" stroke-width="4"/>
+
+  <!-- Prisma Angular Central con Visor del Boceto -->
+  <polygon points="215,156 242,108 288,108 315,156" fill="#141E28" stroke="#00FFCC" stroke-width="8" stroke-linejoin="round"/>
+  <line x1="252" y1="116" x2="260" y2="146" stroke="#00FFCC" stroke-width="4" stroke-linecap="round"/>
+  <line x1="265" y1="116" x2="273" y2="146" stroke="#00FFCC" stroke-width="4" stroke-linecap="round"/>
+  <line x1="278" y1="116" x2="286" y2="146" stroke="#00FFCC" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Botón Disparador Derecho -->
+  <rect x="348" y="130" width="38" height="26" rx="6" fill="#141E28" stroke="#00FFCC" stroke-width="8"/>
+  <rect x="358" y="112" width="18" height="18" rx="4" fill="#00FFCC"/>
+
+  <!-- CUERPO DE LA CÁMARA (Estilo Vectorial Limpio) -->
+  <rect x="96" y="156" width="320" height="236" rx="36" fill="url(#bodyV2)" stroke="url(#cyanLine)" stroke-width="12" stroke-linejoin="round"/>
+
+  <!-- Banda inferior de agarre (Zócalo del boceto) -->
+  <path d="M 108 392 L 404 392" stroke="#00FFCC" stroke-width="10" stroke-linecap="round"/>
+
+  <!-- Visor Telemétrico Frontal Izquierdo -->
+  <rect x="124" y="184" width="68" height="38" rx="10" fill="#080C10" stroke="#00FFCC" stroke-width="7"/>
+  <rect x="134" y="193" width="26" height="20" rx="4" fill="#00FFCC"/>
+
+  <!-- LENTE PRINCIPAL GRANDE -->
+  <!-- Halo difuso -->
+  <circle cx="270" cy="274" r="130" fill="url(#lensRingGrad)"/>
+
+  <!-- Anillo exterior -->
+  <circle cx="270" cy="274" r="92" fill="#101820" stroke="#00FFCC" stroke-width="12"/>
+
+  <!-- Anillo de escala / enfoque métrico del fotómetro -->
+  <circle cx="270" cy="274" r="76" fill="none" stroke="#00FFCC" stroke-width="5" stroke-dasharray="16 10"/>
+
+  <!-- Cristal de la lente -->
+  <circle cx="270" cy="274" r="60" fill="#080C10" stroke="#00FFCC" stroke-width="7"/>
+
+  <!-- Retícula Cuadrada (Del dibujo del objetivo) -->
+  <g stroke="#00FFCC" stroke-width="4" stroke-linecap="round">
+    <line x1="228" y1="254" x2="312" y2="254"/>
+    <line x1="218" y1="274" x2="322" y2="274"/>
+    <line x1="228" y1="294" x2="312" y2="294"/>
+    <line x1="250" y1="232" x2="250" y2="316"/>
+    <line x1="270" y1="222" x2="270" y2="326"/>
+    <line x1="290" y1="232" x2="290" y2="316"/>
+  </g>
+
+  <!-- Reflejo blanco nítido -->
+  <path d="M 242 246 A 40 40 0 0 1 298 246" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Dial inferior izquierdo de la lente -->
+  <rect x="178" y="318" width="22" height="16" rx="5" fill="#00FFCC" transform="rotate(-30 189 326)"/>
+
+  <!-- Punto de sensor fotómetro inferior derecho -->
+  <circle cx="348" cy="336" r="10" fill="#00FFCC"/>
+  <circle cx="348" cy="336" r="4" fill="#FFFFFF"/>
+</svg>

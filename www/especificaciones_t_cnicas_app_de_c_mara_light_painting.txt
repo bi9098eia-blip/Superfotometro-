@@ -1,0 +1,31 @@
+Prompt Master para Google Stitch: App Android de Cámara & Light Painting
+Visión General de Producto & Contexto de Negocio
+Diseñar la interfaz de usuario (UI) y experiencia de interacción (UX) para una aplicación nativa de Android en español dedicada al control manual avanzado de cámara y técnica de Light Painting (Pintura con Luz). La app está pensada para ser operada tanto manualmente como con las manos libres mediante comandos de voz.
+Guía Estética y Tema Visual
+* Tema visual: Modo Oscuro AMOLED / Minimalista de alto contraste para entornos de fotografía nocturna o estudio a oscuras.
+* Color Accent: Neón / Luminous Teal (#00FFCC) o Magenta para acentuar elementos interactivos sobre fondo negro profundo.
+* Tipografía: Sans-serif moderna, legibilidad de alto contraste.
+Pantallas Clave y Componentes UI A Generar
+1. Pantalla Principal de Captura (Viewfinder / Live View)
+* Visor a pantalla completa (Live View): Previsualización activa del sensor de la cámara.
+* Superposición de Estado (Pausa / Play): Cuando está en Pausa, el lienzo acumulado previamente se superpone sobre la imagen en vivo con un contraste ligeramente elevado (high-contrast overlay). Indicador visual claro del estado (Pausado / Grabando / Preparado).
+* Barra Inferior de Modos de Renderizado (Accesible incluso en Pausa): Selector deslizante / pestañas para alternar entre: Pintar con Luz, Pintar con Sombra, Modo Estela (Fade/Desvanecimiento). Al cambiar de modo en Pausa, se conserva la capa acumulada previa.
+* Controles Flotantes / HUD de Parámetros Manuales: Deslizadores (Sliders) táctiles e interactivos para: Velocidad de Obturación, ISO, y Distancia Focal (Enfoque Manual con Focus Peaking). Ajuste de Controles Dinámicos de Exposición: Umbrales mínimos/máximos de luz y oscuridad, y tiempo de respuesta/reacción.
+* Botón Principal de Obturador: Botón grande multifunción (Play/Pausa) con estado de activación por voz.
+2. Panel de Automatización, Temporizador e Intervalómetro
+Modal / Pantalla deslizable para la configuración de captura automática:
+* Temporizador de Disparo Inicial: Campo selector de retardo antes de comenzar.
+* Tiempo de Exposición Fijo: Ajuste de tiempo total de toma.
+* Intervalómetro Avanzado: Configuración de rutinas: Retardo inicial, Duración de grabación activa, Duración de pausa automática, Número de ciclos/repeticiones.
+3. Asistente y Configuración de Control por Voz
+* Barra / Widget flotante con indicador de escucha por voz (Micrófono activo).
+* Comandos soportados en español: "Play" (o "Iniciar") y "Pausa".
+* Indicador visual de confirmación de comando detectado.
+4. Flujo de Navegación e Interacciones (Stitch Connections)
+* Al pulsar el botón de Pausa o ejecutar el comando de voz "Pausa", el estado cambia a PAUSA, congelando la acumulación, acentuando el contraste del lienzo acumulado y manteniendo la previsualización en vivo.
+* El usuario puede cambiar el modo de renderizado desde la barra inferior mientras sigue en Pausa.
+* Al pulsar Play o decir "Play", la acumulación se reanuda aplicando las reglas del modo activo.
+Especificaciones de Documentación Técnica (DESIGN.md)
+Generar la estructura necesaria para exportar DESIGN.md con:
+* Especificación de permisos nativos de Android: android.permission.CAMERA y android.permission.RECORD_AUDIO.
+* Guía de arquitectura de UI y guía de instalación/despliegue README.md para Android en español.

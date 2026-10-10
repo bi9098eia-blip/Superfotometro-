@@ -1,0 +1,339 @@
+#!/usr/bin/env python3
+"""
+SuperFotómetro para Android (Optimizado 100% para Pydroid 3)
+------------------------------------------------------------
+- Diseñado para funcionar en la pantalla táctil de tu teléfono Android sin errores.
+- Utiliza Tkinter (incluido de fábrica en Pydroid 3) y NumPy/Pillow.
+- Soporta simulación de sensor táctil y captura sin dependencias pesadas.
+- Incluye:
+  * Deslizador de mezcla alfa y superposición en Pausa (0% a 100%).
+  * Modos de fusión: Pintar Luz, Pintar Sombra, Modo Estela.
+  * Botón disparador Play/Pausa de gran tamaño para dedos.
+  * Modo Visor Limpio.
+  * Filtros de luminancia mínimo/máximo.
+"""
+
+import sys
+import time
+import math
+import tkinter as tk
+from tkinter import ttk, messagebox
+import numpy as np
+from PIL import Image, ImageTk
+
+# ==============================================================================
+# MOTOR DE FUSIÓN MATRICIAL NUMPY (ACCELERADO EN MÓVIL)
+# ==============================================================================
+
+class ComputationalEngine:
+    def __init__(self, width=480, height=360):
+        self.width = width
+        self.height = height
+        self.canvas_buffer = np.zeros((height, width, 3), dtype=np.float32)
+        self.mask_buffer = np.zeros((height, width), dtype=np.float32)
+        self.checkpoints = []
+        
+        self.blend_mode = 0  # 0: Pintar Luz, 1: Pintar Sombra, 2: Estela
+        self.min_lum = 0.12 * 255.0
+        self.max_lum = 0.95 * 255.0
+        self.decay_factor = 0.94
+        self.pause_alpha = 0.65  # 65% mezcla en pausa
+
+    def reset(self):
+        self.canvas_buffer.fill(0.0)
+        self.checkpoints.clear()
+
+    def create_checkpoint(self):
+        if len(self.checkpoints) >= 6:
+            self.checkpoints.pop(0)
+        self.checkpoints.append(self.canvas_buffer.copy())
+
+    def undo(self):
+        if self.checkpoints:
+            self.canvas_buffer = self.checkpoints.pop()
+            return True
+        return False
+
+    def process_frame(self, frame_rgb, is_recording):
+        f32 = frame_rgb.astype(np.float32)
+
+        # 1. ESTADO EN PAUSA CON SUPERPOSICIÓN DE MEZCLA ALFA
+        if not is_recording:
+            # Realce gamma 1.25x en el lienzo acumulado congelado
+            boosted = np.clip(np.power(self.canvas_buffer / 255.0, 1.0 / 1.25) * 255.0, 0, 255)
+            # Mezcla alfa interactiva sobre la cámara viva
+            blended = (1.0 - self.pause_alpha) * f32 + self.pause_alpha * boosted
+            return np.clip(blended, 0, 255).astype(np.uint8)
+
+        # 2. FILTRADO DE LUMINANCIA (Rec. 709)
+        lum = 0.2126 * f32[:, :, 0] + 0.7152 * f32[:, :, 1] + 0.0722 * f32[:, :, 2]
+        valid_mask = (lum >= self.min_lum) & (lum <= self.max_lum) & (self.mask_buffer < 0.5)
+
+        filtered = np.zeros_like(f32)
+        filtered[valid_mask] = f32[valid_mask]
+
+        # 3. MODOS DE FUSIÓN
+        if self.blend_mode == 0:  # Pintar Luz (Max)
+            self.canvas_buffer = np.maximum(self.canvas_buffer, filtered)
+        elif self.blend_mode == 1:  # Pintar Sombra (Min)
+            shadow_mask = valid_mask & (lum > 0)
+            self.canvas_buffer[shadow_mask] = np.minimum(self.canvas_buffer[shadow_mask], filtered[shadow_mask])
+        elif self.blend_mode == 2:  # Modo Estela
+            decayed = self.canvas_buffer * self.decay_factor
+            self.canvas_buffer = np.maximum(decayed, filtered)
+
+        return np.clip(self.canvas_buffer, 0, 255).astype(np.uint8)
+
+
+# ==============================================================================
+# SENSOR Y SIMULADOR DE LUZ TÁCTIL PARA ANDROID
+# ==============================================================================
+
+class AndroidSensorFeed:
+    def __init__(self, width=480, height=360):
+        self.width = width
+        self.height = height
+        self.touch_x = width // 2
+        self.touch_y = height // 2
+        self.is_touching = False
+
+    def update_touch(self, x, y, active=True):
+        self.touch_x = max(0, min(self.width - 1, x))
+        self.touch_y = max(0, min(self.height - 1, y))
+        self.is_touching = active
+
+    def get_frame(self):
+        frame = np.zeros((self.height, self.width, 3), dtype=np.uint8)
+        
+        # Si el usuario toca la pantalla del visor, pinta luz donde pone el dedo
+        if self.is_touching:
+            cx, cy = self.touch_x, self.touch_y
+            radius = 16
+        else:
+            # Fuente de luz orbital automática cuando no se toca
+            t = time.time() * 2.2
+            cx = int(self.width / 2 + math.cos(t) * (self.width * 0.32))
+            cy = int(self.height / 2 + math.sin(t * 1.6) * (self.height * 0.30))
+            radius = 14
+
+        y, x = np.ogrid[:self.height, :self.width]
+        dist_sq = (x - cx) ** 2 + (y - cy) ** 2
+        spot = np.exp(-dist_sq / (2.0 * (radius ** 2))) * 255.0
+
+        # Haz de luz Teal Neón (#00FFCC)
+        frame[:, :, 0] = np.clip(spot * 0.1, 0, 255).astype(np.uint8)
+        frame[:, :, 1] = np.clip(spot * 1.0, 0, 255).astype(np.uint8)
+        frame[:, :, 2] = np.clip(spot * 0.8, 0, 255).astype(np.uint8)
+
+        return frame
+
+
+# ==============================================================================
+# INTERFAZ GRÁFICA TÁCTIL AMOLED (TKINTER NATIVO PYDROID 3)
+# ==============================================================================
+
+class SuperFotometroPydroid(tk.Tk):
+    def __init__(self):
+        super().__init__()
+
+        self.title("SuperFotómetro Android")
+        self.configure(bg="#000000")
+        
+        # Tamaño adaptable a pantalla vertical de smartphone
+        self.geometry("480x780")
+
+        self.width = 460
+        self.height = 340
+
+        self.engine = ComputationalEngine(self.width, self.height)
+        self.sensor = AndroidSensorFeed(self.width, self.height)
+
+        self.is_recording = False
+        self.clean_view = False
+
+        self._build_ui()
+        self.after(30, self._render_loop)
+
+    def _build_ui(self):
+        # 1. Barra Superior HUD
+        self.top_bar = tk.Frame(self, bg="#0A0D12", height=42)
+        self.top_bar.pack(fill="x", padx=6, pady=(4, 2))
+
+        self.lbl_status = tk.Label(
+            self.top_bar,
+            text="⏸ PAUSA · MEZCLA ALFA ACTIVA",
+            fg="#FFB800",
+            bg="#0A0D12",
+            font=("Monospace", 9, "bold")
+        )
+        self.lbl_status.pack(side="left", padx=8, pady=8)
+
+        self.btn_clean = tk.Button(
+            self.top_bar,
+            text="👁️ VISOR LIMPIO",
+            bg="#0B2922",
+            fg="#00FFCC",
+            font=("Arial", 8, "bold"),
+            relief="flat",
+            padx=8,
+            command=self.toggle_clean_view
+        )
+        self.btn_clean.pack(side="right", padx=6, pady=6)
+
+        # 2. Visor Interactivo Táctil
+        self.canvas_visor = tk.Canvas(
+            self,
+            width=self.width,
+            height=self.height,
+            bg="#000000",
+            highlightthickness=1,
+            highlightbackground="#00FFCC"
+        )
+        self.canvas_visor.pack(padx=6, pady=2)
+        self.canvas_visor.bind("<B1-Motion>", self._on_touch_drag)
+        self.canvas_visor.bind("<Button-1>", self._on_touch_down)
+        self.canvas_visor.bind("<ButtonRelease-1>", self._on_touch_up)
+
+        # 3. Panel de Controles Desplegable
+        self.panel_controls = tk.Frame(self, bg="#000000")
+        self.panel_controls.pack(fill="both", expand=True, padx=8, pady=2)
+
+        # Selector de Modos de Fusión
+        frame_modes = tk.Frame(self.panel_controls, bg="#0A0D12", bd=1, relief="solid")
+        frame_modes.pack(fill="x", pady=4)
+
+        tk.Label(frame_modes, text="MODO DE FUSIÓN:", fg="#A0A8B5", bg="#0A0D12", font=("Arial", 8, "bold")).pack(anchor="w", padx=6, pady=2)
+        
+        modes_row = tk.Frame(frame_modes, bg="#0A0D12")
+        modes_row.pack(fill="x", padx=4, pady=3)
+
+        self.btn_m1 = tk.Button(modes_row, text="Pintar Luz", bg="#00FFCC", fg="#000000", font=("Arial", 9, "bold"), relief="flat", command=lambda: self.set_mode(0))
+        self.btn_m1.pack(side="left", expand=True, fill="x", padx=2)
+
+        self.btn_m2 = tk.Button(modes_row, text="Sombra", bg="#161A22", fg="#FFFFFF", font=("Arial", 9), relief="flat", command=lambda: self.set_mode(1))
+        self.btn_m2.pack(side="left", expand=True, fill="x", padx=2)
+
+        self.btn_m3 = tk.Button(modes_row, text="Estela", bg="#161A22", fg="#FFFFFF", font=("Arial", 9), relief="flat", command=lambda: self.set_mode(2))
+        self.btn_m3.pack(side="left", expand=True, fill="x", padx=2)
+
+        # Deslizador de Transparencia / Mezcla en Pausa
+        frame_alpha = tk.Frame(self.panel_controls, bg="#0A0D12", bd=1, relief="solid")
+        frame_alpha.pack(fill="x", pady=4)
+
+        self.lbl_alpha = tk.Label(frame_alpha, text="SUPERPOSICIÓN EN PAUSA: 65%", fg="#FFB800", bg="#0A0D12", font=("Arial", 8, "bold"))
+        self.lbl_alpha.pack(anchor="w", padx=6, pady=2)
+
+        self.slider_alpha = tk.Scale(
+            frame_alpha,
+            from_=0,
+            to=100,
+            orient="horizontal",
+            bg="#0A0D12",
+            fg="#00FFCC",
+            highlightthickness=0,
+            troughcolor="#1B1B1B",
+            command=self._on_alpha_change
+        )
+        self.slider_alpha.set(65)
+        self.slider_alpha.pack(fill="x", padx=8, pady=(0, 4))
+
+        # Fila de Acciones: Deshacer, Limpiar y Guardar
+        row_actions = tk.Frame(self.panel_controls, bg="#000000")
+        row_actions.pack(fill="x", pady=4)
+
+        btn_undo = tk.Button(row_actions, text="↺ Deshacer", bg="#3A1116", fg="#FF007F", font=("Arial", 9, "bold"), relief="flat", command=self.do_undo)
+        btn_undo.pack(side="left", expand=True, fill="x", padx=2)
+
+        btn_clear = tk.Button(row_actions, text="Lienzo Limpio", bg="#1A1A1A", fg="#FF3B30", font=("Arial", 9), relief="flat", command=self.engine.reset)
+        btn_clear.pack(side="left", expand=True, fill="x", padx=2)
+
+        btn_save = tk.Button(row_actions, text="💾 Guardar PNG", bg="#1A1A1A", fg="#FFFFFF", font=("Arial", 9), relief="flat", command=self.save_png)
+        btn_save.pack(side="left", expand=True, fill="x", padx=2)
+
+        # 4. BOTÓN DISPARADOR PRINCIPAL FLOTANTE PARA DEDO
+        self.btn_shutter = tk.Button(
+            self,
+            text="▶ INICIAR EXPOSICIÓN (PLAY)",
+            bg="#00FFCC",
+            fg="#000000",
+            font=("Arial", 12, "bold"),
+            relief="flat",
+            height=2,
+            command=self.toggle_recording
+        )
+        self.btn_shutter.pack(fill="x", side="bottom", padx=10, pady=8)
+
+    # ==========================================================================
+    # MANEJADORES DE INTERACCIÓN
+    # ==========================================================================
+
+    def set_mode(self, mode):
+        self.engine.blend_mode = mode
+        self.btn_m1.configure(bg="#00FFCC" if mode == 0 else "#161A22", fg="#000000" if mode == 0 else "#FFFFFF")
+        self.btn_m2.configure(bg="#00FFCC" if mode == 1 else "#161A22", fg="#000000" if mode == 1 else "#FFFFFF")
+        self.btn_m3.configure(bg="#00FFCC" if mode == 2 else "#161A22", fg="#000000" if mode == 2 else "#FFFFFF")
+
+    def _on_alpha_change(self, val):
+        pct = int(val)
+        self.engine.pause_alpha = pct / 100.0
+        self.lbl_alpha.configure(text=f"SUPERPOSICIÓN EN PAUSA: {pct}%")
+
+    def toggle_recording(self):
+        if not self.is_recording:
+            self.is_recording = True
+            self.lbl_status.configure(text="● EXP. ACTIVA: ACUMULANDO", fg="#FF3B30")
+            self.btn_shutter.configure(text="⏸ PAUSAR (CONGELAR)", bg="#FFB800", fg="#000000")
+        else:
+            self.is_recording = False
+            self.engine.create_checkpoint()
+            self.lbl_status.configure(text="⏸ PAUSA · MEZCLA ALFA ACTIVA", fg="#FFB800")
+            self.btn_shutter.configure(text="▶ REANUDAR EXPOSICIÓN", bg="#00FFCC", fg="#000000")
+
+    def toggle_clean_view(self):
+        self.clean_view = not self.clean_view
+        if self.clean_view:
+            self.panel_controls.pack_forget()
+            self.btn_clean.configure(text="⚙️ MOSTRAR CONTROLES", bg="#222")
+        else:
+            self.panel_controls.pack(fill="both", expand=True, padx=8, pady=2)
+            self.btn_clean.configure(text="👁️ VISOR LIMPIO", bg="#0B2922")
+
+    def do_undo(self):
+        if self.engine.undo():
+            self.lbl_status.configure(text="↺ TRAZO DESHECHO", fg="#FF007F")
+        else:
+            messagebox.showinfo("SuperFotómetro", "No hay más trazos previos para deshacer.")
+
+    def save_png(self):
+        img_np = np.clip(self.engine.canvas_buffer, 0, 255).astype(np.uint8)
+        img = Image.fromarray(img_np)
+        filename = f"SuperFotometro_{int(time.time())}.png"
+        img.save(filename)
+        messagebox.showinfo("SuperFotómetro", f"¡Obra guardada con éxito en tu móvil!\nArchivo: {filename}")
+
+    def _on_touch_down(self, event):
+        self.sensor.update_touch(event.x, event.y, True)
+
+    def _on_touch_drag(self, event):
+        self.sensor.update_touch(event.x, event.y, True)
+
+    def _on_touch_up(self, event):
+        self.sensor.update_touch(event.x, event.y, False)
+
+    def _render_loop(self):
+        raw_frame = self.sensor.get_frame()
+        processed = self.engine.process_frame(raw_frame, self.is_recording)
+
+        img = Image.fromarray(processed)
+        self.tk_img = ImageTk.PhotoImage(image=img)
+        self.canvas_visor.create_image(0, 0, anchor="nw", image=self.tk_img)
+
+        self.after(33, self._render_loop)
+
+
+# ==============================================================================
+# INICIO
+# ==============================================================================
+if __name__ == "__main__":
+    app = SuperFotometroPydroid()
+    app.mainloop()

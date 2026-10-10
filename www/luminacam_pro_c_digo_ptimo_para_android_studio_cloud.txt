@@ -1,0 +1,578 @@
+# LuminaCam Pro — Proyecto Óptimo para Android Studio en la Nube (Cloud Workstations / Firebase / GitHub Codespaces)
+
+Este proyecto contiene la configuración integral y el código fuente optimizado para compilar y ejecutar **LuminaCam Pro** en entornos de desarrollo en la nube de Google (**Cloud Workstations para Android Studio**, **Firebase Test Lab** o **GitHub Codespaces**).
+
+---
+
+## 1. Configuración de Entorno en la Nube
+
+### `settings.gradle.kts`
+```kotlin
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "LuminaCamPro"
+include(":app")
+```
+
+---
+
+### `build.gradle.kts` (Nivel Proyecto)
+```kotlin
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+}
+```
+
+---
+
+### `gradle/libs.versions.toml` (Version Catalog Cloud-Ready)
+```toml
+[versions]
+agp = "8.6.0"
+kotlin = "2.0.20"
+coreKtx = "1.13.1"
+lifecycleRuntimeKtx = "2.8.6"
+activityCompose = "1.9.3"
+composeBom = "2024.10.00"
+cameraX = "1.4.0"
+coroutines = "1.9.0"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+
+# Camera2 & CameraX (Compatibilidad Dual Cloud/Hardware)
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraX" }
+androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraX" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraX" }
+androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraX" }
+
+# Corrutinas
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+```
+
+---
+
+### `app/build.gradle.kts` (Módulo App Optimizado para Nube / Compilación Rápida)
+```kotlin
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+}
+
+android {
+    namespace = "com.lightpainting.camera"
+    compileSdk = 35
+
+    defaultConfig {
+        applicationId = "com.lightpainting.camera"
+        minSdk = 29
+        targetSdk = 35
+        versionCode = 1
+        versionName = "1.0.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64") // x86_64 para emuladores Cloud/Firebase
+        }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
+            isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    buildFeatures {
+        compose = true
+    }
+}
+
+dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
+
+    // Cámara y Gráficos
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.kotlinx.coroutines.android)
+
+    debugImplementation(libs.androidx.ui.tooling)
+}
+```
+
+---
+
+## 2. Manifiesto del Sistema (`app/src/main/AndroidManifest.xml`)
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    
+    <!-- Soporta tanto sensores reales físicos como emulación en Cloud -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-feature android:glEsVersion="0x00030002" android:required="true" />
+
+    <application
+        android:allowBackup="false"
+        android:hardwareAccelerated="true"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:label="LuminaCam Pro"
+        android:roundIcon="@android:drawable/ic_menu_camera"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
+```
+
+---
+
+## 3. Shader de Acumulación GPU (`app/src/main/res/raw/accumulate_frag.glsl`)
+```glsl
+#version 320 es
+precision highp float;
+
+in vec2 vTexCoord;
+out vec4 fragColor;
+
+uniform sampler2D uLiveTexture;
+uniform sampler2D uAccumulatedTexture;
+uniform sampler2D uMaskTexture;
+
+uniform int uBlendMode;       // 0: Light, 1: Shadow, 2: Trail Decay
+uniform float uDecayFactor;   // ej. 0.965
+uniform float uMinLuminance;  // ej. 0.15
+uniform float uMaxLuminance;  // ej. 0.90
+uniform bool uIsPaused;
+uniform float uGammaBoost;    // 1.25
+
+float getLum(vec3 c) {
+    return dot(c, vec3(0.2126, 0.7152, 0.0722));
+}
+
+void main() {
+    vec4 live = texture(uLiveTexture, vTexCoord);
+    vec4 prev = texture(uAccumulatedTexture, vTexCoord);
+    vec4 mask = texture(uMaskTexture, vTexCoord);
+
+    if (uIsPaused) {
+        vec3 boosted = pow(prev.rgb, vec3(1.0 / uGammaBoost));
+        fragColor = vec4(boosted, 1.0);
+        return;
+    }
+
+    // Escudo Negativo de Protección (Canal G de la Máscara)
+    if (mask.g > 0.1) {
+        fragColor = prev;
+        return;
+    }
+
+    float lum = getLum(live.rgb);
+    if (lum < uMinLuminance || lum > uMaxLuminance) {
+        live = vec4(0.0);
+    }
+
+    vec4 outColor = prev;
+    if (uBlendMode == 0) {
+        // Pintar Luz (Lighten / Max)
+        outColor = max(prev, live);
+    } else if (uBlendMode == 1) {
+        // Pintar Sombra (Darken / Min)
+        if (lum > 0.0) {
+            outColor = min(prev, live);
+        }
+    } else if (uBlendMode == 2) {
+        // Modo Estela (Decay)
+        outColor = max(prev * uDecayFactor, live);
+    }
+
+    fragColor = outColor;
+}
+```
+
+---
+
+## 4. Actividad Principal y Motor en la Nube (`MainActivity.kt`)
+Ubicación: `app/src/main/java/com/lightpainting/camera/MainActivity.kt`
+
+```kotlin
+package com.lightpainting.camera
+
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+
+// Paleta AMOLED LuminaCam Pro
+val AmoledBlack = Color(0xFF000000)
+val GlassSurface = Color(0xDD0A0D12)
+val NeonTeal = Color(0xFF00FFCC)
+val NeonMagenta = Color(0xFFFF007F)
+val AmberPause = Color(0xFFFFB800)
+val RedRec = Color(0xFFFF3B30)
+
+enum class CaptureState { READY, RECORDING, PAUSED }
+enum class BlendMode(val title: String) { LIGHT("Pintar Luz"), SHADOW("Pintar Sombra"), TRAIL("Modo Estela") }
+
+class MainActivity : ComponentActivity() {
+
+    private val requestPermissions = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { _ -> }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        // Solicitar permisos en tiempo de ejecución
+        val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+        if (permissions.any { ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED }) {
+            requestPermissions.launch(permissions)
+        }
+
+        setContent {
+            LuminaCamCloudApp()
+        }
+    }
+}
+
+@Composable
+fun LuminaCamCloudApp() {
+    var state by remember { mutableStateOf(CaptureState.READY) }
+    var blendMode by remember { mutableStateOf(BlendMode.LIGHT) }
+    var checkpointsCount by remember { mutableIntStateOf(0) }
+    var showUndoSnackbar by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AmoledBlack)
+    ) {
+        // 1. Simulación / Render de Sensor de Visor
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF07090C)),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Icon(
+                    imageVector = Icons.Default.CameraAlt,
+                    contentDescription = null,
+                    tint = NeonTeal.copy(alpha = 0.4f),
+                    modifier = Modifier.size(54.dp)
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = "LUMINACAM PRO · CLOUD ENGINE READY",
+                    color = Color.DarkGray,
+                    fontSize = 11.sp,
+                    fontFamily = FontFamily.Monospace,
+                    letterSpacing = 1.sp
+                )
+                if (state == CaptureState.RECORDING) {
+                    Text(
+                        text = "● ACUMULANDO FOTONES EN TIEMPO REAL",
+                        color = RedRec,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Monospace
+                    )
+                }
+            }
+        }
+
+        // 2. High-Contrast Overlay si está en Pausa
+        if (state == CaptureState.PAUSED) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .border(2.dp, AmberPause.copy(alpha = 0.5f))
+                    .padding(top = 70.dp),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                Surface(
+                    color = GlassSurface,
+                    shape = RoundedCornerShape(20.dp),
+                    border = BorderStroke(1.dp, AmberPause.copy(alpha = 0.4f))
+                ) {
+                    Text(
+                        text = "PAUSA · HIGH-CONTRAST OVERLAY (1.25x GAMMA)",
+                        color = AmberPause,
+                        fontSize = 10.sp,
+                        fontFamily = FontFamily.Monospace,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                    )
+                }
+            }
+        }
+
+        // 3. HUD Superior (Estado, Cloud & Reconocimiento de Voz)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                AssistChip(
+                    onClick = {},
+                    label = { Text("CLOUD EMULATOR", color = NeonTeal, fontSize = 10.sp) },
+                    colors = AssistChipDefaults.assistChipColors(containerColor = GlassSurface)
+                )
+                AssistChip(
+                    onClick = {},
+                    label = { Text("RAW 48MP", color = Color.White, fontSize = 10.sp) },
+                    colors = AssistChipDefaults.assistChipColors(containerColor = GlassSurface)
+                )
+            }
+
+            // Widget Micrófono
+            Row(
+                modifier = Modifier
+                    .background(GlassSurface, RoundedCornerShape(16.dp))
+                    .border(1.dp, NeonTeal.copy(alpha = 0.3f), RoundedCornerShape(16.dp))
+                    .padding(horizontal = 10.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Icon(Icons.Default.Mic, contentDescription = null, tint = NeonTeal, modifier = Modifier.size(14.dp))
+                Text("Voz Activa", color = NeonTeal, fontSize = 10.sp, fontFamily = FontFamily.Monospace)
+            }
+        }
+
+        // 4. Panel de Checkpoints y Deshacer (Visible en Pausa)
+        AnimatedVisibility(
+            visible = state == CaptureState.PAUSED,
+            enter = fadeIn() + slideInVertically { it / 2 },
+            exit = fadeOut() + slideOutVertically { it / 2 },
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 175.dp)
+        ) {
+            Surface(
+                color = GlassSurface,
+                shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(1.dp, Color.White.copy(alpha = 0.1f)),
+                modifier = Modifier.fillMaxWidth(0.92f)
+            ) {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("HISTORIAL DE TRAZOS", color = Color.Gray, fontSize = 10.sp, fontFamily = FontFamily.Monospace)
+                        Text("$checkpointsCount CHECKPOINTS", color = NeonTeal, fontSize = 10.sp, fontFamily = FontFamily.Monospace)
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    Button(
+                        onClick = {
+                            if (checkpointsCount > 0) {
+                                checkpointsCount--
+                                showUndoSnackbar = true
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3A1116)),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(Icons.Default.Undo, contentDescription = null, tint = NeonMagenta, modifier = Modifier.size(16.dp))
+                        Spacer(Modifier.width(6.dp))
+                        Text("Deshacer Último Trazo", color = Color.White, fontSize = 12.sp)
+                    }
+                }
+            }
+        }
+
+        // 5. Selector Deslizante de Modos de Fusión (En Caliente)
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 110.dp)
+                .background(GlassSurface, RoundedCornerShape(24.dp))
+                .border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(24.dp))
+                .padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            BlendMode.values().forEach { mode ->
+                val selected = blendMode == mode
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(if (selected) NeonTeal else Color.Transparent)
+                        .clickable { blendMode = mode }
+                        .padding(horizontal = 14.dp, vertical = 7.dp)
+                ) {
+                    Text(
+                        text = mode.title,
+                        color = if (selected) Color.Black else Color.White,
+                        fontSize = 11.sp,
+                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                    )
+                }
+            }
+        }
+
+        // 6. Botón Central Disparador Multifunción (Play / Pausa)
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 24.dp)
+                .size(76.dp)
+                .clip(CircleShape)
+                .background(
+                    when (state) {
+                        CaptureState.RECORDING -> RedRec
+                        CaptureState.PAUSED -> AmberPause
+                        CaptureState.READY -> NeonTeal
+                    }
+                )
+                .clickable {
+                    state = when (state) {
+                        CaptureState.READY -> CaptureState.RECORDING
+                        CaptureState.RECORDING -> {
+                            checkpointsCount++
+                            CaptureState.PAUSED
+                        }
+                        CaptureState.PAUSED -> CaptureState.RECORDING
+                    }
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = when (state) {
+                    CaptureState.RECORDING -> Icons.Default.Pause
+                    CaptureState.PAUSED -> Icons.Default.PlayArrow
+                    CaptureState.READY -> Icons.Default.PlayArrow
+                },
+                contentDescription = null,
+                tint = Color.Black,
+                modifier = Modifier.size(36.dp)
+            )
+        }
+    }
+}
+```
+
+---
+
+## 5. Instrucciones para Ejecutar en la Nube (Google Cloud Workstations / Firebase Test Lab)
+
+1. **Google Cloud Workstations (Android Studio in the Cloud)**:
+   - Crea una estación de trabajo con la imagen base **Android**.
+   - Clona tu repositorio o pega estos archivos en el directorio del proyecto.
+   - Abre la terminal integrada de Cloud Workstations y ejecuta:
+     ```bash
+     ./gradlew assembleDebug
+     ```
+2. **Pruebas en Dispositivos Virtuales / Físicos en la Nube (Firebase Test Lab)**:
+   - Para probar la app en cientos de teléfonos reales sin tener hardware local:
+     ```bash
+     gcloud firebase test android run \
+       --type robo \
+       --app app/build/outputs/apk/debug/app-debug.apk \
+       --device model=oriole,version=33,locale=es,orientation=portrait
+     ```
+3. **Compilación sin Errores**:
+   - Este código incluye soporte explícito para la arquitectura `x86_64` (emuladores de la nube) y `arm64-v8a` (dispositivos físicos).

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>LuminaCam Pro</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#131313;color:#e2e2e2;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary-fixed-dim": "#00e0b3", "primary-container": "#00ffcc", "secondary-container": "#ff4a8d", "on-secondary-fixed-variant": "#8f0044", "on-tertiary-fixed": "#271900", "tertiary": "#fffeff", "on-surface": "#e2e2e2", "on-secondary": "#65002e", "error-container": "#93000a", "on-surface-variant": "#b9cbc2", "primary-fixed": "#24ffcd", "surface-container-high": "#2a2a2a", "on-background": "#e2e2e2", "background": "#131313", "on-error": "#690005", "surface-variant": "#353535", "on-error-container": "#ffdad6", "on-primary-fixed": "#002118", "surface-dim": "#131313", "error": "#ffb4ab", "inverse-surface": "#e2e2e2", "on-tertiary-container": "#835d00", "secondary": "#ffb1c4", "on-primary-fixed-variant": "#00513f", "surface-bright": "#393939", "on-primary-container": "#00725a", "tertiary-container": "#ffdda5", "tertiary-fixed": "#ffdea8", "on-primary": "#00382b", "outline-variant": "#3a4a44", "surface-container": "#1f1f1f", "on-secondary-container": "#590028", "secondary-fixed-dim": "#ffb1c4", "surface-tint": "#00e0b3", "surface-container-highest": "#353535", "outline": "#83958d", "inverse-primary": "#006b54", "surface": "#131313", "on-tertiary-fixed-variant": "#5e4200", "surface-container-lowest": "#0e0e0e", "on-tertiary": "#412d00", "secondary-fixed": "#ffd9e1", "surface-container-low": "#1b1b1b", "tertiary-fixed-dim": "#ffba20", "inverse-on-surface": "#303030", "primary": "#fdfffc", "on-secondary-fixed": "#3f001a" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-sm": "0.5rem", "margin": "1rem", "space-xs": "0.25rem", "space-md": "0.75rem", "space-xl": "2rem", "gutter": "0.75rem", "space-lg": "1.25rem" }, fontFamily: { "metric-xl": ["JetBrains Mono"], "headline-lg": ["Space Grotesk"], "body-md": ["Space Grotesk"], "label-sm": ["JetBrains Mono"], "headline-sm": ["Space Grotesk"], "metric-md": ["JetBrains Mono"], "metric-lg": ["JetBrains Mono"], "body-sm": ["Space Grotesk"], "headline-md": ["Space Grotesk"], "headline-lg-mobile": ["Space Grotesk"], "label-md": ["JetBrains Mono"], "body-lg": ["Space Grotesk"] }, fontSize: { "metric-xl": ["28px", { lineHeight: "32px", letterSpacing: "-0.03em", fontWeight: "700" }], "headline-lg": ["32px", { lineHeight: "38px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "label-sm": ["10px", { lineHeight: "12px", letterSpacing: "0.08em", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }], "metric-md": ["14px", { lineHeight: "18px", letterSpacing: "-0.01em", fontWeight: "500" }], "metric-lg": ["20px", { lineHeight: "24px", letterSpacing: "-0.02em", fontWeight: "600" }], "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }], "headline-md": ["22px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "headline-lg-mobile": ["26px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }], "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "500" }], "body-lg": ["16px", { lineHeight: "22px", fontWeight: "400" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col select-none"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.6)]"><div class="h-14 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm overflow-hidden"><div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full text-primary-fixed"><span class="material-symbols-outlined text-[15px]">battery_charging_80</span><span class="font-label-sm text-label-sm">84%</span></div><div class="flex items-center bg-surface-container-low px-2 py-1 rounded-full text-secondary font-label-sm text-label-sm"><span>RAW/DNG</span></div><div class="hidden sm:flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm"><span class="material-symbols-outlined text-[13px]">sd_card</span><span>RAW 1,420</span></div><div class="flex items-center gap-1.5 bg-surface-container px-2.5 py-1 rounded-full text-primary-fixed-dim"><span class="material-symbols-outlined text-[14px] animate-pulse">graphic_eq</span><span class="font-label-sm text-label-sm truncate max-w-[110px]">Escuchando</span></div></div><div class="flex items-center gap-space-xs"><button class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[20px]">tune</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full bg-surface pt-14 pb-28"><div class="flex flex-col w-full text-on-surface select-none pb-12">
+<!-- HUD TELEMETRÍA SUPERIOR Y SELECTOR DE LENTES -->
+<div class="px-margin pt-2 pb-1 flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container-high text-primary-container font-label-sm text-label-sm tracking-wider shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-ping mr-1.5"></span>
+          SENSOR SONY IMX989 • 1" CAL
+        </span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-tertiary-fixed-dim font-label-sm text-label-sm">
+          GPU DECAY v2.4
+        </span>
+</div>
+<div class="flex items-center gap-2">
+<button class="h-7 px-2.5 rounded-full bg-surface-container-high text-primary-fixed-dim flex items-center gap-1 font-label-sm text-label-sm shadow-sm active:scale-95 transition-all" id="toggleVoiceMic">
+<span class="material-symbols-outlined text-[14px]">mic</span>
+<span>VOZ: ON</span>
+</button>
+<span class="font-metric-md text-metric-md text-primary-fixed">60 FPS</span>
+</div>
+</div>
+<!-- Barra de selección óptica física Android -->
+<div class="flex items-center justify-between bg-surface-container-low/90 backdrop-blur-md px-2 py-1.5 rounded-lg shadow-sm">
+<div class="flex items-center gap-1.5 overflow-x-auto">
+<button class="px-2.5 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface">
+          0.6x 14mm
+        </button>
+<button class="px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm shadow-[0_0_12px_rgba(0,255,204,0.35)]">
+          1.0x 24mm
+        </button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface">
+          3.2x 75mm
+        </button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container-highest text-secondary font-label-sm text-label-sm hover:text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">filter_center_focus</span>
+          MACRO
+        </button>
+</div>
+<!-- Histograma RGB micro integrado -->
+<div class="flex items-center gap-1 bg-surface-container-lowest px-2 py-1 rounded">
+<svg class="w-14 h-4 text-primary-fixed-dim" fill="none" viewbox="0 0 60 16">
+<path d="M0 16 L5 13 L12 9 L20 14 L28 4 L35 7 L45 2 L52 8 L60 16 Z" fill="rgba(0,255,204,0.25)" stroke="#00FFCC" stroke-width="1"></path>
+<path d="M0 16 L8 14 L18 11 L25 12 L34 8 L42 5 L50 9 L60 16 Z" opacity="0.6" stroke="#FF4A8D" stroke-width="0.8"></path>
+</svg>
+<span class="font-label-sm text-label-sm text-on-surface-variant">RGB</span>
+</div>
+</div>
+</div>
+<!-- VISOR DE CÁMARA (VIEWFINDER HUD PROFESIONAL) -->
+<div class="relative mx-margin rounded-xl overflow-hidden bg-surface-container-lowest shadow-[0_4px_24px_rgba(0,0,0,0.9)]">
+<!-- Contenedor Visual del Live View -->
+<div class="relative w-full aspect-[4/3] bg-surface-container-lowest flex items-center justify-center overflow-hidden">
+<!-- Imagen simulada del sensor con trazos y astrofotografía -->
+<div class="absolute inset-0 bg-cover bg-center opacity-85" data-alt="Vibrant night long exposure photography viewfinder frame with neon green and magenta glowing light trails curving smoothly over a silhouette mountain ridge under deep starlit black sky with pinpoint stars and faint blue nebula." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBUCkWrjWnXI_Icdl9b5kTwK_YNRZbnTof2EPwMGncJ_VTUzhtdk71qayy5RhP69OccWd6y8Pp85fFleDhzG3oWfhCogB55hUxE0k5saJ7AWmC3v3EUO7ig1SWm16k0etFLKwRFgnVHxNBQWiDMr1JAI8wqzo11faelkthsmvgdvcjO9PaP7Sge1N2fQt34dcngX2Mb8BdXwIXQD-fCLDhX3r1hY-f1iZNcZ04C5iyLD873lweWAPrueg')"></div>
+<!-- Placa Base Simulada Superpuesta si está activa -->
+<div class="absolute inset-0 bg-cover bg-center pointer-events-none opacity-40 mix-blend-screen" data-alt="Monochrome faint technical astrophotography baseline plate with pinpoint stars guide grid and faint celestial coordinates on pitch dark sky." id="basePlateOverlay" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDZ8CnJAemGERklNyF1b-fAtSgSVnavxWh_38l_TU-_bmK1ZDaYXRjZIsrIcWjZUbgVVvTI9MNWWulhLzBfJp4YlgjWqtH7tshe3hnSQYEIP-ezCMiOa9UyYpEsSldg7vwp5LlGsw3WDApSP7HpYJbSVanYFDCpz1yJNHNmt3FIYoU27bz9oJpDqf2QYA9Wk8mD6xSp1Vdg0A1tkSymnEd06a_nOqNPnv35cgOeeQY8IATCntUfcyZJ7g')"></div>
+<!-- Matriz Reticular & Peaking Guides -->
+<div class="absolute inset-0 pointer-events-none flex flex-col justify-between p-3">
+<!-- Guías tercios con hairlines especulares -->
+<div class="absolute inset-0 grid grid-cols-3 grid-rows-3 pointer-events-none opacity-20">
+<div class="border-r border-b border-primary/20"></div>
+<div class="border-r border-b border-primary/20"></div>
+<div class="border-b border-primary/20"></div>
+<div class="border-r border-b border-primary/20"></div>
+<div class="border-r border-b border-primary/20"></div>
+<div class="border-b border-primary/20"></div>
+<div class="border-r border-primary/20"></div>
+<div class="border-r border-primary/20"></div>
+<div></div>
+</div>
+<!-- Telemetría Overlay Sup -->
+<div class="relative z-10 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest/90 font-label-sm text-label-sm text-primary-fixed shadow-sm">
+              REC: ESTELA 4K
+            </span>
+<span class="px-1.5 py-0.5 rounded bg-secondary-container/90 text-on-secondary font-label-sm text-label-sm">
+              PEAKING VERDE 92%
+            </span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-lowest/90 px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[14px]">wb_twilight</span>
+<span class="font-label-sm text-label-sm text-tertiary-fixed">4800 K</span>
+</div>
+</div>
+<!-- Retícula de Enfoque Activa Central con Focus Peaking -->
+<div class="relative z-10 self-center flex flex-col items-center justify-center">
+<div class="relative w-16 h-16 flex items-center justify-center">
+<!-- Retícula dinámica -->
+<div class="w-10 h-10 rounded border-2 border-primary-container shadow-[0_0_12px_rgba(0,255,204,0.6)] flex items-center justify-center transition-all">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+</div>
+<!-- Marcadores de esquinas -->
+<div class="absolute -top-1 -left-1 w-2.5 h-2.5 border-t-2 border-l-2 border-primary-container"></div>
+<div class="absolute -top-1 -right-1 w-2.5 h-2.5 border-t-2 border-r-2 border-primary-container"></div>
+<div class="absolute -bottom-1 -left-1 w-2.5 h-2.5 border-b-2 border-l-2 border-primary-container"></div>
+<div class="absolute -bottom-1 -right-1 w-2.5 h-2.5 border-b-2 border-r-2 border-primary-container"></div>
+</div>
+<div class="mt-1 px-2 py-0.5 rounded bg-surface-container-lowest/90 text-primary-fixed font-metric-md text-metric-md shadow-[0_0_8px_rgba(0,255,204,0.3)]">
+<span id="reticleFocusDist">1.85 m</span> • AF-LOCK ACTIVO
+          </div>
+</div>
+<!-- Telemetría Overlay Inf -->
+<div class="relative z-10 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="px-2 py-1 rounded bg-surface-container-lowest/90 font-metric-md text-metric-md text-on-surface">
+              ISO <span class="text-primary-fixed">400</span>
+</span>
+<span class="px-2 py-1 rounded bg-surface-container-lowest/90 font-metric-md text-metric-md text-on-surface">
+              BULB <span class="text-primary-fixed">15.4s</span>
+</span>
+</div>
+<div class="px-2 py-0.5 rounded bg-surface-container-lowest/90 text-secondary-fixed-dim font-label-sm text-label-sm flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            PLACA: ASTRO_BASE.RAW
+          </div>
+</div>
+</div>
+</div>
+</div>
+<!-- PANEL DE CONFIGURACIÓN & COCKPIT TELEMÉTRICO -->
+<div class="px-margin mt-3 flex flex-col gap-3">
+<!-- SECCIÓN 1: ENFOQUE Y AUTOFOCO INTELIGENTE -->
+<div class="bg-surface-container-low rounded-xl p-3 shadow-md flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_8px_rgba(0,255,204,0.8)]"></span>
+<span class="font-headline-sm text-headline-sm text-primary">Enfoque &amp; Macro Óptico</span>
+</div>
+<span class="font-metric-md text-metric-md text-primary-container font-bold" id="focusValueDisplay">
+          Distancia: 1.85 m
+        </span>
+</div>
+<!-- Toggle AF Lock en primera exposición -->
+<div class="flex items-center justify-between bg-surface-container px-3 py-2 rounded-lg">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium">Bloquear AF en 1ª Exposición</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Congela el motor al detectar el primer destello o trazo</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="afLockCheckbox" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-container after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container shadow-inner"></div>
+</label>
+</div>
+<!-- Slider de Enfoque Manual con Escala Graduada en Metros -->
+<div class="flex flex-col gap-1.5 pt-1">
+<div class="flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm">
+<span>MANUAL SLIDER</span>
+<div class="flex items-center gap-2">
+<span class="text-primary-fixed">PEAKING VERDE ACTIVO</span>
+<span class="text-tertiary-fixed-dim">HYPERFOCAL</span>
+</div>
+</div>
+<!-- Slider Range Nativo estilizado -->
+<div class="relative py-1">
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary-container" id="focusSlider" max="10" min="0.1" step="0.05" type="range" value="1.85"/>
+</div>
+<!-- Escala graduada visible en metros -->
+<div class="flex justify-between items-center font-label-sm text-label-sm text-on-surface-variant px-0.5">
+<button class="hover:text-primary-container transition-colors" onclick="setFocus(0.35)" type="button">0.35m (Macro)</button>
+<button class="hover:text-primary-container transition-colors" onclick="setFocus(0.85)" type="button">0.85m (Retrato)</button>
+<button class="hover:text-primary-container transition-colors" onclick="setFocus(1.5)" type="button">1.5m</button>
+<button class="hover:text-primary-container transition-colors" onclick="setFocus(3.0)" type="button">3.0m</button>
+<button class="hover:text-primary-container transition-colors" onclick="setFocus(5.0)" type="button">5.0m</button>
+<button class="hover:text-primary-container transition-colors text-primary-fixed font-bold" onclick="setFocus(10)" type="button">∞ Infinito</button>
+</div>
+</div>
+</div>
+<!-- SECCIÓN 2: MODO ESTELA Y PERSISTENCIA DECAY GPU -->
+<div class="bg-surface-container-low rounded-xl p-3 shadow-md flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container text-[18px]">auto_awesome_motion</span>
+<span class="font-headline-sm text-headline-sm text-primary">Modo Estela &amp; Acumulación</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-secondary-container/30 text-secondary font-label-sm text-label-sm">
+          SHADERS GL_LIGHT_ADD
+        </span>
+</div>
+<!-- Selector de modos de mezcla -->
+<div class="grid grid-cols-3 gap-1.5 bg-surface-container p-1 rounded-lg">
+<button class="py-1.5 px-2 rounded font-label-md text-label-md text-center bg-surface-container-highest text-on-surface-variant">
+          Aditivo Continuo
+        </button>
+<button class="py-1.5 px-2 rounded font-label-md text-label-md text-center bg-primary-container text-on-primary-container font-bold shadow-[0_0_10px_rgba(0,255,204,0.3)]">
+          Modo Estela
+        </button>
+<button class="py-1.5 px-2 rounded font-label-md text-label-md text-center bg-surface-container-highest text-on-surface-variant">
+          Estrellas Claras
+        </button>
+</div>
+<!-- Deslizador de Decaimiento / Tiempo de Desvanecimiento -->
+<div class="flex flex-col gap-1.5 pt-1">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface">Decaimiento / Persistencia Estela</span>
+<span class="font-metric-md text-metric-md text-primary-fixed font-bold" id="decayDisplay">
+            4.5s [GPU Buffer]
+          </span>
+</div>
+<div class="relative py-1">
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary-container" id="decaySlider" max="30" min="0.5" step="0.5" type="range" value="4.5"/>
+</div>
+<div class="flex justify-between items-center font-label-sm text-label-sm text-on-surface-variant px-0.5">
+<span>0.5s (Rápido)</span>
+<span>4.5s (Recomendado)</span>
+<span>15.0s</span>
+<span class="text-tertiary-fixed">30.0s / Permanente</span>
+</div>
+</div>
+</div>
+<!-- SECCIÓN 3: NAVEGADOR DE ARCHIVOS PARA IMAGEN DE FONDO (PLACA BASE) -->
+<div class="bg-surface-container-low rounded-xl p-3 shadow-md flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed text-[18px]">layers</span>
+<span class="font-headline-sm text-headline-sm text-primary">Placa Base de Fondo</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-primary-fixed font-label-sm text-label-sm" id="currentBaseTag">
+          Astro_Placa_Base_01.raw
+        </span>
+</div>
+<!-- Botón Examinar Almacenamiento / Galería (Click/Touch nativo) -->
+<div class="flex items-center gap-2">
+<button class="flex-1 py-2.5 px-3 rounded-lg bg-surface-container-high hover:bg-surface-variant text-on-surface flex items-center justify-center gap-2 font-body-md text-body-md font-medium active:scale-98 transition-all" id="browseFileBtn">
+<span class="material-symbols-outlined text-primary-container text-[20px]">folder_open</span>
+<span>Examinar Almacenamiento / Galería</span>
+</button>
+<button class="py-2.5 px-3 rounded-lg bg-surface-container-lowest text-on-surface-variant hover:text-error flex items-center gap-1.5 font-label-md text-label-md active:scale-98 transition-all" id="clearCanvasBtn">
+<span class="material-symbols-outlined text-[16px]">delete_sweep</span>
+<span>Lienzo Limpio</span>
+</button>
+</div>
+<!-- Selector de cuadrícula o miniaturas recientes -->
+<div class="flex flex-col gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant">MINIATURAS RECIENTES / PRESETS DNG</span>
+<div class="grid grid-cols-3 gap-2">
+<!-- Miniatura 1 -->
+<div class="cursor-pointer group relative rounded-lg overflow-hidden bg-surface-container-highest p-1 flex flex-col gap-1 ring-1 ring-primary-container/40" onclick="selectPreset('Astro_Placa_Base_01.raw')">
+<div class="w-full h-12 rounded bg-cover bg-center" data-alt="Milky Way starry night sky deep exposure background template with crisp dark horizon and clear constellations." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAkXNSMAI-v0sSVY3QmX6LVrXWUuVbejeaxEbmrafXD2hBOLDIlCr4nDlDgW75Ut_LZwD822tpT-chIVXpUg5R3Ej3jRdaEyEJpCyWzm0jOINaBK_FklmJ6wiypoDt_yOMxzwpMVPvV9FgFd33GyWarhU0pDHyOffKwFnc2M4g-uvFBMCb3mB1qWq9Zk-SaTmpCH8k4EPMKdmNUBQBOBT3pU2f9zQyoWM5gGCu4sJsqhKoyszqTZBLGJA')"></div>
+<span class="font-label-sm text-label-sm text-primary truncate">Astro_Placa.raw</span>
+</div>
+<!-- Miniatura 2 -->
+<div class="cursor-pointer group relative rounded-lg overflow-hidden bg-surface-container-highest p-1 flex flex-col gap-1 hover:bg-surface-variant" onclick="selectPreset('Nocturna_Reflejo.png')">
+<div class="w-full h-12 rounded bg-cover bg-center" data-alt="Calm lake water reflecting illuminated city bridge night lights long exposure photography base template." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAYWabFvpLGC9AKFTwFDiI_WvdgLD-lTGnag6o0-XNcxiQFIvnnzVBXkMp2wMy93rgNkXPxZ24WPTvA0hLO4uFVbIlOwOgEeWVtNgR-L08IlrHVdprwKLPFPOgjeEOKUBDCr-vcYQ7jQ9v458fUJVoKKWutU2Yw2RImVlMFgKVwmUkYP2LvGogpZX_404sAQWFbJY6Ymw5DWKinsf9Q520C9Xni-dBuIS93T4zo7uCMmzUlrqSAQOiKyw')"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Nocturna_Reflejo</span>
+</div>
+<!-- Miniatura 3 -->
+<div class="cursor-pointer group relative rounded-lg overflow-hidden bg-surface-container-highest p-1 flex flex-col gap-1 hover:bg-surface-variant" onclick="selectPreset('Boceto_Guia.dng')">
+<div class="w-full h-12 rounded bg-cover bg-center" data-alt="Technical neon calligraphy light painting geometric guide wireframe blueprint on dark background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDIY5ixLJ16huXwiUahCck_Oop4lmIvq5_M3K495hokx8JSrdztlno8VF-z5Dcba5rPk2_czppVapIjzi3Ew5QmVqBZZsRH8FYoCisyeFhHzWAh__Qk7zb7CWhOf91fRJVauYMYWwuYd26x9dycMpGnzmzb9FCpbZhKQCzBE2HBQZZkp-crW1PlHSqYOHtHKV_QlJqrDCUh3AWYBX7uQ49z_Bb73WSO3B_vC-7BmRZ401O3p55cdVS58Q')"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Boceto_Guia.dng</span>
+</div>
+</div>
+</div>
+<!-- Deslizador de opacidad de fondo -->
+<div class="flex flex-col gap-1 pt-1">
+<div class="flex justify-between items-center font-body-sm text-body-sm">
+<span class="text-on-surface-variant">Opacidad Placa Base en Visor</span>
+<span class="font-metric-md text-metric-md text-primary-fixed" id="opacityDisplay">40%</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary-container" id="opacitySlider" max="100" min="0" type="range" value="40"/>
+</div>
+</div>
+<!-- SECCIÓN 4: SELECTOR DE ANCLAJES RÁPIDOS PARA BOTÓN OBTURADOR MÓVIL -->
+<div class="bg-surface-container-low rounded-xl p-3 shadow-md flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[17px] text-primary-container">pan_tool</span>
+          Anclaje Obturador Flotante
+        </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="shutterCoordsBadge">X: 180px | Y: 680px</span>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<button class="py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-variant active:scale-95 transition-all" onclick="anchorShutter('left')" type="button">
+          Esquina Izq
+        </button>
+<button class="py-1.5 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-bold shadow-sm" onclick="anchorShutter('center')" type="button">
+          Centro HUD
+        </button>
+<button class="py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-variant active:scale-95 transition-all" onclick="anchorShutter('right')" type="button">
+          Esquina Der
+        </button>
+</div>
+</div>
+</div>
+<!-- BOTÓN PLAY/PAUSA MÓVIL Y FLOTANTE POR LA PANTALLA (INTERACTIVO DRAGGABLE) -->
+<div class="fixed z-40 touch-none" id="floatingShutterContainer" style="bottom: 125px; left: 50%; transform: translateX(-50%);">
+<div class="flex flex-col items-center">
+<!-- Badge de Estado Draggable -->
+<div class="cursor-move mb-1 px-2.5 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md shadow-md flex items-center gap-1 select-none active:scale-95" id="shutterDragHandle">
+<span class="material-symbols-outlined text-[12px] text-primary-container">drag_indicator</span>
+<span class="font-label-sm text-label-sm text-primary-fixed tracking-wider">ARRASTRAR LIBRE 🔒</span>
+</div>
+<!-- Anillo exterior y disparador circular -->
+<div class="relative w-20 h-20 flex items-center justify-center">
+<!-- Anillo de progreso / Glow de exposición activa -->
+<div class="absolute inset-0 rounded-full bg-primary-container/20 blur-md transition-all" id="shutterGlowRing"></div>
+<div class="w-20 h-20 rounded-full bg-surface-container-lowest p-1 shadow-2xl flex items-center justify-center">
+<button class="w-16 h-16 rounded-full bg-surface flex items-center justify-center shadow-[0_0_16px_rgba(0,255,204,0.4)] active:scale-90 transition-transform" id="mainShutterBtn">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container transition-colors" id="shutterInnerCore">
+<span class="material-symbols-outlined text-[28px]" id="shutterIcon">play_arrow</span>
+</div>
+</button>
+</div>
+</div>
+<!-- Indicador de Tiempo Exposición Bulbing -->
+<div class="mt-1 px-2 py-0.5 rounded bg-surface-container-lowest/80 backdrop-blur-sm">
+<span class="font-metric-md text-metric-md text-on-surface" id="shutterTimer">PAUSA (15.4s)</span>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Control en tiempo real de Distancia de Enfoque
+  const focusSlider = document.getElementById('focusSlider');
+  const focusDisplay = document.getElementById('focusValueDisplay');
+  const reticleDist = document.getElementById('reticleFocusDist');
+
+  function updateFocusText(val) {
+    const num = parseFloat(val);
+    const textVal = num >= 9.8 ? '∞ Infinito' : num.toFixed(2) + ' m';
+    focusDisplay.textContent = 'Distancia: ' + textVal;
+    reticleDist.textContent = textVal;
+  }
+
+  if (focusSlider) {
+    focusSlider.addEventListener('input', (e) => {
+      updateFocusText(e.target.value);
+    });
+  }
+
+  function setFocus(val) {
+    if (focusSlider) {
+      focusSlider.value = val;
+      updateFocusText(val);
+    }
+  }
+
+  // Control de persistencia de Modo Estela (GPU Decay)
+  const decaySlider = document.getElementById('decaySlider');
+  const decayDisplay = document.getElementById('decayDisplay');
+
+  if (decaySlider) {
+    decaySlider.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      if (val >= 29.5) {
+        decayDisplay.textContent = 'Permanente [GPU Infinite]';
+      } else {
+        decayDisplay.textContent = val.toFixed(1) + 's [GPU Buffer]';
+      }
+    });
+  }
+
+  // Control de opacidad y carga de Placa Base
+  const opacitySlider = document.getElementById('opacitySlider');
+  const opacityDisplay = document.getElementById('opacityDisplay');
+  const baseOverlay = document.getElementById('basePlateOverlay');
+  const currentBaseTag = document.getElementById('currentBaseTag');
+  const clearBtn = document.getElementById('clearCanvasBtn');
+  const browseBtn = document.getElementById('browseFileBtn');
+
+  if (opacitySlider && baseOverlay) {
+    opacitySlider.addEventListener('input', (e) => {
+      const pct = e.target.value;
+      opacityDisplay.textContent = pct + '%';
+      baseOverlay.style.opacity = (pct / 100).toString();
+    });
+  }
+
+  function selectPreset(name) {
+    if (currentBaseTag) currentBaseTag.textContent = name;
+    if (baseOverlay) baseOverlay.style.opacity = '0.5';
+    if (opacitySlider) opacitySlider.value = 50;
+    if (opacityDisplay) opacityDisplay.textContent = '50%';
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (currentBaseTag) currentBaseTag.textContent = 'Lienzo Negro (Sin Placa)';
+      if (baseOverlay) baseOverlay.style.opacity = '0';
+      if (opacitySlider) opacitySlider.value = 0;
+      if (opacityDisplay) opacityDisplay.textContent = '0%';
+    });
+  }
+
+  if (browseBtn) {
+    browseBtn.addEventListener('click', () => {
+      // Simular apertura nativa de Storage Access Framework de Android
+      const mockFiles = ['Nube_Magallanes_HDR.raw', 'Reflejo_Urbano_10s.dng', 'Rastro_Cometa_04.dng'];
+      const pick = mockFiles[Math.floor(Math.random() * mockFiles.length)];
+      selectPreset(pick);
+    });
+  }
+
+  // Botón Disparador Play/Pausa Flotante con Dragging Libre y Anclajes
+  const shutterContainer = document.getElementById('floatingShutterContainer');
+  const dragHandle = document.getElementById('shutterDragHandle');
+  const coordsBadge = document.getElementById('shutterCoordsBadge');
+  const mainShutterBtn = document.getElementById('mainShutterBtn');
+  const shutterInnerCore = document.getElementById('shutterInnerCore');
+  const shutterIcon = document.getElementById('shutterIcon');
+  const shutterTimer = document.getElementById('shutterTimer');
+  const shutterGlow = document.getElementById('shutterGlowRing');
+
+  let isCapturing = false;
+  let timerInterval = null;
+  let secondsCount = 15.4;
+
+  if (mainShutterBtn) {
+    mainShutterBtn.addEventListener('click', () => {
+      isCapturing = !isCapturing;
+      if (isCapturing) {
+        // Estado Grabación / Integración Activa
+        shutterInnerCore.className = 'w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary transition-colors';
+        shutterIcon.textContent = 'pause';
+        shutterGlow.className = 'absolute inset-0 rounded-full bg-secondary-container/40 blur-lg animate-pulse transition-all';
+        timerInterval = setInterval(() => {
+          secondsCount += 0.1;
+          shutterTimer.textContent = 'EXPONIENDO: ' + secondsCount.toFixed(1) + 's';
+        }, 100);
+      } else {
+        // Estado Pausa
+        clearInterval(timerInterval);
+        shutterInnerCore.className = 'w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container transition-colors';
+        shutterIcon.textContent = 'play_arrow';
+        shutterGlow.className = 'absolute inset-0 rounded-full bg-primary-container/20 blur-md transition-all';
+        shutterTimer.textContent = 'PAUSA (' + secondsCount.toFixed(1) + 's)';
+      }
+    });
+  }
+
+  function anchorShutter(pos) {
+    if (!shutterContainer) return;
+    shutterContainer.style.transform = 'none';
+    if (pos === 'left') {
+      shutterContainer.style.left = '20px';
+      shutterContainer.style.bottom = '120px';
+    } else if (pos === 'right') {
+      shutterContainer.style.left = (window.innerWidth - 100) + 'px';
+      shutterContainer.style.bottom = '120px';
+    } else {
+      shutterContainer.style.left = '50%';
+      shutterContainer.style.transform = 'translateX(-50%)';
+      shutterContainer.style.bottom = '125px';
+    }
+    updateCoordsDisplay();
+  }
+
+  function updateCoordsDisplay() {
+    if (!shutterContainer || !coordsBadge) return;
+    const rect = shutterContainer.getBoundingClientRect();
+    coordsBadge.textContent = 'X: ' + Math.round(rect.left) + 'px | Y: ' + Math.round(rect.top) + 'px';
+  }
+
+  // Lógica de arrastre touch / pointer
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let initialLeft = 0;
+  let initialTop = 0;
+
+  if (dragHandle && shutterContainer) {
+    dragHandle.addEventListener('pointerdown', (e) => {
+      isDragging = true;
+      dragHandle.setPointerCapture(e.pointerId);
+      const rect = shutterContainer.getBoundingClientRect();
+      shutterContainer.style.transform = 'none';
+      shutterContainer.style.bottom = 'auto';
+      shutterContainer.style.left = rect.left + 'px';
+      shutterContainer.style.top = rect.top + 'px';
+
+      startX = e.clientX;
+      startY = e.clientY;
+      initialLeft = rect.left;
+      initialTop = rect.top;
+    });
+
+    dragHandle.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+
+      let newX = initialLeft + deltaX;
+      let newY = initialTop + deltaY;
+
+      // Restricción dentro de viewport
+      newX = Math.max(8, Math.min(window.innerWidth - 88, newX));
+      newY = Math.max(64, Math.min(window.innerHeight - 150, newY));
+
+      shutterContainer.style.left = newX + 'px';
+      shutterContainer.style.top = newY + 'px';
+      updateCoordsDisplay();
+    });
+
+    const stopDrag = () => {
+      isDragging = false;
+    };
+    dragHandle.addEventListener('pointerup', stopDrag);
+    dragHandle.addEventListener('pointercancel', stopDrag);
+  }
+
+  // Micro-toggle para comando de voz
+  const voiceBtn = document.getElementById('toggleVoiceMic');
+  if (voiceBtn) {
+    voiceBtn.addEventListener('click', () => {
+      const isMuted = voiceBtn.textContent.includes('OFF');
+      if (isMuted) {
+        voiceBtn.innerHTML = '<span class="material-symbols-outlined text-[14px]">mic</span><span>VOZ: ON</span>';
+        voiceBtn.className = 'h-7 px-2.5 rounded-full bg-surface-container-high text-primary-fixed-dim flex items-center gap-1 font-label-sm text-label-sm shadow-sm active:scale-95 transition-all';
+      } else {
+        voiceBtn.innerHTML = '<span class="material-symbols-outlined text-[14px]">mic_off</span><span>VOZ: OFF</span>';
+        voiceBtn.className = 'h-7 px-2.5 rounded-full bg-surface-container text-on-surface-variant flex items-center gap-1 font-label-sm text-label-sm shadow-sm active:scale-95 transition-all';
+      }
+    });
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.8)]" data-active-classes="text-primary-fixed font-headline-sm"><div class="h-28 px-margin flex flex-col justify-center gap-2"><div class="flex items-center justify-around"><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="live-viewfinder" href="#"><span class="material-symbols-outlined text-[20px]">camera</span><span class="font-label-sm text-label-sm">Capture</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="exposure-cockpit" href="#"><span class="material-symbols-outlined text-[20px]">exposure</span><span class="font-label-sm text-label-sm">Exposure</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="live-viewfinder" href="#"><div class="w-full h-full rounded-full bg-surface flex items-center justify-center"><div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[22px]">radio_button_checked</span></div></div></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="light-trails-library" href="#"><span class="material-symbols-outlined text-[20px]">auto_awesome_motion</span><span class="font-label-sm text-label-sm">Trails</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="calibration-profile" href="#"><span class="material-symbols-outlined text-[20px]">sensors</span><span class="font-label-sm text-label-sm">Calibrate</span></a></div></div></nav></body></html>

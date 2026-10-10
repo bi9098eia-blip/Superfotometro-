@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>LuminaCam Pro</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#131313;color:#e2e2e2;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary-fixed-dim": "#00e0b3", "primary-container": "#00ffcc", "secondary-container": "#ff4a8d", "on-secondary-fixed-variant": "#8f0044", "on-tertiary-fixed": "#271900", "tertiary": "#fffeff", "on-surface": "#e2e2e2", "on-secondary": "#65002e", "error-container": "#93000a", "on-surface-variant": "#b9cbc2", "primary-fixed": "#24ffcd", "surface-container-high": "#2a2a2a", "on-background": "#e2e2e2", "background": "#131313", "on-error": "#690005", "surface-variant": "#353535", "on-error-container": "#ffdad6", "on-primary-fixed": "#002118", "surface-dim": "#131313", "error": "#ffb4ab", "inverse-surface": "#e2e2e2", "on-tertiary-container": "#835d00", "secondary": "#ffb1c4", "on-primary-fixed-variant": "#00513f", "surface-bright": "#393939", "on-primary-container": "#00725a", "tertiary-container": "#ffdda5", "tertiary-fixed": "#ffdea8", "on-primary": "#00382b", "outline-variant": "#3a4a44", "surface-container": "#1f1f1f", "on-secondary-container": "#590028", "secondary-fixed-dim": "#ffb1c4", "surface-tint": "#00e0b3", "surface-container-highest": "#353535", "outline": "#83958d", "inverse-primary": "#006b54", "surface": "#131313", "on-tertiary-fixed-variant": "#5e4200", "surface-container-lowest": "#0e0e0e", "on-tertiary": "#412d00", "secondary-fixed": "#ffd9e1", "surface-container-low": "#1b1b1b", "tertiary-fixed-dim": "#ffba20", "inverse-on-surface": "#303030", "primary": "#fdfffc", "on-secondary-fixed": "#3f001a" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-sm": "0.5rem", "margin": "1rem", "space-xs": "0.25rem", "space-md": "0.75rem", "space-xl": "2rem", "gutter": "0.75rem", "space-lg": "1.25rem" }, fontFamily: { "metric-xl": ["JetBrains Mono"], "headline-lg": ["Space Grotesk"], "body-md": ["Space Grotesk"], "label-sm": ["JetBrains Mono"], "headline-sm": ["Space Grotesk"], "metric-md": ["JetBrains Mono"], "metric-lg": ["JetBrains Mono"], "body-sm": ["Space Grotesk"], "headline-md": ["Space Grotesk"], "headline-lg-mobile": ["Space Grotesk"], "label-md": ["JetBrains Mono"], "body-lg": ["Space Grotesk"] }, fontSize: { "metric-xl": ["28px", { lineHeight: "32px", letterSpacing: "-0.03em", fontWeight: "700" }], "headline-lg": ["32px", { lineHeight: "38px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "label-sm": ["10px", { lineHeight: "12px", letterSpacing: "0.08em", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }], "metric-md": ["14px", { lineHeight: "18px", letterSpacing: "-0.01em", fontWeight: "500" }], "metric-lg": ["20px", { lineHeight: "24px", letterSpacing: "-0.02em", fontWeight: "600" }], "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }], "headline-md": ["22px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "headline-lg-mobile": ["26px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }], "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "500" }], "body-lg": ["16px", { lineHeight: "22px", fontWeight: "400" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col select-none"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.6)]"><div class="h-14 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm overflow-hidden"><div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full text-primary-fixed"><span class="material-symbols-outlined text-[15px]">battery_charging_80</span><span class="font-label-sm text-label-sm">84%</span></div><div class="flex items-center bg-surface-container-low px-2 py-1 rounded-full text-secondary font-label-sm text-label-sm"><span>RAW/DNG</span></div><div class="hidden sm:flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm"><span class="material-symbols-outlined text-[13px]">sd_card</span><span>RAW 1,420</span></div><div class="flex items-center gap-1.5 bg-surface-container px-2.5 py-1 rounded-full text-primary-fixed-dim"><span class="material-symbols-outlined text-[14px] animate-pulse">graphic_eq</span><span class="font-label-sm text-label-sm truncate max-w-[110px]">Escuchando</span></div></div><div class="flex items-center gap-space-xs"><button class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[20px]">tune</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full bg-surface pt-14 pb-28"><div class="flex flex-col w-full pb-6 relative overflow-hidden select-none">
+<!-- HUD Top Floating Status Strip -->
+<div class="w-full px-margin pt-2 pb-1 z-20 flex flex-col gap-1.5">
+<!-- Top Row: State Pill & Gyro -->
+<div class="flex items-center justify-between gap-space-xs">
+<div class="flex items-center gap-1.5 bg-tertiary-fixed-dim/20 backdrop-blur-md px-2.5 py-1 rounded-full shadow-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim animate-ping"></span>
+<span class="font-label-sm text-label-sm text-tertiary-fixed-dim uppercase tracking-wider">PAUSA · BUFFER CONGELADO</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1 bg-surface-container-high/80 backdrop-blur-md px-2 py-0.5 rounded-full text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px] text-primary-fixed">screen_rotation</span>
+<span>0.0° TILT</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-high/80 backdrop-blur-md px-2 py-0.5 rounded-full text-primary-fixed font-metric-md text-metric-md">
+<span class="material-symbols-outlined text-[13px] text-secondary">timer</span>
+<span id="frozen-timer">00:42.8</span>
+</div>
+</div>
+</div>
+<!-- Second Row HUD Telemetry -->
+<div class="flex items-center justify-between gap-space-xs overflow-x-auto no-scrollbar py-0.5">
+<div class="flex items-center gap-1.5 bg-surface-container-lowest/80 backdrop-blur-md px-2 py-1 rounded-full text-primary-fixed-dim font-label-sm text-label-sm shrink-0">
+<span class="material-symbols-outlined text-[14px] text-primary-container">bolt</span>
+<span class="tracking-wide">LIGHTEN BLEND · GAMMA 1.25x</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container-lowest/80 backdrop-blur-md px-2 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-fixed"></span>
+<span>4K DNG RAW · 60FPS LOCKED</span>
+</div>
+</div>
+</div>
+<!-- Primary Viewfinder Canvas Area -->
+<div class="relative w-full aspect-[4/5] max-h-[580px] my-1 overflow-hidden bg-surface-container-lowest rounded-xl shadow-2xl flex items-center justify-center">
+<!-- Viewfinder Layer: Background Nocturnal Light Painting Shot -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-300 scale-100" data-alt="High contrast long exposure photography of a cyberpunk city terrace at midnight with vibrant luminous cyan and neon magenta calligraphic light trails floating in mid air, sharp light ribbons winding through foreground, moody starry sky and illuminated distant skyscrapers, crystal clear high contrast overlay review mode" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAGW70F4gbDNnJHx0RXvdenFVJFj-wNIhH92JcQ-3FbITAfZVsSbKpN848cINQ6tHLfAJuF2Qq84TYmxOdPyZpA6acE8_sEjHbT7yfdH5_thwphGrIETbsvxghZriaPGRqPIacX_ZmBycaRh34cyXh-t_hoP4ulsfEyJYbGp1Pt4NahTnXlPCu7_ofnuK3Wx6DhtE-_YOLIBpusRkaajvcQ6y1y77ISPgvfRLPi2pUvYWCxDzn3XFn0ww')">
+<!-- High-Contrast Canvas Overlay Simulation -->
+<div class="absolute inset-0 bg-primary-container/10 backdrop-contrast-125 backdrop-brightness-110 pointer-events-none transition-opacity duration-300" id="gamma-overlay"></div>
+</div>
+<!-- HUD Viewfinder Bracket Corners & Reticles -->
+<div class="absolute inset-2 pointer-events-none z-10 flex flex-col justify-between">
+<!-- Top corners -->
+<div class="flex justify-between items-start">
+<div class="w-5 h-5 flex flex-col justify-between">
+<div class="w-5 h-0.5 bg-primary-fixed/80"></div>
+<div class="w-0.5 h-4 bg-primary-fixed/80"></div>
+</div>
+<!-- High Contrast Canvas Badge Notification -->
+<div class="flex items-center gap-1.5 bg-surface-container-lowest/90 px-3 py-1 rounded-full shadow-lg pointer-events-auto">
+<span class="material-symbols-outlined text-[14px] text-tertiary-fixed-dim">view_in_ar</span>
+<span class="font-label-sm text-label-sm text-on-surface tracking-wider">CANVAS FROZEN · PREVIEWING ACCUMULATION</span>
+</div>
+<div class="w-5 h-5 flex flex-col items-end justify-between">
+<div class="w-5 h-0.5 bg-primary-fixed/80"></div>
+<div class="w-0.5 h-4 bg-primary-fixed/80"></div>
+</div>
+</div>
+<!-- Center Reticle / Light painting Focus Target -->
+<div class="self-center flex flex-col items-center justify-center relative">
+<div class="w-12 h-12 rounded-full flex items-center justify-center opacity-80">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary shadow-[0_0_12px_rgba(255,0,127,0.8)] animate-pulse"></div>
+</div>
+<div class="absolute -bottom-5 bg-surface-container-lowest/80 px-2 py-0.5 rounded text-on-surface-variant font-label-sm text-label-sm">
+          MF 0.85m · PEAKING ON
+        </div>
+</div>
+<!-- Bottom corners -->
+<div class="flex justify-between items-end">
+<div class="w-5 h-5 flex flex-col justify-between">
+<div class="w-0.5 h-4 bg-primary-fixed/80"></div>
+<div class="w-5 h-0.5 bg-primary-fixed/80"></div>
+</div>
+<div class="w-5 h-5 flex flex-col items-end justify-between">
+<div class="w-0.5 h-4 bg-primary-fixed/80"></div>
+<div class="w-5 h-0.5 bg-primary-fixed/80"></div>
+</div>
+</div>
+</div>
+<!-- Floating Lateral Quick Tool Deck (Right Rail) -->
+<div class="absolute right-3 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-2.5">
+<!-- Gamma Toggle Button -->
+<button class="w-10 h-10 rounded-full bg-surface-container-high/90 backdrop-blur-md flex flex-col items-center justify-center text-primary-fixed shadow-md active:scale-95 transition-all" id="toggle-gamma-btn">
+<span class="material-symbols-outlined text-[18px]">contrast</span>
+<span class="font-label-sm text-[8px] leading-tight font-bold">1.25x</span>
+</button>
+<!-- 100% Pixel Loupe Detail Inspector -->
+<button class="w-10 h-10 rounded-full bg-surface-container-high/90 backdrop-blur-md flex items-center justify-center text-on-surface hover:text-primary-fixed shadow-md active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[20px]">zoom_in</span>
+</button>
+<!-- Light Threshold Mask Filter -->
+<button class="w-10 h-10 rounded-full bg-surface-container-high/90 backdrop-blur-md flex items-center justify-center text-secondary shadow-md active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[20px]">tonality</span>
+</button>
+<!-- Voice Command Active Indicator -->
+<button class="w-10 h-10 rounded-full bg-surface-container-high/90 backdrop-blur-md flex items-center justify-center text-tertiary-fixed-dim shadow-md active:scale-95 transition-all relative">
+<span class="material-symbols-outlined text-[20px]">mic</span>
+<span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-tertiary-fixed-dim animate-ping"></span>
+</button>
+</div>
+<!-- Floating Live Exposure Parameters HUD (Top Left Viewfinder) -->
+<div class="absolute top-10 left-3 z-10 flex flex-col gap-1.5 pointer-events-none">
+<div class="flex items-center gap-1.5 bg-surface-container-lowest/80 backdrop-blur-md px-2 py-0.5 rounded font-metric-md text-metric-md text-on-surface">
+<span class="text-on-surface-variant font-label-sm text-label-sm">ISO</span>
+<span class="text-primary-fixed font-bold">400</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container-lowest/80 backdrop-blur-md px-2 py-0.5 rounded font-metric-md text-metric-md text-on-surface">
+<span class="text-on-surface-variant font-label-sm text-label-sm">EXP</span>
+<span class="text-secondary font-bold">BULB (42.8s)</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container-lowest/80 backdrop-blur-md px-2 py-0.5 rounded font-metric-md text-metric-md text-on-surface">
+<span class="text-on-surface-variant font-label-sm text-label-sm">APERTURE</span>
+<span class="text-on-surface font-bold">f/4.0</span>
+</div>
+</div>
+<!-- Live Frozen Histogram HUD (Bottom Left Viewfinder) -->
+<div class="absolute bottom-3 left-3 z-10 bg-surface-container-lowest/85 backdrop-blur-md p-2 rounded-lg flex flex-col gap-1 shadow-lg pointer-events-none">
+<div class="flex items-center justify-between gap-3 text-on-surface-variant font-label-sm text-label-sm">
+<span class="text-primary-fixed">RGB HISTOGRAM</span>
+<span class="text-tertiary-fixed-dim">GAMMA BOOST ON</span>
+</div>
+<!-- SVG Histogram Data Curve -->
+<div class="w-32 h-10 relative overflow-hidden flex items-end">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 40">
+<!-- Shadow/Mid/Highlight Gradients -->
+<defs>
+<lineargradient id="histGradient" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0%" stop-color="#00ffcc" stop-opacity="0.8"></stop>
+<stop offset="50%" stop-color="#ff4a8d" stop-opacity="0.7"></stop>
+<stop offset="100%" stop-color="#ffdda5" stop-opacity="0.9"></stop>
+</lineargradient>
+</defs>
+<!-- Baseline curves -->
+<path d="M 0 40 Q 15 35 25 28 T 45 15 T 70 8 T 85 22 T 100 38 L 100 40 L 0 40 Z" fill="url(#histGradient)" opacity="0.45"></path>
+<path d="M 0 40 Q 18 30 30 20 T 55 10 T 80 5 T 90 28 T 100 40" fill="none" stroke="#24ffcd" stroke-width="1.5"></path>
+<path d="M 0 40 Q 10 38 35 25 T 65 18 T 88 12 T 100 40" fill="none" stroke="#ff4a8d" stroke-width="1.2"></path>
+</svg>
+</div>
+</div>
+<!-- Voice Feedback Chip Overlay -->
+<div class="absolute bottom-3 right-3 z-10 bg-surface-container-high/90 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
+<span class="material-symbols-outlined text-[15px] text-tertiary-fixed-dim animate-pulse">record_voice_over</span>
+<span class="font-body-sm text-body-sm text-on-surface">Di <span class="text-primary-fixed font-bold">"Play"</span> o <span class="text-secondary font-bold">"Guardar"</span></span>
+</div>
+</div>
+<!-- Hot-Switchable Render Modes Deck (Cambio en Caliente durante Pausa) -->
+<div class="w-full px-margin py-1.5 flex flex-col gap-1 z-10">
+<div class="flex items-center justify-between text-on-surface-variant px-1 font-label-sm text-label-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary-fixed">tune</span>
+        CAMBIO DE MODO EN CALIENTE
+      </span>
+<span class="text-primary-fixed-dim">SIN REINICIAR LIENZO</span>
+</div>
+<!-- Segmented Hot Switch Buttons -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low p-1 rounded-xl shadow-inner">
+<!-- Active Mode: Pintar Luz -->
+<button class="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-surface-container-highest text-primary-container shadow-[0_0_14px_rgba(0,255,204,0.35)] transition-all">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">brush</span>
+<span class="font-headline-sm text-[12px] font-bold">Pintar Luz</span>
+</div>
+<span class="font-label-sm text-[9px] text-primary-fixed-dim">Lighten Add</span>
+</button>
+<!-- Option 2: Pintar Sombra -->
+<button class="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">dark_mode</span>
+<span class="font-headline-sm text-[12px]">Pintar Sombra</span>
+</div>
+<span class="font-label-sm text-[9px]">Subtract/Darken</span>
+</button>
+<!-- Option 3: Modo Estela -->
+<button class="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">auto_awesome_motion</span>
+<span class="font-headline-sm text-[12px]">Modo Estela</span>
+</div>
+<span class="font-label-sm text-[9px]">Decay Phosphor</span>
+</button>
+</div>
+</div>
+<!-- Primary Pause Cockpit Control & Multifunction Shutter Deck -->
+<div class="w-full px-margin pt-2 pb-1 flex flex-col gap-3 z-10">
+<div class="flex items-center justify-between px-2">
+<!-- Left: Current Buffer Thumbnail Preview -->
+<div class="flex flex-col items-center gap-1">
+<div class="relative w-14 h-14 rounded-lg overflow-hidden bg-surface-container-highest shadow-md cursor-pointer active:scale-95 transition-transform flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="Micro thumbnail showing preview of raw long exposure light trails buffer cyan and magenta swirls on black background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMc9QSUNp9uWoOzlYhZQN_XHtW5buKtuxFDoXurLIlcwV1vIp1s6G5BbmXTDghKF2MOTDm9kUYtkeB2PqXsv5NSk5lUzwuKWf9toeZlVKEcqpK3w2LUDX5L5VGyyU8RF_B016lQB8WRen9xytT8F23nSs7J3JF02acUR6khaNjje0UI-nAo404CbN1ZvF7UZyRoY2jRcZ9L1wO35EbITiIpdKNOSGUAgAkJt1aox1EiejFCt9d_-p_0Q"/>
+<div class="absolute inset-0 bg-surface-dim/30"></div>
+<span class="absolute bottom-0.5 right-0.5 bg-surface-container-lowest/90 text-primary-fixed font-label-sm text-[8px] px-1 rounded">BUFFER</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Revisar 1:1</span>
+</div>
+<!-- Center Action: Concentric Resume (PLAY) Shutter Button -->
+<div class="flex flex-col items-center">
+<button class="relative w-20 h-20 rounded-full flex items-center justify-center bg-surface-container-lowest shadow-[0_0_24px_rgba(0,255,204,0.45)] active:scale-95 transition-all group" id="resume-shutter">
+<!-- Concentric Outer Ring -->
+<div class="absolute inset-1 rounded-full bg-primary-container/20 animate-pulse"></div>
+<!-- Inner Core Button with Play Neon Glow -->
+<div class="w-14 h-14 rounded-full bg-surface-container-high group-hover:bg-primary-container flex items-center justify-center text-primary-container group-hover:text-on-primary transition-colors shadow-inner">
+<span class="material-symbols-outlined text-[32px] translate-x-0.5" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</button>
+<span class="mt-1.5 font-label-sm text-label-sm text-primary-fixed font-bold tracking-wider uppercase animate-pulse">REANUDAR PINTURA</span>
+</div>
+<!-- Right: Direct DNG RAW Export / Save Deck -->
+<div class="flex flex-col items-center gap-1">
+<button class="w-14 h-14 rounded-lg bg-surface-container-high hover:bg-secondary-container flex flex-col items-center justify-center text-secondary hover:text-on-secondary shadow-md active:scale-95 transition-all group">
+<span class="material-symbols-outlined text-[24px]">save</span>
+<span class="font-label-sm text-[9px] font-bold">EXPORTAR</span>
+</button>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Guardar RAW</span>
+</div>
+</div>
+<!-- Secondary Safe Operational Row: Discard / Settings Reset -->
+<div class="flex items-center justify-between pt-1 px-4">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-error transition-colors py-1">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+<span class="font-label-sm text-label-sm">Descartar Toma</span>
+</button>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary-fixed-dim">lightbulb</span>
+<span class="font-body-sm text-body-sm">Pausa no altera el tiempo de bulbo neto</span>
+</div>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary-fixed transition-colors py-1">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+<span class="font-label-sm text-label-sm">Calibrar</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  (function initPauseCockpitInteractions() {
+    const toggleGammaBtn = document.getElementById('toggle-gamma-btn');
+    const gammaOverlay = document.getElementById('gamma-overlay');
+    let gammaEnabled = true;
+
+    if (toggleGammaBtn && gammaOverlay) {
+      toggleGammaBtn.addEventListener('click', () => {
+        gammaEnabled = !gammaEnabled;
+        if (gammaEnabled) {
+          gammaOverlay.classList.remove('opacity-0');
+          gammaOverlay.classList.add('opacity-100');
+          toggleGammaBtn.classList.add('text-primary-fixed');
+          toggleGammaBtn.classList.remove('text-on-surface-variant');
+        } else {
+          gammaOverlay.classList.remove('opacity-100');
+          gammaOverlay.classList.add('opacity-0');
+          toggleGammaBtn.classList.remove('text-primary-fixed');
+          toggleGammaBtn.classList.add('text-on-surface-variant');
+        }
+      });
+    }
+
+    const resumeBtn = document.getElementById('resume-shutter');
+    if (resumeBtn) {
+      resumeBtn.addEventListener('click', () => {
+        resumeBtn.classList.add('scale-90');
+        setTimeout(() => {
+          resumeBtn.classList.remove('scale-90');
+        }, 150);
+      });
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.8)]" data-active-classes="text-primary-fixed font-headline-sm"><div class="h-28 px-margin flex flex-col justify-center gap-2"><div class="flex items-center justify-around"><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="live-viewfinder" href="#"><span class="material-symbols-outlined text-[20px]">camera</span><span class="font-label-sm text-label-sm">Capture</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="exposure-cockpit" href="#"><span class="material-symbols-outlined text-[20px]">exposure</span><span class="font-label-sm text-label-sm">Exposure</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="live-viewfinder" href="#"><div class="w-full h-full rounded-full bg-surface flex items-center justify-center"><div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[22px]">radio_button_checked</span></div></div></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="light-trails-library" href="#"><span class="material-symbols-outlined text-[20px]">auto_awesome_motion</span><span class="font-label-sm text-label-sm">Trails</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="calibration-profile" href="#"><span class="material-symbols-outlined text-[20px]">sensors</span><span class="font-label-sm text-label-sm">Calibrate</span></a></div></div></nav></body></html>

@@ -1,0 +1,225 @@
+# SuperFotómetro — Especificación Técnica & Manual de Arquitectura Android CameraX
+
+Documento maestro de especificación y arquitectura técnica para la implementación nativa en Android (Kotlin 2.0+, Jetpack Compose, CameraX ImageAnalysis, MediaPipe, OpenCV Android SDK y OpenGL ES 3.2).
+
+---
+
+## 📑 1. Mapa Completo de Módulos y Funciones de la Suite
+
+### 1. Modo Luz (Light Accumulation)
+- **1.1. Exposición Máx/Mín**: Umbral dual en espacio de color y luminancia para recortar o admitir fotones directos.
+- **1.2. Sombras Máx/Mín**: Control de corte de ruido térmico en áreas oscuras para evitar elevación artificial de negros.
+- **1.3. Muestreo x Fotogramas**: Cadencia estroboscópica regulable (1:1 continuo a 60 fps, 1:2 a 30 fps, 1:4 a 15 fps, 1:10 estroboscópico de pulsos).
+- **1.4. Bloquear Enfoque (AF-Lock)**: Fijación incondicional de distancia métrica en primera exposición con memorización de dioptrías.
+
+### 2. Modo Sombra (Shadow / Darken Mode)
+- **2.1. Exposición Máx/Mín**: Umbral invertido ($P_{out} = \min(P_{prev}, P_{curr})$) para grabado de siluetas.
+- **2.2. Sombras Máx/Mín**: Calibración de rango dinámico inferior para el trazo de sombras sobre fondos claros.
+- **2.3. Muestreo x Fotogramas**: Muestreo intercalado específico para siluetado rítmico.
+- **2.4. Bloquear Enfoque**: Bloqueo métrico independiente para el operador de sombra.
+
+### 3. Modo Estela (Decay / Phosphor Trails)
+- **3.1. Exposición**: Brillo pico del frente de onda de la estela lumínica.
+- **3.2. Sombras**: Nivel de absorción del residuo del trazo.
+- **3.3. Desvanecimiento (Decay Factor)**: Coeficiente exponencial $\alpha \in [0.80, 0.99]$ por segundo.
+- **3.4. Muestreo**: Tasa de actualización temporal del buffer persistente.
+- **3.5. Difuminado (Gaussian Blur / Phosphor Spread)**: Kernel de convolución GPU para simular dispersión de fósforo analógico.
+
+### 4 & 8. Máscaras & Herramientas de Máscaras
+- **4.1 / 8.3. Varita Mágica (Magic Wand)**: Inundación por tolerancia cromática $\Delta E$ en espacio HSV.
+- **4.2 / 8.1. Pincel Libre**: Trazado manual con calibre dinámico (8 px a 180 px) y dureza de borde regulable.
+- **4.3 / 8.2. Formas Geométricas**: Rectángulo, elipse, polígonos vectoriales y degradados lineales.
+- **4.4. Negativo (Escudo Anti-Destellos)**: Inversión instantánea del buffer de protección contra destellos directos a lente.
+- **4.5 / 8.4. Nueva Máscara**: Creación de nueva capa multi-buffer (hasta 8 capas apilables).
+- **4.6 / 8.5. Eliminar Máscara**: Purgado de la capa seleccionada.
+- **4.7 / 8.6. Eliminar Selección**: Limpieza del buffer alfa activo.
+- **4.8 / 8.7. Modificar (Abrir Herramientas de Imagen)**: Puente directo entre la máscara y la gradación tonal.
+
+### 5. Fondo (Background & Placa Base)
+- **5.1. Añadir Fondo**: Carga desde MediaStore / URI nativo con soporte RAW, PNG y DNG.
+- **5.2. Clonar Estética**: Extracción de histograma y paleta tonal del fondo aplicado a la exposición viva.
+- **5.3. Modificar Fondo**: Ajuste de opacidad de mezcla, rotación y escala de la placa base.
+
+### 6. Herramientas de Soporte (Transformación Geométrica)
+- **6.1. Proporción (Aspect Ratio)**: 1:1, 4:3, 16:9, 21:9 cinemático y 3:2 fotográfico.
+- **6.2. Tamaño**: Escala de lienzo matricial.
+- **6.3. Rotar**: Giro continuo en pasos de 0.1° o 90°.
+- **6.4. Voltear**: Flip horizontal (espejo) y flip vertical.
+- **6.5. Perspectiva**: Corrección trapezoidal (Keystone) en 4 vértices para encuadres angulados.
+- **6.6. Posición**: Desplazamiento de coordenadas $X/Y$ del sensor virtual.
+- **6.7. Recortar**: Herramienta de recorte no destructivo.
+
+### 7. Herramientas de Imagen (Gradación Tonal Completa)
+- **7.1. Brillo (Exposure Bias)**
+- **7.2. Contraste (S-Curve)**
+- **7.3. Luces (Specular Highlights)**
+- **7.4. Sombras (Shadow Recovery)**
+- **7.5. Medios Tonos (Midtone Gamma)**
+- **7.6. Saturación (Vibrance & Saturation)**
+- **7.7. Color (Temperatura de Color K & Tinte Tint)**
+
+### 9. Herramientas de Identificación IA (Segmentación Semántica)
+- **9.1. Identifícame**: Calibración de silueta facial y corporal del fotógrafo en escena.
+- **9.2. Solo Yo**: Aislamiento exclusivo del operador en vivo; todo elemento externo es enmascarado.
+- **9.3. Solo Nosotros**: Detección multi-persona de los artistas de la sesión de Light Painting.
+- **9.4. Todo Menos Yo (Inpainting / Sujeto Invisible)**: El sujeto que porta las linternas es eliminado en tiempo real mediante sustitución de fondo estático, dejando únicamente el rastro de la luz que sostiene.
+- **9.5. Todo Menos Nosotros**: Eliminación en vivo de todo el equipo de artistas para estelas puras sin cuerpos visibles.
+
+### 10. Activación por Voz & Sonidos Personalizados
+- **10.1. Mapeo Acústico**: Asignación de timbres, hotwords y frecuencias sonoras exclusivas para las acciones:
+  - `Play` (Iniciar acumulación)
+  - `Pausa` (Congelar y activar mezcla alfa con High-Contrast Overlay)
+  - Identificación de objetos y valores (lectura auditiva de lux, tiempo transcurrido y FPS).
+
+---
+
+## 🛠️ 2. Arquitectura de Implementación Android Nativa
+
+### Pipeline de Captura: CameraX + ImageAnalysis + MediaRecorder Surface
+
+```
+[ CameraX Preview (SurfaceProvider) ] ──> [ Pantalla AMOLED 60 FPS ]
+                   │
+                   ▼
+[ CameraX ImageAnalysis (YUV_420_888) ]
+                   │
+         ┌─────────┴─────────┐
+         ▼                   ▼
+[ OpenCV Android SDK ]   [ Google MediaPipe Tasks ]
+(Filtrado HSV / Chroma)  (Selfie Segmentation / Hands-Free)
+         │                   │
+         └─────────┬─────────┘
+                   ▼
+       [ GLSurfaceView FBO 320es ]
+       (Shader de Fusión y Máscaras)
+                   │
+         ┌─────────┴─────────┐
+         ▼                   ▼
+[ Visor Táctil Compose ]   [ MediaRecorder / SurfaceInput ]
+                           (Grabación MP4 / DNG RAW Final)
+```
+
+---
+
+## 💻 3. Código Kotlin 2.0: ImageAnalysis & Segmentación MediaPipe / HSV
+
+```kotlin
+package com.superfotometro.camera.core.pipeline
+
+import android.content.Context
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
+import com.google.mediapipe.tasks.vision.imagesegmenter.ImageSegmenter
+import com.google.mediapipe.tasks.vision.imagesegmenter.ImageSegmenterResult
+import org.opencv.core.Core
+import org.opencv.core.CvType
+import org.opencv.core.Mat
+import org.opencv.core.Scalar
+import org.opencv.imgproc.Imgproc
+import java.nio.ByteBuffer
+import java.util.concurrent.Executors
+
+class SuperFotometroPipeline(
+    private val context: Context,
+    private val onProcessedFrame: (Mat) -> Unit
+) : ImageAnalysis.Analyzer {
+
+    // Configuración HSV
+    var lowerHsv = Scalar(20.0, 100.0, 100.0) // Ejemplo color linterna / sodio
+    var upperHsv = Scalar(35.0, 255.0, 255.0)
+    var isChromaEnabled = true
+
+    // Modo Segmentación MediaPipe: "Todo Menos Yo", "Solo Yo"
+    var segmentMode = SegmentationMode.EVERYTHING_EXCEPT_ME
+    private var cleanBackgroundMat: Mat? = null
+
+    enum class SegmentationMode {
+        ALL_PASSTHROUGH,
+        ONLY_ME,
+        ONLY_US,
+        EVERYTHING_EXCEPT_ME,
+        EVERYTHING_EXCEPT_US
+    }
+
+    override fun analyze(imageProxy: ImageProxy) {
+        val yMat = imageProxy.toMatRGB()
+
+        // 1. FILTRADO POR COLOR HSV (Opción A)
+        if (isChromaEnabled) {
+            val hsvMat = Mat()
+            Imgproc.cvtColor(yMat, hsvMat, Imgproc.COLOR_RGB2HSV)
+            val mask = Mat()
+            Core.inRange(hsvMat, lowerHsv, upperHsv, mask)
+            // Invertir máscara si se desea ignorar ese color
+            Core.bitwise_not(mask, mask)
+            val filtered = Mat()
+            Core.bitwise_and(yMat, yMat, filtered, mask)
+            onProcessedFrame(filtered)
+            hsvMat.release()
+            mask.release()
+        } else {
+            onProcessedFrame(yMat)
+        }
+
+        imageProxy.close()
+    }
+
+    private fun ImageProxy.toMatRGB(): Mat {
+        // Conversión ultrarrápida de planes YUV_420_888 a Mat RGB mediante buffers nativos
+        val mat = Mat(height, width, CvType.CV_8UC3)
+        // [Implementación optimizada con OpenCV / libyuv]
+        return mat
+    }
+}
+```
+
+---
+
+## 🎬 4. Fragment Shader OpenGL ES 3.2 de Inpainting y Fusión
+```glsl
+#version 320 es
+precision highp float;
+
+in vec2 vTexCoord;
+out vec4 fragColor;
+
+uniform sampler2D uLiveSensor;         // Stream CameraX
+uniform sampler2D uAccumulatedCanvas;  // Acumulación VRAM
+uniform sampler2D uCleanBackground;    // Fotograma fondo limpio para Inpainting
+uniform sampler2D uAiMaskTexture;      // Máscara MediaPipe (Persona / Sujeto)
+
+uniform int uIdentifyMode;             // 0: Normal, 1: Solo Yo, 2: Todo Menos Yo (Inpainting)
+uniform int uBlendMode;                // 0: Luz, 1: Sombra, 2: Estela
+uniform float uDecay;
+
+void main() {
+    vec4 live = texture(uLiveSensor, vTexCoord);
+    vec4 prev = texture(uAccumulatedCanvas, vTexCoord);
+    vec4 bg = texture(uCleanBackground, vTexCoord);
+    float personMask = texture(uAiMaskTexture, vTexCoord).r; // 1.0 = Persona detectada
+
+    // MODO "TODO MENOS YO" (Inpainting en vivo del cuerpo del fotógrafo)
+    if (uIdentifyMode == 2) {
+        if (personMask > 0.5) {
+            // Sustituye el cuerpo del operador por el fondo limpio capturado previamente
+            live = bg;
+        }
+    } else if (uIdentifyMode == 1) { // MODO "SOLO YO"
+        if (personMask < 0.5) {
+            live = vec4(0.0, 0.0, 0.0, 1.0);
+        }
+    }
+
+    // ACUMULACIÓN DE LUZ
+    vec4 res = prev;
+    if (uBlendMode == 0) {
+        res = max(prev, live);
+    } else if (uBlendMode == 1) {
+        res = min(prev, live);
+    } else if (uBlendMode == 2) {
+        res = max(prev * uDecay, live);
+    }
+
+    fragColor = res;
+}
+```

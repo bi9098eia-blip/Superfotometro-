@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>LuminaCam Pro</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#131313;color:#e2e2e2;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary-fixed-dim": "#00e0b3", "primary-container": "#00ffcc", "secondary-container": "#ff4a8d", "on-secondary-fixed-variant": "#8f0044", "on-tertiary-fixed": "#271900", "tertiary": "#fffeff", "on-surface": "#e2e2e2", "on-secondary": "#65002e", "error-container": "#93000a", "on-surface-variant": "#b9cbc2", "primary-fixed": "#24ffcd", "surface-container-high": "#2a2a2a", "on-background": "#e2e2e2", "background": "#131313", "on-error": "#690005", "surface-variant": "#353535", "on-error-container": "#ffdad6", "on-primary-fixed": "#002118", "surface-dim": "#131313", "error": "#ffb4ab", "inverse-surface": "#e2e2e2", "on-tertiary-container": "#835d00", "secondary": "#ffb1c4", "on-primary-fixed-variant": "#00513f", "surface-bright": "#393939", "on-primary-container": "#00725a", "tertiary-container": "#ffdda5", "tertiary-fixed": "#ffdea8", "on-primary": "#00382b", "outline-variant": "#3a4a44", "surface-container": "#1f1f1f", "on-secondary-container": "#590028", "secondary-fixed-dim": "#ffb1c4", "surface-tint": "#00e0b3", "surface-container-highest": "#353535", "outline": "#83958d", "inverse-primary": "#006b54", "surface": "#131313", "on-tertiary-fixed-variant": "#5e4200", "surface-container-lowest": "#0e0e0e", "on-tertiary": "#412d00", "secondary-fixed": "#ffd9e1", "surface-container-low": "#1b1b1b", "tertiary-fixed-dim": "#ffba20", "inverse-on-surface": "#303030", "primary": "#fdfffc", "on-secondary-fixed": "#3f001a" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-sm": "0.5rem", "margin": "1rem", "space-xs": "0.25rem", "space-md": "0.75rem", "space-xl": "2rem", "gutter": "0.75rem", "space-lg": "1.25rem" }, fontFamily: { "metric-xl": ["JetBrains Mono"], "headline-lg": ["Space Grotesk"], "body-md": ["Space Grotesk"], "label-sm": ["JetBrains Mono"], "headline-sm": ["Space Grotesk"], "metric-md": ["JetBrains Mono"], "metric-lg": ["JetBrains Mono"], "body-sm": ["Space Grotesk"], "headline-md": ["Space Grotesk"], "headline-lg-mobile": ["Space Grotesk"], "label-md": ["JetBrains Mono"], "body-lg": ["Space Grotesk"] }, fontSize: { "metric-xl": ["28px", { lineHeight: "32px", letterSpacing: "-0.03em", fontWeight: "700" }], "headline-lg": ["32px", { lineHeight: "38px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "label-sm": ["10px", { lineHeight: "12px", letterSpacing: "0.08em", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }], "metric-md": ["14px", { lineHeight: "18px", letterSpacing: "-0.01em", fontWeight: "500" }], "metric-lg": ["20px", { lineHeight: "24px", letterSpacing: "-0.02em", fontWeight: "600" }], "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }], "headline-md": ["22px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "headline-lg-mobile": ["26px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }], "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "500" }], "body-lg": ["16px", { lineHeight: "22px", fontWeight: "400" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col select-none"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.6)]"><div class="h-14 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm overflow-hidden"><div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full text-primary-fixed"><span class="material-symbols-outlined text-[15px]">battery_charging_80</span><span class="font-label-sm text-label-sm">84%</span></div><div class="flex items-center bg-surface-container-low px-2 py-1 rounded-full text-secondary font-label-sm text-label-sm"><span>RAW/DNG</span></div><div class="hidden sm:flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm"><span class="material-symbols-outlined text-[13px]">sd_card</span><span>RAW 1,420</span></div><div class="flex items-center gap-1.5 bg-surface-container px-2.5 py-1 rounded-full text-primary-fixed-dim"><span class="material-symbols-outlined text-[14px] animate-pulse">graphic_eq</span><span class="font-label-sm text-label-sm truncate max-w-[110px]">Escuchando</span></div></div><div class="flex items-center gap-space-xs"><button class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[20px]">tune</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full bg-surface pt-14 pb-28"><div class="flex flex-col w-full relative">
+<!-- Status HUD & Viewfinder Container -->
+<section class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden flex flex-col justify-between p-3 select-none">
+<!-- Camera Sensor Live Feed & Paused Exposure Light Trails Overlay -->
+<div class="absolute inset-0 z-0">
+<!-- Live Sensor Background Image -->
+<img class="w-full h-full object-cover opacity-80" data-alt="Dark atmospheric urban street at midnight, low-light photography preview frame with soft ambient neon reflections, deep black shadows, raw mobile sensor noise, photographic master quality" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGco04RrG651fRFevR9GGfCS8YMktuRe6no5yfje3H3r4Dm1maTuyg4cdIzYabHk8DayAp8Jy7-5LFaYGB82aPeWHK0vHtmcPbh5NkhUkyXoZZUeHm34q6q57UeK-8ZZFZrJGxThfDIsb9_3X-W--Fq-IDQx7UzwE81xDvoXCvDGZCBZYkf9jTdcwmdZ1RxJqnujSZRZ0DPnS8f_F6UGSVyfV5uF5IGmHYMOC_FlhFrIJPjGqxgyHweg"/>
+<!-- Paused Accumulation Layer with Dynamic Blend -->
+<div class="absolute inset-0 bg-cover bg-center transition-opacity duration-150" data-alt="Light painting long exposure vibrant neon ribbons in glowing luminous teal and neon magenta swirling across a pitch black darkroom setting with crisp dynamic particle sparks" id="pausedExposureLayer" style="opacity: 0.65; background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB_SM-k-d8nXuKsSU6hINvS3Gz29q7l66o8OQM75PeeH8jUh3ScAcw5bT2qgUK4O2jPqn-CXkft8bfE7Gh31hKCgFuCSqkWCHvopTM09PdOAXoRw70bwCCdUhmT88ATQwGU07EOg27G2GifcGSthU_MRWiidXDF7fE0KSB2FXrAZglEdZwSfMAQeJKcXjVnxBnLWBHS_RZ3Qa5_xxx0yG-sslsxXAZlr5GvaD-_2zTvs15lPEighR3K-w');">
+</div>
+<!-- Mask Stroke Vectors Simulation Overlay -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-10" fill="none" viewbox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+<!-- Negative Shield Mask Zone (Neon Magenta) -->
+<path d="M 60 120 Q 140 80 220 130 T 340 100 L 320 220 Q 200 240 100 190 Z" fill="rgba(255, 74, 141, 0.22)" stroke="#ff4a8d" stroke-dasharray="4 3" stroke-width="1.5"></path>
+<text class="font-label-sm text-label-sm tracking-widest font-semibold opacity-90" fill="#ffb1c4" x="110" y="150">ZONA BLOQUEO · ESCUDO (-)</text>
+<!-- Live Light Trail Vector Path (Teal) -->
+<path class="filter drop-shadow-[0_0_8px_rgba(0,255,204,0.8)]" d="M 30 380 C 120 420 180 260 250 310 S 370 200 380 180" stroke="#00e0b3" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+<!-- Focus Crosshair locked -->
+<circle cx="200" cy="250" opacity="0.6" r="24" stroke="#24ffcd" stroke-dasharray="3 3" stroke-width="1"></circle>
+<line stroke="#24ffcd" stroke-width="1.5" x1="200" x2="200" y1="220" y2="232"></line>
+<line stroke="#24ffcd" stroke-width="1.5" x1="200" x2="200" y1="268" y2="280"></line>
+<line stroke="#24ffcd" stroke-width="1.5" x1="170" x2="182" y1="250" y2="250"></line>
+<line stroke="#24ffcd" stroke-width="1.5" x1="218" x2="230" y1="250" y2="250"></line>
+<rect fill="#24ffcd" height="4" width="4" x="198" y="248"></rect>
+</svg>
+</div>
+<!-- Viewfinder Top Tactical Telemetry -->
+<div class="relative z-20 flex items-start justify-between w-full">
+<div class="flex flex-col gap-1">
+<!-- Live Pause Overlay Banner Badge -->
+<div class="flex items-center gap-1.5 bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded-full text-secondary shadow-lg">
+<span class="w-2 h-2 rounded-full bg-secondary-container animate-ping"></span>
+<span class="material-symbols-outlined text-[14px]">pause_circle</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Pausa Activa · Mezcla en Vivo</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm bg-surface-container-lowest/70 backdrop-blur-sm px-2 py-0.5 rounded-full w-fit">
+<span class="text-primary-fixed">T: 00:04:32.4</span>
+<span>·</span>
+<span>1,842 ACC-FRAMES</span>
+</div>
+</div>
+<!-- Real-Time Exposure RGB Mini-Monitor & Histogram -->
+<div class="bg-surface-container-lowest/90 backdrop-blur-md p-2 rounded-lg flex flex-col gap-1 items-end shadow-md">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-tertiary-fixed">HISTOGRAMA RGB</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary-fixed animate-pulse"></span>
+</div>
+<!-- Stylized SVG Histogram Bars -->
+<svg class="w-24 h-6" fill="none" viewbox="0 0 96 24">
+<path d="M0 24 L10 18 L20 22 L35 12 L45 16 L55 6 L70 14 L85 4 L96 24 Z" fill="rgba(0, 224, 179, 0.35)"></path>
+<path d="M0 24 L15 20 L28 14 L40 19 L60 8 L75 10 L88 2 L96 24 Z" fill="rgba(255, 74, 141, 0.3)"></path>
+<polyline points="0,24 10,18 20,22 35,12 45,16 55,6 70,14 85,4 96,24" stroke="#00e0b3" stroke-width="1"></polyline>
+<polyline points="0,24 15,20 28,14 40,19 60,8 75,10 88,2 96,24" stroke="#ff4a8d" stroke-width="1"></polyline>
+</svg>
+</div>
+</div>
+<!-- Lens Selector Dock (On Viewfinder HUD) -->
+<div class="relative z-20 flex justify-center w-full">
+<div class="flex items-center bg-surface-container-lowest/90 backdrop-blur-xl p-1 rounded-full shadow-lg">
+<button class="lens-tab px-3 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm transition-all hover:text-on-surface" onclick="setLens(this, '0.6x')">
+          0.6x <span class="opacity-60 text-[9px]">14mm</span>
+</button>
+<button class="lens-tab px-3 py-1 rounded-full bg-surface-container-high text-primary-fixed font-label-sm text-label-sm shadow-sm transition-all font-bold" onclick="setLens(this, '1x')">
+          1x <span class="text-primary-fixed-dim text-[9px]">24mm</span>
+</button>
+<button class="lens-tab px-3 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm transition-all hover:text-on-surface" onclick="setLens(this, '3x')">
+          3x <span class="opacity-60 text-[9px]">75mm</span>
+</button>
+<button class="lens-tab px-2.5 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1 transition-all hover:text-on-surface" onclick="setLens(this, 'Macro')">
+<span class="material-symbols-outlined text-[13px]">filter_vintage</span>
+<span>MACRO</span>
+</button>
+</div>
+</div>
+<!-- Viewfinder Bottom Scrim & Live Overlay Blend Slider Deck -->
+<div class="relative z-20 w-full bg-surface-container-lowest/90 backdrop-blur-md p-2.5 rounded-xl flex flex-col gap-1.5 shadow-xl">
+<div class="flex items-center justify-between text-on-surface">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary-fixed text-[16px]">layers</span>
+<span class="font-body-sm text-body-sm font-semibold">Opacidad de Superposición (Pausa)</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary-fixed-dim bg-surface-container px-2 py-0.5 rounded" id="overlayValueText">65% Mezcla</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-sm text-label-sm text-on-surface-variant">0%</span>
+<div class="relative flex-1 flex items-center">
+<input class="w-full h-1.5 bg-surface-container-high rounded-lg appearance-none cursor-pointer accent-primary-container focus:outline-none" id="overlaySlider" max="100" min="0" oninput="updateOverlayBlend(this.value)" type="range" value="65"/>
+</div>
+<span class="font-label-sm text-label-sm text-primary-fixed font-bold">100%</span>
+</div>
+</div>
+<!-- Draggable Floating Main Shutter Button -->
+<div class="absolute bottom-16 right-4 z-40 flex flex-col items-center gap-1 transition-all duration-200 cursor-move" id="draggableShutterContainer">
+<!-- Movement Handle Anchor with 4-way arrow icon -->
+<div class="flex items-center gap-1 bg-surface-container-lowest/95 backdrop-blur-md px-2 py-0.5 rounded-full text-on-surface-variant font-label-sm text-label-sm shadow-md active:scale-95">
+<span class="material-symbols-outlined text-[13px] text-primary-fixed">open_with</span>
+<span class="text-[9px] uppercase tracking-wider text-on-surface">Arrastrar</span>
+</div>
+<!-- Concentric Dual Shutter Hub -->
+<div class="relative w-16 h-16 rounded-full bg-surface-container-lowest/90 p-1 flex items-center justify-center shadow-[0_0_24px_rgba(0,0,0,0.9)]">
+<!-- Luminous Outer Ring -->
+<div class="absolute inset-0 rounded-full bg-gradient-to-tr from-secondary-container via-transparent to-primary-container p-0.5 animate-spin" style="animation-duration: 12s;">
+<div class="w-full h-full bg-surface-container-lowest rounded-full"></div>
+</div>
+<!-- Shutter Core Interactive -->
+<button class="relative z-10 w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center active:scale-90 transition-transform shadow-inner" id="mainShutterBtn" onclick="toggleCaptureState()">
+<span class="material-symbols-outlined text-secondary text-[26px]" id="shutterIcon">play_arrow</span>
+</button>
+<!-- Mini Lock Indicator -->
+<div class="absolute -top-1 -right-1 w-5 h-5 bg-surface-container-high rounded-full flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-[11px] text-primary-fixed">lock_open</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Shutter Dock Position Quick Selector Ribbon -->
+<section class="px-margin py-2 flex items-center justify-between bg-surface-container-lowest">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed">drag_indicator</span>
+<span class="font-label-sm text-label-sm uppercase font-semibold">Anclaje Obturador:</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-low p-0.5 rounded-lg">
+<button class="px-2 py-0.5 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all" id="dock-free" onclick="snapShutter('free')">Libre</button>
+<button class="px-2 py-0.5 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all" id="dock-bl" onclick="snapShutter('bottom-left')">Abajo Izq</button>
+<button class="px-2 py-0.5 rounded font-label-sm text-label-sm bg-surface-container text-primary-fixed font-bold shadow-sm transition-all" id="dock-br" onclick="snapShutter('bottom-right')">Abajo Der</button>
+</div>
+</section>
+<!-- Background Plate / Underlay Management Card -->
+<section class="px-margin mt-2">
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-sm shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed text-[20px]">wallpaper</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Placa Base de Fondo</span>
+</div>
+<!-- Underlay Visibility Toggle -->
+<label class="flex items-center gap-2 cursor-pointer">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Superponer</span>
+<input checked="" class="sr-only peer" id="plateToggle" onchange="togglePlateVisibility(this)" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-container-high peer-checked:bg-primary-container rounded-full relative transition-colors">
+<div class="w-3.5 h-3.5 bg-surface-container-lowest rounded-full absolute top-0.75 left-0.75 peer-checked:translate-x-4 transition-transform shadow"></div>
+</div>
+</label>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        Proyecta una fotografía guía o placa de oscuridad absoluta para trazar tus estelas luminosas con precisión milimétrica.
+      </p>
+<!-- Import Action Triggers -->
+<div class="grid grid-cols-2 gap-space-sm pt-1">
+<button class="flex items-center justify-center gap-2 bg-surface-container-high hover:bg-surface-variant text-on-surface py-2.5 px-3 rounded-lg active:scale-[0.98] transition-all" onclick="triggerFileImport()">
+<span class="material-symbols-outlined text-primary-fixed text-[18px]">folder_open</span>
+<span class="font-label-md text-label-md">Importar Fondo</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 bg-surface-container-lowest hover:bg-surface-container text-on-surface-variant hover:text-on-surface py-2.5 px-3 rounded-lg active:scale-[0.98] transition-all" onclick="setCleanCanvas()">
+<span class="material-symbols-outlined text-secondary text-[18px]">cleaning_services</span>
+<span class="font-label-md text-label-md truncate">Lienzo Limpio</span>
+</button>
+</div>
+<!-- Active Loaded Plate Status Mini-Banner -->
+<div class="flex items-center justify-between bg-surface-container-lowest px-2.5 py-1.5 rounded-lg" id="activePlatePill">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[16px]">image</span>
+<span class="font-label-sm text-label-sm text-on-surface truncate">PLATE_NOCTURNA_ASTRO_04.RAW</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary-fixed">ACTIVA</span>
+</div>
+</div>
+</section>
+<!-- Dual-Thumb Range Sliders Section -->
+<section class="px-margin mt-3 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed text-[18px]">tune</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Umbrales Duales de Captura</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary-fixed bg-surface-container-low px-2 py-0.5 rounded-full">Filtros Activos</span>
+</div>
+<!-- 1. Luminance Dual-Thumb Range Slider -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-2 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface font-medium">Rango de Luminancia (Lux)</span>
+<span class="font-metric-md text-metric-md text-primary-fixed bg-surface-container-lowest px-2 py-0.5 rounded" id="lumRangeValue">Min 15% — Max 88%</span>
+</div>
+<!-- Track & Visual Dual Thumbs Representation -->
+<div class="relative w-full py-2">
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full relative overflow-hidden">
+<div class="absolute left-[15%] right-[12%] top-0 bottom-0 bg-primary-container rounded-full"></div>
+</div>
+<!-- Dual Thumbs Handle Emulation -->
+<div class="absolute left-[15%] top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-lg cursor-pointer">
+<div class="w-2.5 h-2.5 bg-primary-container rounded-full"></div>
+</div>
+<div class="absolute right-[12%] top-1/2 -translate-y-1/2 translate-x-1/2 w-5 h-5 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-lg cursor-pointer">
+<div class="w-2.5 h-2.5 bg-primary-container rounded-full"></div>
+</div>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>0% (Negro Puro)</span>
+<span>50%</span>
+<span>100% (Clipping)</span>
+</div>
+</div>
+<!-- 2. Motion Velocity Range Slider (Speed of Light Vector) -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-2 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface font-medium">Velocidad del Trazo</span>
+<span class="font-metric-md text-metric-md text-secondary bg-surface-container-lowest px-2 py-0.5 rounded" id="speedRangeValue">5 px/s — 120 px/s</span>
+</div>
+<div class="relative w-full py-2">
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full relative overflow-hidden">
+<div class="absolute left-[8%] right-[28%] top-0 bottom-0 bg-secondary-container rounded-full"></div>
+</div>
+<div class="absolute left-[8%] top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-lg cursor-pointer">
+<div class="w-2.5 h-2.5 bg-secondary-container rounded-full"></div>
+</div>
+<div class="absolute right-[28%] top-1/2 -translate-y-1/2 translate-x-1/2 w-5 h-5 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-lg cursor-pointer">
+<div class="w-2.5 h-2.5 bg-secondary-container rounded-full"></div>
+</div>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>1 px/s (Estático)</span>
+<span>150 px/s (Fuga Dinámica)</span>
+</div>
+</div>
+<!-- 3. Color Tolerance Range Slider -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-2 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface font-medium">Tolerancia de Color (ΔE)</span>
+<span class="font-metric-md text-metric-md text-tertiary-fixed bg-surface-container-lowest px-2 py-0.5 rounded" id="toleranceRangeValue">ΔE 8 — ΔE 64</span>
+</div>
+<div class="relative w-full py-2">
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full relative overflow-hidden">
+<div class="absolute left-[12%] right-[36%] top-0 bottom-0 bg-tertiary-fixed rounded-full"></div>
+</div>
+<div class="absolute left-[12%] top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-lg cursor-pointer">
+<div class="w-2.5 h-2.5 bg-tertiary-fixed rounded-full"></div>
+</div>
+<div class="absolute right-[36%] top-1/2 -translate-y-1/2 translate-x-1/2 w-5 h-5 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-lg cursor-pointer">
+<div class="w-2.5 h-2.5 bg-tertiary-fixed rounded-full"></div>
+</div>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>Estricto (ΔE 0)</span>
+<span>Amplio Espectro (ΔE 100)</span>
+</div>
+</div>
+</section>
+<!-- Pro Manual Cockpit: ISO & Shutter Speed Controls -->
+<section class="px-margin mt-3">
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-md shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed text-[18px]">exposure</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Control Manual del Sensor</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Modo M / Calibrado</span>
+</div>
+<!-- ISO Slider -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface">Sensibilidad ISO</span>
+<span class="font-metric-md text-metric-md text-primary-fixed font-bold bg-surface-container-lowest px-2 py-0.5 rounded" id="isoReadout">ISO 200</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary-container" max="6" min="0" oninput="updateIso(this.value)" step="1" type="range" value="2"/>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant px-0.5">
+<span>50</span>
+<span>100</span>
+<span class="text-primary-fixed">200</span>
+<span>400</span>
+<span>800</span>
+<span>1600</span>
+<span>6400</span>
+</div>
+</div>
+<!-- Shutter Speed Slider with BULB -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface">Velocidad de Obturación</span>
+<span class="font-metric-md text-metric-md text-secondary font-bold bg-surface-container-lowest px-2 py-0.5 rounded" id="shutterReadout">1/4s</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-secondary-container" max="7" min="0" oninput="updateShutter(this.value)" step="1" type="range" value="3"/>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant px-0.5">
+<span>1/8000</span>
+<span>1/1000</span>
+<span>1/60</span>
+<span class="text-secondary">1/4s</span>
+<span>2s</span>
+<span>15s</span>
+<span>30s</span>
+<span class="text-secondary-fixed-dim font-bold">BULB ∞</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Masking Toolset & Selection Inversion Deck -->
+<section class="px-margin mt-3 mb-4">
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-3 shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">brush</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Herramientas de Máscara</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary-fixed bg-surface-container-lowest px-2 py-0.5 rounded-full">Inversión Disponible</span>
+</div>
+<!-- Mask Brush Tool Selection Buttons -->
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Positive Brush Button -->
+<button class="mask-tool-btn p-2.5 rounded-lg bg-surface-container-high text-primary-fixed flex items-center gap-2 transition-all shadow-sm" onclick="selectMaskTool(this, 'positive')">
+<span class="material-symbols-outlined text-[18px]">draw</span>
+<div class="flex flex-col text-left">
+<span class="font-label-md text-label-md font-semibold">Máscara Luz (+)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Trazo Verde Activo</span>
+</div>
+</button>
+<!-- Negative Shield Brush Button (Magenta) -->
+<button class="mask-tool-btn p-2.5 rounded-lg bg-surface-container text-on-surface-variant flex items-center gap-2 hover:text-secondary transition-all" onclick="selectMaskTool(this, 'negative')">
+<span class="material-symbols-outlined text-secondary-container text-[18px]">shield</span>
+<div class="flex flex-col text-left">
+<span class="font-label-md text-label-md font-semibold text-secondary">Escudo (-)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Zona Protegida</span>
+</div>
+</button>
+</div>
+<!-- Invert Selection & Clear Mask Action Buttons -->
+<div class="grid grid-cols-2 gap-space-sm pt-0.5">
+<button class="flex items-center justify-center gap-2 bg-secondary-container text-on-secondary py-2.5 px-3 rounded-lg active:scale-95 transition-transform shadow-md font-bold" onclick="invertMask()">
+<span class="material-symbols-outlined text-[18px]">flip</span>
+<span class="font-label-md text-label-md">Invertir Máscara</span>
+</button>
+<button class="flex items-center justify-center gap-2 bg-surface-container-high hover:bg-surface-variant text-on-surface py-2.5 px-3 rounded-lg active:scale-95 transition-transform" onclick="clearMask()">
+<span class="material-symbols-outlined text-error text-[18px]">delete_sweep</span>
+<span class="font-label-md text-label-md">Limpiar Capa</span>
+</button>
+</div>
+<!-- Brush Fine Tuning: Size & Feathering/Hardness -->
+<div class="bg-surface-container-lowest p-2.5 rounded-lg flex flex-col gap-2 mt-1">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Calibre del Pincel</span>
+<span class="font-metric-md text-metric-md text-primary-fixed" id="brushSizeLabel">32 px</span>
+</div>
+<input class="w-full h-1 bg-surface-container-high rounded appearance-none cursor-pointer accent-primary-container" max="96" min="4" oninput="document.getElementById('brushSizeLabel').innerText = this.value + ' px'" type="range" value="32"/>
+<div class="flex items-center justify-between pt-1">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Dureza del Trazo</span>
+<span class="font-metric-md text-metric-md text-secondary" id="brushHardnessLabel">75%</span>
+</div>
+<input class="w-full h-1 bg-surface-container-high rounded appearance-none cursor-pointer accent-secondary-container" max="100" min="0" oninput="document.getElementById('brushHardnessLabel').innerText = this.value + '%'" type="range" value="75"/>
+</div>
+</div>
+</section>
+<!-- Interactive Logic Script -->
+<script>
+    function updateOverlayBlend(val) {
+      const layer = document.getElementById('pausedExposureLayer');
+      const text = document.getElementById('overlayValueText');
+      if (layer) {
+        layer.style.opacity = (val / 100).toString();
+      }
+      if (text) {
+        text.innerText = val + '% Mezcla';
+      }
+    }
+
+    let isPaused = true;
+    function toggleCaptureState() {
+      isPaused = !isPaused;
+      const btn = document.getElementById('mainShutterBtn');
+      const icon = document.getElementById('shutterIcon');
+      if (isPaused) {
+        icon.innerText = 'play_arrow';
+        icon.className = 'material-symbols-outlined text-secondary text-[26px]';
+      } else {
+        icon.innerText = 'pause';
+        icon.className = 'material-symbols-outlined text-primary-fixed text-[26px]';
+      }
+    }
+
+    function snapShutter(position) {
+      const container = document.getElementById('draggableShutterContainer');
+      const btnFree = document.getElementById('dock-free');
+      const btnBL = document.getElementById('dock-bl');
+      const btnBR = document.getElementById('dock-br');
+
+      [btnFree, btnBL, btnBR].forEach(b => {
+        b.className = 'px-2 py-0.5 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all';
+      });
+
+      if (position === 'bottom-left') {
+        container.style.left = '16px';
+        container.style.right = 'auto';
+        container.style.bottom = '64px';
+        btnBL.className = 'px-2 py-0.5 rounded font-label-sm text-label-sm bg-surface-container text-primary-fixed font-bold shadow-sm transition-all';
+      } else if (position === 'bottom-right') {
+        container.style.left = 'auto';
+        container.style.right = '16px';
+        container.style.bottom = '64px';
+        btnBR.className = 'px-2 py-0.5 rounded font-label-sm text-label-sm bg-surface-container text-primary-fixed font-bold shadow-sm transition-all';
+      } else {
+        container.style.left = '50%';
+        container.style.right = 'auto';
+        container.style.transform = 'translateX(-50%)';
+        container.style.bottom = '90px';
+        btnFree.className = 'px-2 py-0.5 rounded font-label-sm text-label-sm bg-surface-container text-primary-fixed font-bold shadow-sm transition-all';
+      }
+    }
+
+    function setLens(el, focal) {
+      document.querySelectorAll('.lens-tab').forEach(b => {
+        b.className = 'lens-tab px-3 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm transition-all hover:text-on-surface';
+      });
+      el.className = 'lens-tab px-3 py-1 rounded-full bg-surface-container-high text-primary-fixed font-label-sm text-label-sm shadow-sm transition-all font-bold';
+    }
+
+    function togglePlateVisibility(checkbox) {
+      const pill = document.getElementById('activePlatePill');
+      if (checkbox.checked) {
+        pill.style.display = 'flex';
+      } else {
+        pill.style.display = 'none';
+      }
+    }
+
+    function triggerFileImport() {
+      const pill = document.getElementById('activePlatePill');
+      pill.style.display = 'flex';
+      pill.querySelector('.text-on-surface').innerText = 'NUEVA_PLACA_BASE_IMPORTADA.RAW';
+    }
+
+    function setCleanCanvas() {
+      const checkbox = document.getElementById('plateToggle');
+      checkbox.checked = false;
+      togglePlateVisibility(checkbox);
+    }
+
+    const isoSteps = ['ISO 50', 'ISO 100', 'ISO 200', 'ISO 400', 'ISO 800', 'ISO 1600', 'ISO 6400'];
+    function updateIso(idx) {
+      document.getElementById('isoReadout').innerText = isoSteps[idx];
+    }
+
+    const shutterSteps = ['1/8000s', '1/1000s', '1/60s', '1/4s', '2s', '15s', '30s', 'BULB ∞'];
+    function updateShutter(idx) {
+      document.getElementById('shutterReadout').innerText = shutterSteps[idx];
+    }
+
+    function selectMaskTool(btn, mode) {
+      document.querySelectorAll('.mask-tool-btn').forEach(b => {
+        b.className = 'mask-tool-btn p-2.5 rounded-lg bg-surface-container text-on-surface-variant flex items-center gap-2 transition-all';
+      });
+      if (mode === 'positive') {
+        btn.className = 'mask-tool-btn p-2.5 rounded-lg bg-surface-container-high text-primary-fixed flex items-center gap-2 transition-all shadow-sm';
+      } else {
+        btn.className = 'mask-tool-btn p-2.5 rounded-lg bg-surface-container-high text-secondary flex items-center gap-2 transition-all shadow-sm';
+      }
+    }
+
+    let inverted = false;
+    function invertMask() {
+      inverted = !inverted;
+      const layer = document.getElementById('pausedExposureLayer');
+      if (inverted) {
+        layer.style.filter = 'invert(1) hue-rotate(180deg)';
+      } else {
+        layer.style.filter = 'none';
+      }
+    }
+
+    function clearMask() {
+      const layer = document.getElementById('pausedExposureLayer');
+      layer.style.filter = 'none';
+      inverted = false;
+    }
+  </script>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.8)]" data-active-classes="text-primary-fixed font-headline-sm"><div class="h-28 px-margin flex flex-col justify-center gap-2"><div class="flex items-center justify-around"><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="live-viewfinder" href="#"><span class="material-symbols-outlined text-[20px]">camera</span><span class="font-label-sm text-label-sm">Capture</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="exposure-cockpit" href="#"><span class="material-symbols-outlined text-[20px]">exposure</span><span class="font-label-sm text-label-sm">Exposure</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="live-viewfinder" href="#"><div class="w-full h-full rounded-full bg-surface flex items-center justify-center"><div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[22px]">radio_button_checked</span></div></div></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="light-trails-library" href="#"><span class="material-symbols-outlined text-[20px]">auto_awesome_motion</span><span class="font-label-sm text-label-sm">Trails</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="calibration-profile" href="#"><span class="material-symbols-outlined text-[20px]">sensors</span><span class="font-label-sm text-label-sm">Calibrate</span></a></div></div></nav></body></html>

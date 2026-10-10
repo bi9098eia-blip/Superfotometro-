@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-[#04080D]" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>SuperFotómetro - Visor Caligráfico Técnico</title>
+<!-- Tailwind CSS CDN with Forms & Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Technical Blueprint Handwritten & Monospace -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&amp;family=JetBrains+Mono:wght@400;500;700;800&amp;family=Share+Tech+Mono&amp;display=swap" rel="stylesheet"/>
+<!-- FontAwesome for technical blueprint icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            blueprint: {
+              bg: '#04080D',
+              surface: '#081018',
+              card: '#0B1724',
+              grid: 'rgba(0, 255, 204, 0.05)',
+              cyan: '#00FFCC',
+              magenta: '#FF007F',
+              amber: '#FFB800',
+              accent: '#39FF14',
+              muted: '#4A6572'
+            }
+          },
+          fontFamily: {
+            mono: ['"Share Tech Mono"', '"JetBrains Mono"', 'monospace'],
+            hand: ['"Caveat"', 'cursive']
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-grid-and-blueprint-styles">
+    /* Blueprint Engineering Grid Backdrop */
+    .bg-cad-grid {
+      background-color: #04080D;
+      background-image: 
+        linear-gradient(rgba(0, 255, 204, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 204, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(0, 255, 204, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 204, 0.015) 1px, transparent 1px);
+      background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+    }
+
+    /* Handwritten Ink Effect with Slight Text Shadows */
+    .ink-cyan {
+      color: #00FFCC;
+      text-shadow: 0 0 1px rgba(0, 255, 204, 0.6), 0 0 8px rgba(0, 255, 204, 0.25);
+    }
+    .ink-magenta {
+      color: #FF007F;
+      text-shadow: 0 0 1px rgba(255, 0, 127, 0.6), 0 0 8px rgba(255, 0, 127, 0.25);
+    }
+    .ink-amber {
+      color: #FFB800;
+      text-shadow: 0 0 1px rgba(255, 184, 0, 0.6), 0 0 8px rgba(255, 184, 0, 0.25);
+    }
+
+    /* Dashed Blueprint Sketch Borders */
+    .border-sketch-cyan {
+      border: 1px dashed rgba(0, 255, 204, 0.4);
+    }
+    .border-sketch-magenta {
+      border: 1px dashed rgba(255, 0, 127, 0.4);
+    }
+    .border-sketch-amber {
+      border: 1px dashed rgba(255, 184, 0, 0.4);
+    }
+
+    /* Custom range sliders */
+    input[type=range] {
+      -webkit-appearance: none;
+      background: transparent;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      height: 3px;
+      background: #122334;
+      border-radius: 2px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 14px;
+      width: 14px;
+      border-radius: 50%;
+      background: currentColor;
+      margin-top: -5px;
+      box-shadow: 0 0 8px currentColor;
+      cursor: pointer;
+    }
+    
+    /* Hide scrollbars for clean HUD */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="h-full bg-cad-grid text-slate-200 font-mono antialiased select-none flex flex-col justify-between overflow-x-hidden">
+<!-- BEGIN: TopHeader -->
+<header class="sticky top-0 z-50 bg-[#04080D]/90 backdrop-blur-md border-b border-[#00FFCC]/20 px-3 py-2 flex flex-col gap-1.5" data-purpose="top-navigation">
+<div class="flex items-center justify-between">
+<!-- Title & Version Stamp -->
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 rounded-lg border border-blueprint-cyan flex items-center justify-center bg-blueprint-card text-blueprint-cyan shadow-[0_0_8px_rgba(0,255,204,0.3)]">
+<i class="fa-solid fa-camera-retro text-sm"></i>
+</div>
+<div>
+<div class="flex items-center space-x-2 leading-none">
+<span class="font-bold tracking-wider text-sm ink-cyan">SUPERFOTÓMETRO</span>
+<span class="text-[9px] px-1.5 py-0.5 rounded border border-blueprint-cyan/50 text-blueprint-cyan font-hand font-bold bg-blueprint-cyan/10">V4.8·CAD</span>
+</div>
+<span class="text-[9px] text-slate-400 font-mono tracking-tight block">CALIGRAFÍA A MANO ALZADA // DRAFT-09</span>
+</div>
+</div>
+<!-- Quick Telemetry Badges -->
+<div class="flex items-center space-x-1.5 text-[10px]">
+<span class="px-2 py-0.5 rounded-full border border-blueprint-cyan/40 bg-blueprint-cyan/10 text-blueprint-cyan font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-blueprint-cyan animate-pulse"></span> AF·98.2%
+        </span>
+<span class="px-2 py-0.5 rounded-full border border-blueprint-amber/40 bg-blueprint-amber/10 text-blueprint-amber font-mono font-bold">
+          84% <i class="fa-solid fa-battery-three-quarters text-[9px] ml-0.5"></i>
+</span>
+<button class="w-7 h-7 rounded-full border border-slate-700 bg-blueprint-card flex items-center justify-center text-slate-300 active:scale-95 transition-transform" title="Perfil">
+<i class="fa-solid fa-user-astronaut text-xs"></i>
+</button>
+</div>
+</div>
+<!-- Quick Status Mode Toolbar -->
+<div class="flex items-center justify-between text-[11px] pt-1 border-t border-[#00FFCC]/10">
+<div class="flex items-center space-x-1.5">
+<span class="px-1.5 py-0.2 rounded bg-blueprint-card border border-slate-800 text-slate-300 text-[10px]">RAW/DNG</span>
+<span class="px-1.5 py-0.2 rounded bg-blueprint-card border border-blueprint-cyan/40 text-blueprint-cyan text-[10px] font-hand font-bold">ISO 100</span>
+<span class="text-[10px] text-slate-400">1/125s · f/1.8</span>
+</div>
+<div class="flex items-center space-x-1">
+<button class="px-2 py-0.5 rounded border border-blueprint-cyan text-blueprint-cyan bg-blueprint-cyan/10 text-[10px] font-hand flex items-center gap-1 hover:bg-blueprint-cyan/20" id="clean-view-btn">
+<i class="fa-regular fa-eye text-[9px]"></i> VISOR LIMPIO
+        </button>
+<button class="w-6 h-6 rounded border border-slate-700 bg-blueprint-surface text-slate-300 flex items-center justify-center hover:text-white">
+<i class="fa-solid fa-sliders text-[10px]"></i>
+</button>
+</div>
+</div>
+</header>
+<!-- END: TopHeader -->
+<!-- BEGIN: InteractiveCameraViewport -->
+<main class="flex-1 flex flex-col p-3 gap-3 overflow-y-auto no-scrollbar" data-purpose="viewport-and-modules-container">
+<!-- Viewport Container with Reticle and Technical Overlay -->
+<div class="relative w-full aspect-[4/3] rounded-xl border-2 border-sketch-cyan bg-[#020508] overflow-hidden shadow-[0_0_20px_rgba(0,255,204,0.15)] flex items-center justify-center">
+<!-- Live Blueprint Reticle / Optical Graph Simulator -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+<!-- Coordinate Lines -->
+<line stroke="rgba(0, 255, 204, 0.2)" stroke-dasharray="4,4" x1="0" x2="100%" y1="50%" y2="50%"></line>
+<line stroke="rgba(0, 255, 204, 0.2)" stroke-dasharray="4,4" x1="50%" x2="50%" y1="0" y2="100%"></line>
+<!-- Center Focus Blueprint Circles -->
+<circle cx="50%" cy="50%" fill="none" opacity="0.85" r="58" stroke="#00FFCC" stroke-dasharray="6,3" stroke-width="1.2"></circle>
+<circle cx="50%" cy="50%" fill="none" opacity="0.7" r="32" stroke="#FF007F" stroke-width="1"></circle>
+<circle cx="50%" cy="50%" fill="#00FFCC" r="4"></circle>
+<!-- Outer Optical Target Marks -->
+<circle cx="50%" cy="50%" r="90" stroke="rgba(0,255,204,0.15)" stroke-dasharray="2,6" stroke-width="1"></circle>
+<path d="M 120 40 L 140 40 M 120 40 L 120 60" fill="none" stroke="#00FFCC" stroke-width="1.5"></path>
+<path d="M 280 40 L 260 40 M 280 40 L 280 60" fill="none" stroke="#00FFCC" stroke-width="1.5"></path>
+<path d="M 120 180 L 140 180 M 120 180 L 120 160" fill="none" stroke="#00FFCC" stroke-width="1.5"></path>
+<path d="M 280 180 L 260 180 M 280 180 L 280 160" fill="none" stroke="#00FFCC" stroke-width="1.5"></path>
+</svg>
+<!-- Simulated Peaking / Starburst Neon Trace Graphic -->
+<div class="relative z-10 flex flex-col items-center justify-center pointer-events-none">
+<div class="w-20 h-20 rounded-full border border-blueprint-cyan/50 flex items-center justify-center animate-spin" style="animation-duration: 22s;">
+<div class="w-16 h-16 rounded-full border-t-2 border-blueprint-magenta flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-blueprint-amber animate-ping"></span>
+</div>
+</div>
+<span class="font-hand text-blueprint-cyan text-sm tracking-wide mt-2 font-bold bg-blueprint-bg/80 px-2 py-0.5 rounded border border-blueprint-cyan/30">
+          Trazo Lumínico Sobel · Calibrado
+        </span>
+</div>
+<!-- Top Overlay Metadata Inside HUD -->
+<div class="absolute top-2 left-2 right-2 flex justify-between items-center text-[10px] font-mono text-slate-300 pointer-events-none">
+<div class="bg-[#04080D]/80 backdrop-blur-sm px-2 py-0.5 rounded border border-blueprint-cyan/30 text-blueprint-cyan font-bold flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+<span>REC-CAD: 1/80s</span>
+<span class="text-slate-400">·</span>
+<span>f/1.8</span>
+</div>
+<div class="bg-[#04080D]/80 backdrop-blur-sm px-2 py-0.5 rounded border border-blueprint-magenta/30 text-blueprint-magenta font-bold">
+          AF-LOCK [ACTIVO]
+        </div>
+</div>
+<!-- Live Histogram Waveform Mockup in Viewport -->
+<div class="absolute bottom-2 left-2 right-2 flex items-end justify-between pointer-events-none">
+<div class="bg-[#04080D]/85 p-1.5 rounded border border-[#00FFCC]/20 flex items-center gap-2">
+<svg class="w-24 h-6 overflow-visible" viewbox="0 0 100 24">
+<path d="M0,22 Q15,4 30,18 T60,8 T80,20 L100,10 L100,24 L0,24 Z" fill="rgba(0, 255, 204, 0.2)" stroke="#00FFCC" stroke-width="1.2"></path>
+</svg>
+<div class="text-[8px] leading-tight">
+<div class="text-blueprint-cyan font-bold">HISTO·PENSK</div>
+<div class="text-slate-400 font-mono">RGB DUAL PEAK</div>
+</div>
+</div>
+<div class="bg-[#04080D]/85 px-2 py-1 rounded border border-blueprint-cyan/30 text-[9px] text-blueprint-cyan font-mono flex items-center gap-1">
+<i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+<span>LIVE BLEND x12</span>
+</div>
+</div>
+</div>
+<!-- END: InteractiveCameraViewport -->
+<!-- BEGIN: QuickLensTurret -->
+<div class="flex flex-col gap-1" data-purpose="optical-turret">
+<div class="flex items-center justify-between text-[11px] px-1 font-mono">
+<span class="text-blueprint-cyan font-bold flex items-center gap-1">
+<i class="fa-solid fa-circle-dot text-[8px] animate-pulse"></i> TORRETA DE LENTES (ÓPTICA DRAFT)
+        </span>
+<span class="text-blueprint-amber font-hand font-bold text-xs">CALIBRE 35mm EQUIV.</span>
+</div>
+<div class="grid grid-cols-4 gap-1.5">
+<button class="py-1.5 px-1 rounded-lg border border-slate-800 bg-blueprint-card text-center hover:border-blueprint-cyan transition-all">
+<div class="text-xs font-bold font-mono text-slate-300">0.6×</div>
+<div class="text-[9px] text-slate-500 font-hand">14mm Ultra</div>
+</button>
+<button class="py-1.5 px-1 rounded-lg border-2 border-blueprint-cyan bg-blueprint-cyan/10 text-center shadow-[0_0_8px_rgba(0,255,204,0.2)]">
+<div class="text-xs font-bold font-mono text-blueprint-cyan">1.0×</div>
+<div class="text-[9px] text-blueprint-cyan font-hand font-bold">24mm PRIME</div>
+</button>
+<button class="py-1.5 px-1 rounded-lg border border-slate-800 bg-blueprint-card text-center hover:border-blueprint-cyan transition-all">
+<div class="text-xs font-bold font-mono text-slate-300">3.2×</div>
+<div class="text-[9px] text-slate-500 font-hand">75mm Tele</div>
+</button>
+<button class="py-1.5 px-1 rounded-lg border border-slate-800 bg-blueprint-card text-center hover:border-blueprint-magenta transition-all">
+<div class="text-xs font-bold font-mono text-blueprint-magenta">MACRO</div>
+<div class="text-[9px] text-blueprint-magenta font-hand">Micro-Trazo</div>
+</button>
+</div>
+</div>
+<!-- END: QuickLensTurret -->
+<!-- BEGIN: 10FunctionalPanelsSection -->
+<section class="mt-2 flex flex-col gap-2.5 pb-20" data-purpose="ten-blueprint-engineering-modules">
+<!-- Section Header -->
+<div class="flex items-center justify-between border-b border-blueprint-cyan/30 pb-1">
+<div class="flex items-center space-x-2">
+<span class="w-2.5 h-2.5 bg-blueprint-cyan rounded-full inline-block"></span>
+<h2 class="text-xs font-bold uppercase tracking-widest text-blueprint-cyan">
+            PANEL DE INGENIERÍA LUMÍNICA · 10 DOCKS
+          </h2>
+</div>
+<span class="text-[10px] font-hand text-blueprint-magenta font-bold">TINTA DE PRECISIÓN V4.8</span>
+</div>
+<!-- Quick Tab Navigator for the 10 Sections -->
+<div class="flex overflow-x-auto gap-1.5 py-1 no-scrollbar text-[10px]" data-purpose="modules-horizontal-dock-selector">
+<a class="px-2.5 py-1 rounded-full border border-blueprint-cyan bg-blueprint-cyan/15 text-blueprint-cyan whitespace-nowrap font-hand font-bold" href="#modulo-1-luz">1. Luz</a>
+<a class="px-2.5 py-1 rounded-full border border-slate-800 bg-blueprint-card text-slate-300 whitespace-nowrap hover:border-blueprint-cyan" href="#modulo-2-sombra">2. Sombra</a>
+<a class="px-2.5 py-1 rounded-full border border-slate-800 bg-blueprint-card text-slate-300 whitespace-nowrap hover:border-blueprint-cyan" href="#modulo-3-estela">3. Estela</a>
+<a class="px-2.5 py-1 rounded-full border border-slate-800 bg-blueprint-card text-slate-300 whitespace-nowrap hover:border-blueprint-cyan" href="#modulo-4-mascaras">4. Máscaras</a>
+<a class="px-2.5 py-1 rounded-full border border-slate-800 bg-blueprint-card text-slate-300 whitespace-nowrap hover:border-blueprint-cyan" href="#modulo-5-fondo">5. Fondo</a>
+<a class="px-2.5 py-1 rounded-full border border-slate-800 bg-blueprint-card text-slate-300 whitespace-nowrap hover:border-blueprint-cyan" href="#modulo-6-soporte">6. Soporte</a>
+<a class="px-2.5 py-1 rounded-full border border-slate-800 bg-blueprint-card text-slate-300 whitespace-nowrap hover:border-blueprint-cyan" href="#modulo-7-imagen">7. Imagen</a>
+<a class="px-2.5 py-1 rounded-full border border-slate-800 bg-blueprint-card text-slate-300 whitespace-nowrap hover:border-blueprint-cyan" href="#modulo-8-herrmascaras">8. Herr. Máscaras</a>
+<a class="px-2.5 py-1 rounded-full border border-slate-800 bg-blueprint-card text-slate-300 whitespace-nowrap hover:border-blueprint-cyan" href="#modulo-9-ia">9. Identif. IA</a>
+<a class="px-2.5 py-1 rounded-full border border-slate-800 bg-blueprint-card text-slate-300 whitespace-nowrap hover:border-blueprint-cyan" href="#modulo-10-voz">10. Voz</a>
+</div>
+<!-- MÓDULO 1: LUZ -->
+<div class="rounded-xl border border-sketch-cyan bg-blueprint-surface/90 p-3 shadow-lg" data-purpose="module-luz" id="modulo-1-luz">
+<div class="flex items-center justify-between border-b border-blueprint-cyan/20 pb-1.5 mb-2.5">
+<div class="flex items-center space-x-2">
+<span class="w-5 h-5 rounded bg-blueprint-cyan/20 border border-blueprint-cyan flex items-center justify-center text-blueprint-cyan text-[10px]">01</span>
+<h3 class="text-sm font-hand font-bold text-blueprint-cyan tracking-wider">Control de Luz de Precisión</h3>
+</div>
+<span class="text-[10px] text-slate-400 font-mono">CANAL_FOTÓN</span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-[11px]">
+<div class="bg-blueprint-card p-2 rounded border border-slate-800">
+<div class="flex justify-between text-slate-400 font-hand text-xs mb-1">
+<span>Exposición Máx / Mín</span>
+<span class="text-blueprint-cyan font-bold font-mono">+1.6EV</span>
+</div>
+<input class="w-full text-blueprint-cyan" max="3" min="-3" step="0.1" type="range" value="1.6"/>
+</div>
+<div class="bg-blueprint-card p-2 rounded border border-slate-800">
+<div class="flex justify-between text-slate-400 font-hand text-xs mb-1">
+<span>Sombras Máx / Mín</span>
+<span class="text-blueprint-cyan font-bold font-mono">68%</span>
+</div>
+<input class="w-full text-blueprint-cyan" max="100" min="0" type="range" value="68"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-2">
+<div class="bg-blueprint-card p-2 rounded border border-slate-800 flex items-center justify-between">
+<span class="text-[11px] font-hand text-slate-300">Muestreo x Fotogramas</span>
+<span class="text-xs font-mono font-bold text-blueprint-cyan px-2 py-0.5 rounded bg-blueprint-cyan/10 border border-blueprint-cyan/30">60 fps</span>
+</div>
+<button class="bg-blueprint-card p-2 rounded border border-blueprint-cyan/40 hover:border-blueprint-cyan flex items-center justify-between text-blueprint-cyan transition-colors">
+<span class="text-[11px] font-hand font-bold">Bloquear Enfoque</span>
+<i class="fa-solid fa-lock text-xs"></i>
+</button>
+</div>
+</div>
+<!-- MÓDULO 2: SOMBRA -->
+<div class="rounded-xl border border-sketch-amber bg-blueprint-surface/90 p-3 shadow-lg" data-purpose="module-sombra" id="modulo-2-sombra">
+<div class="flex items-center justify-between border-b border-blueprint-amber/20 pb-1.5 mb-2.5">
+<div class="flex items-center space-x-2">
+<span class="w-5 h-5 rounded bg-blueprint-amber/20 border border-blueprint-amber flex items-center justify-center text-blueprint-amber text-[10px]">02</span>
+<h3 class="text-sm font-hand font-bold text-blueprint-amber tracking-wider">Gestión Dinámica de Sombra</h3>
+</div>
+<span class="text-[10px] text-slate-400 font-mono">UMBRAL_PENUMBRA</span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-[11px]">
+<div class="bg-blueprint-card p-2 rounded border border-slate-800">
+<div class="flex justify-between text-slate-400 font-hand text-xs mb-1">
+<span>Exposición Máx / Mín</span>
+<span class="text-blueprint-amber font-bold font-mono">-2.4EV</span>
+</div>
+<input class="w-full text-blueprint-amber" max="2" min="-4" step="0.1" type="range" value="-2.4"/>
+</div>
+<div class="bg-blueprint-card p-2 rounded border border-slate-800">
+<div class="flex justify-between text-slate-400 font-hand text-xs mb-1">
+<span>Sombras Máx / Mín</span>
+<span class="text-blueprint-amber font-bold font-mono">14%</span>
+</div>
+<input class="w-full text-blueprint-amber" max="100" min="0" type="range" value="14"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-2">
+<div class="bg-blueprint-card p-2 rounded border border-slate-800 flex items-center justify-between">
+<span class="text-[11px] font-hand text-slate-300">Muestreo x Fotogramas</span>
+<span class="text-xs font-mono font-bold text-blueprint-amber px-2 py-0.5 rounded bg-blueprint-amber/10 border border-blueprint-amber/30">120 fps</span>
+</div>
+<button class="bg-blueprint-card p-2 rounded border border-blueprint-amber/40 hover:border-blueprint-amber flex items-center justify-between text-blueprint-amber transition-colors">
+<span class="text-[11px] font-hand font-bold">Bloquear Enfoque</span>
+<i class="fa-solid fa-crosshairs text-xs"></i>
+</button>
+</div>
+</div>
+<!-- MÓDULO 3: ESTELA -->
+<div class="rounded-xl border border-sketch-magenta bg-blueprint-surface/90 p-3 shadow-lg" data-purpose="module-estela" id="modulo-3-estela">
+<div class="flex items-center justify-between border-b border-blueprint-magenta/20 pb-1.5 mb-2.5">
+<div class="flex items-center space-x-2">
+<span class="w-5 h-5 rounded bg-blueprint-magenta/20 border border-blueprint-magenta flex items-center justify-center text-blueprint-magenta text-[10px]">03</span>
+<h3 class="text-sm font-hand font-bold text-blueprint-magenta tracking-wider">Estela Lumínica &amp; Caligrafía</h3>
+</div>
+<span class="text-[10px] text-slate-400 font-mono">TRAZO_CONTINUO</span>
+</div>
+<div class="space-y-2">
+<div class="grid grid-cols-3 gap-2">
+<div class="bg-blueprint-card p-1.5 rounded border border-slate-800 text-center">
+<span class="text-[10px] font-hand text-slate-400 block">Exposición</span>
+<span class="text-xs font-mono font-bold text-blueprint-magenta">15.0 seg</span>
+</div>
+<div class="bg-blueprint-card p-1.5 rounded border border-slate-800 text-center">
+<span class="text-[10px] font-hand text-slate-400 block">Sombras</span>
+<span class="text-xs font-mono font-bold text-blueprint-magenta">Suave 40%</span>
+</div>
+<div class="bg-blueprint-card p-1.5 rounded border border-slate-800 text-center">
+<span class="text-[10px] font-hand text-slate-400 block">Desvanecimiento</span>
+<span class="text-xs font-mono font-bold text-blueprint-magenta">Lineal 2.5s</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-blueprint-card p-2 rounded border border-slate-800">
+<div class="flex justify-between text-slate-400 font-hand text-xs mb-1">
+<span>Muestreo</span>
+<span class="text-blueprint-magenta font-mono font-bold">240 Hz</span>
+</div>
+<input class="w-full text-blueprint-magenta" max="240" min="30" type="range" value="240"/>
+</div>
+<div class="bg-blueprint-card p-2 rounded border border-slate-800">
+<div class="flex justify-between text-slate-400 font-hand text-xs mb-1">
+<span>Difuminado Gauss</span>
+<span class="text-blueprint-magenta font-mono font-bold">4.2 px</span>
+</div>
+<input class="w-full text-blueprint-magenta" max="20" min="0" step="0.2" type="range" value="4.2"/>
+</div>
+</div>
+</div>
+</div>
+<!-- MÓDULO 4: MÁSCARAS -->
+<div class="rounded-xl border border-sketch-cyan bg-blueprint-surface/90 p-3 shadow-lg" data-purpose="module-mascaras" id="modulo-4-mascaras">
+<div class="flex items-center justify-between border-b border-blueprint-cyan/20 pb-1.5 mb-2.5">
+<div class="flex items-center space-x-2">
+<span class="w-5 h-5 rounded bg-blueprint-cyan/20 border border-blueprint-cyan flex items-center justify-center text-blueprint-cyan text-[10px]">04</span>
+<h3 class="text-sm font-hand font-bold text-blueprint-cyan tracking-wider">Gestor Principal de Máscaras</h3>
+</div>
+<span class="text-[10px] text-slate-400 font-mono">SELECCIÓN_CAPA</span>
+</div>
+<div class="grid grid-cols-3 gap-1.5 mb-2">
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 hover:border-blueprint-cyan text-left">
+<i class="fa-solid fa-wand-magic-sparkles text-blueprint-cyan text-xs mb-1 block"></i>
+<span class="text-[11px] font-hand text-slate-200">Varita Mágica</span>
+</button>
+<button class="p-2 rounded bg-blueprint-card border border-blueprint-cyan/50 text-left bg-blueprint-cyan/10">
+<i class="fa-solid fa-paintbrush text-blueprint-cyan text-xs mb-1 block"></i>
+<span class="text-[11px] font-hand font-bold text-blueprint-cyan">Pincel Tinta</span>
+</button>
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 hover:border-blueprint-cyan text-left">
+<i class="fa-solid fa-shapes text-blueprint-cyan text-xs mb-1 block"></i>
+<span class="text-[11px] font-hand text-slate-200">Formas CAD</span>
+</button>
+</div>
+<div class="grid grid-cols-3 gap-1.5 mb-2 text-[10px] font-hand">
+<button class="py-1.5 rounded border border-slate-800 bg-blueprint-card hover:text-blueprint-cyan">Negativo (Inv)</button>
+<button class="py-1.5 rounded border border-blueprint-cyan bg-blueprint-cyan/20 text-blueprint-cyan font-bold">+ Nueva Máscara</button>
+<button class="py-1.5 rounded border border-red-500/40 text-red-400 bg-red-950/20">Eliminar Máscara</button>
+</div>
+<div class="grid grid-cols-3 gap-1.5 text-[10px] font-hand">
+<button class="py-1.5 rounded border border-slate-800 bg-blueprint-card hover:text-blueprint-amber">Eliminar Selec.</button>
+<button class="py-1.5 rounded border border-slate-800 bg-blueprint-card hover:text-blueprint-cyan">Modificar</button>
+<button class="py-1.5 rounded border border-blueprint-cyan/70 bg-blueprint-card text-blueprint-cyan font-bold">Abrir Herr. Imagen</button>
+</div>
+</div>
+<!-- MÓDULO 5: FONDO -->
+<div class="rounded-xl border border-sketch-amber bg-blueprint-surface/90 p-3 shadow-lg" data-purpose="module-fondo" id="modulo-5-fondo">
+<div class="flex items-center justify-between border-b border-blueprint-amber/20 pb-1.5 mb-2.5">
+<div class="flex items-center space-x-2">
+<span class="w-5 h-5 rounded bg-blueprint-amber/20 border border-blueprint-amber flex items-center justify-center text-blueprint-amber text-[10px]">05</span>
+<h3 class="text-sm font-hand font-bold text-blueprint-amber tracking-wider">Lienzo y Fondo de Escena</h3>
+</div>
+<span class="text-[10px] text-slate-400 font-mono">BACKDROP_ESTÉTICA</span>
+</div>
+<div class="grid grid-cols-3 gap-2 text-[11px] font-hand">
+<button class="p-2.5 rounded bg-blueprint-card border border-blueprint-amber/40 text-blueprint-amber flex flex-col items-center justify-center gap-1 hover:bg-blueprint-amber/10">
+<i class="fa-solid fa-layer-group text-sm"></i>
+<span>Añadir Fondo</span>
+</button>
+<button class="p-2.5 rounded bg-blueprint-card border border-blueprint-amber/40 text-blueprint-amber flex flex-col items-center justify-center gap-1 hover:bg-blueprint-amber/10">
+<i class="fa-solid fa-clone text-sm"></i>
+<span>Clonar Estética</span>
+</button>
+<button class="p-2.5 rounded bg-blueprint-card border border-blueprint-amber/40 text-blueprint-amber flex flex-col items-center justify-center gap-1 hover:bg-blueprint-amber/10">
+<i class="fa-solid fa-pen-ruler text-sm"></i>
+<span>Modificar Fondo</span>
+</button>
+</div>
+</div>
+<!-- MÓDULO 6: HERRAMIENTAS DE SOPORTE -->
+<div class="rounded-xl border border-sketch-cyan bg-blueprint-surface/90 p-3 shadow-lg" data-purpose="module-soporte" id="modulo-6-soporte">
+<div class="flex items-center justify-between border-b border-blueprint-cyan/20 pb-1.5 mb-2.5">
+<div class="flex items-center space-x-2">
+<span class="w-5 h-5 rounded bg-blueprint-cyan/20 border border-blueprint-cyan flex items-center justify-center text-blueprint-cyan text-[10px]">06</span>
+<h3 class="text-sm font-hand font-bold text-blueprint-cyan tracking-wider">Herramientas de Soporte Geométrico</h3>
+</div>
+<span class="text-[10px] text-slate-400 font-mono">CAD_TRANSFORM</span>
+</div>
+<!-- 7 Herramientas de soporte: Proporción, Tamaño, Rotar, Voltear, Perspectiva, Posición, Recortar -->
+<div class="grid grid-cols-4 gap-1.5 text-center text-[10px] font-mono">
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 hover:border-blueprint-cyan flex flex-col items-center justify-center gap-1">
+<i class="fa-solid fa-arrows-split-up-and-left text-blueprint-cyan"></i>
+<span class="font-hand">Proporción</span>
+</button>
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 hover:border-blueprint-cyan flex flex-col items-center justify-center gap-1">
+<i class="fa-solid fa-expand text-blueprint-cyan"></i>
+<span class="font-hand">Tamaño</span>
+</button>
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 hover:border-blueprint-cyan flex flex-col items-center justify-center gap-1">
+<i class="fa-solid fa-rotate text-blueprint-cyan"></i>
+<span class="font-hand">Rotar</span>
+</button>
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 hover:border-blueprint-cyan flex flex-col items-center justify-center gap-1">
+<i class="fa-solid fa-repeat text-blueprint-cyan"></i>
+<span class="font-hand">Voltear</span>
+</button>
+</div>
+<div class="grid grid-cols-3 gap-1.5 mt-1.5 text-center text-[10px] font-mono">
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 hover:border-blueprint-cyan flex flex-col items-center justify-center gap-1">
+<i class="fa-solid fa-cube text-blueprint-cyan"></i>
+<span class="font-hand">Perspectiva</span>
+</button>
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 hover:border-blueprint-cyan flex flex-col items-center justify-center gap-1">
+<i class="fa-solid fa-arrows-up-down-left-right text-blueprint-cyan"></i>
+<span class="font-hand">Posición</span>
+</button>
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 hover:border-blueprint-cyan flex flex-col items-center justify-center gap-1">
+<i class="fa-solid fa-crop-simple text-blueprint-cyan"></i>
+<span class="font-hand">Recortar</span>
+</button>
+</div>
+</div>
+<!-- MÓDULO 7: HERRAMIENTAS DE IMAGEN -->
+<div class="rounded-xl border border-sketch-magenta bg-blueprint-surface/90 p-3 shadow-lg" data-purpose="module-imagen" id="modulo-7-imagen">
+<div class="flex items-center justify-between border-b border-blueprint-magenta/20 pb-1.5 mb-2.5">
+<div class="flex items-center space-x-2">
+<span class="w-5 h-5 rounded bg-blueprint-magenta/20 border border-blueprint-magenta flex items-center justify-center text-blueprint-magenta text-[10px]">07</span>
+<h3 class="text-sm font-hand font-bold text-blueprint-magenta tracking-wider">Gradación Tonal de Imagen</h3>
+</div>
+<span class="text-[10px] text-slate-400 font-mono">COLORIMETRÍA</span>
+</div>
+<!-- 7 Controles de imagen: Brillo, Contraste, Luces, Sombras, Medios tonos, Saturación, Color -->
+<div class="space-y-1.5 text-[11px]">
+<div class="flex items-center gap-2 bg-blueprint-card px-2 py-1 rounded border border-slate-800">
+<span class="w-20 font-hand text-slate-300">Brillo</span>
+<input class="flex-1 text-blueprint-magenta" max="50" min="-50" type="range" value="5"/>
+<span class="w-10 text-right font-mono text-[10px] text-blueprint-magenta">+5</span>
+</div>
+<div class="flex items-center gap-2 bg-blueprint-card px-2 py-1 rounded border border-slate-800">
+<span class="w-20 font-hand text-slate-300">Contraste</span>
+<input class="flex-1 text-blueprint-magenta" max="50" min="-50" type="range" value="18"/>
+<span class="w-10 text-right font-mono text-[10px] text-blueprint-magenta">+18</span>
+</div>
+<div class="flex items-center gap-2 bg-blueprint-card px-2 py-1 rounded border border-slate-800">
+<span class="w-20 font-hand text-slate-300">Luces</span>
+<input class="flex-1 text-blueprint-magenta" max="100" min="-100" type="range" value="-12"/>
+<span class="w-10 text-right font-mono text-[10px] text-blueprint-magenta">-12</span>
+</div>
+<div class="flex items-center gap-2 bg-blueprint-card px-2 py-1 rounded border border-slate-800">
+<span class="w-20 font-hand text-slate-300">Sombras</span>
+<input class="flex-1 text-blueprint-magenta" max="100" min="-100" type="range" value="25"/>
+<span class="w-10 text-right font-mono text-[10px] text-blueprint-magenta">+25</span>
+</div>
+<div class="flex items-center gap-2 bg-blueprint-card px-2 py-1 rounded border border-slate-800">
+<span class="w-20 font-hand text-slate-300">Medios Tonos</span>
+<input class="flex-1 text-blueprint-magenta" max="50" min="-50" type="range" value="0"/>
+<span class="w-10 text-right font-mono text-[10px] text-blueprint-magenta">0</span>
+</div>
+<div class="flex items-center gap-2 bg-blueprint-card px-2 py-1 rounded border border-slate-800">
+<span class="w-20 font-hand text-slate-300">Saturación</span>
+<input class="flex-1 text-blueprint-magenta" max="100" min="-100" type="range" value="30"/>
+<span class="w-10 text-right font-mono text-[10px] text-blueprint-magenta">+30</span>
+</div>
+<div class="flex items-center gap-2 bg-blueprint-card px-2 py-1 rounded border border-slate-800">
+<span class="w-20 font-hand text-slate-300">Color (Temp)</span>
+<input class="flex-1 text-blueprint-amber" max="10000" min="2000" type="range" value="5400"/>
+<span class="w-10 text-right font-mono text-[10px] text-blueprint-amber">5400K</span>
+</div>
+</div>
+</div>
+<!-- MÓDULO 8: HERRAMIENTAS DE MÁSCARAS -->
+<div class="rounded-xl border border-sketch-cyan bg-blueprint-surface/90 p-3 shadow-lg" data-purpose="module-herramientas-mascaras" id="modulo-8-herrmascaras">
+<div class="flex items-center justify-between border-b border-blueprint-cyan/20 pb-1.5 mb-2.5">
+<div class="flex items-center space-x-2">
+<span class="w-5 h-5 rounded bg-blueprint-cyan/20 border border-blueprint-cyan flex items-center justify-center text-blueprint-cyan text-[10px]">08</span>
+<h3 class="text-sm font-hand font-bold text-blueprint-cyan tracking-wider">Caja de Herramientas de Máscaras</h3>
+</div>
+<span class="text-[10px] text-slate-400 font-mono">VECTOR_SUITE</span>
+</div>
+<!-- 6 Operaciones: Pincel, Forma, Varita, Nueva Máscara, Eliminar, Invertir -->
+<div class="grid grid-cols-3 gap-2 text-[11px] font-hand">
+<button class="p-2 rounded bg-blueprint-card border border-blueprint-cyan text-blueprint-cyan font-bold flex items-center justify-center gap-1.5 shadow-[0_0_8px_rgba(0,255,204,0.15)]">
+<i class="fa-solid fa-paintbrush"></i> Pincel
+          </button>
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 hover:border-blueprint-cyan text-slate-300 flex items-center justify-center gap-1.5">
+<i class="fa-solid fa-vector-square"></i> Forma
+          </button>
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 hover:border-blueprint-cyan text-slate-300 flex items-center justify-center gap-1.5">
+<i class="fa-solid fa-wand-magic"></i> Varita
+          </button>
+<button class="p-2 rounded bg-blueprint-card border border-blueprint-cyan/40 text-blueprint-cyan flex items-center justify-center gap-1.5">
+<i class="fa-solid fa-plus"></i> Nueva
+          </button>
+<button class="p-2 rounded bg-blueprint-card border border-red-500/30 text-red-400 flex items-center justify-center gap-1.5">
+<i class="fa-solid fa-trash-can"></i> Eliminar
+          </button>
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 hover:border-blueprint-cyan text-slate-300 flex items-center justify-center gap-1.5">
+<i class="fa-solid fa-arrows-rotate"></i> Invertir
+          </button>
+</div>
+</div>
+<!-- MÓDULO 9: IDENTIFICACIÓN IA -->
+<div class="rounded-xl border border-sketch-cyan bg-blueprint-surface/90 p-3 shadow-lg" data-purpose="module-ia" id="modulo-9-ia">
+<div class="flex items-center justify-between border-b border-blueprint-cyan/20 pb-1.5 mb-2.5">
+<div class="flex items-center space-x-2">
+<span class="w-5 h-5 rounded bg-blueprint-cyan/20 border border-blueprint-cyan flex items-center justify-center text-blueprint-cyan text-[10px]">09</span>
+<h3 class="text-sm font-hand font-bold text-blueprint-cyan tracking-wider">Identificación y Segmentación IA</h3>
+</div>
+<span class="text-[10px] text-blueprint-cyan font-mono bg-blueprint-cyan/10 px-1.5 py-0.2 rounded border border-blueprint-cyan/30">NEURAL_NET</span>
+</div>
+<!-- 5 Modos IA: Identifícame, Solo Yo, Solo Nosotros, Todo Menos Yo / Inpainting Invisible, Todo Menos Nosotros -->
+<div class="space-y-1.5 font-hand text-xs">
+<button class="w-full py-2 px-3 rounded bg-blueprint-card border border-blueprint-cyan text-blueprint-cyan font-bold flex items-center justify-between hover:bg-blueprint-cyan/10">
+<span class="flex items-center gap-2"><i class="fa-solid fa-id-badge"></i> 1. Identifícame</span>
+<span class="text-[9px] font-mono px-1 rounded bg-blueprint-cyan/20">TARGET: LOCK</span>
+</button>
+<div class="grid grid-cols-2 gap-2">
+<button class="py-2 px-2 rounded bg-blueprint-card border border-slate-800 text-slate-300 flex items-center justify-center gap-1 hover:border-blueprint-cyan">
+<i class="fa-solid fa-user"></i> Solo Yo
+            </button>
+<button class="py-2 px-2 rounded bg-blueprint-card border border-slate-800 text-slate-300 flex items-center justify-center gap-1 hover:border-blueprint-cyan">
+<i class="fa-solid fa-user-group"></i> Solo Nosotros
+            </button>
+</div>
+<button class="w-full py-2 px-3 rounded bg-blueprint-card border border-blueprint-magenta text-blueprint-magenta flex items-center justify-between hover:bg-blueprint-magenta/10">
+<span class="flex items-center gap-2"><i class="fa-solid fa-ghost"></i> Todo Menos Yo (Inpainting Invisible)</span>
+<span class="text-[9px] font-mono px-1 rounded bg-blueprint-magenta/20">BORRADO ÓPTICO</span>
+</button>
+<button class="w-full py-2 px-3 rounded bg-blueprint-card border border-slate-800 text-slate-300 flex items-center justify-between hover:border-blueprint-cyan">
+<span class="flex items-center gap-2"><i class="fa-solid fa-people-arrows"></i> Todo Menos Nosotros (Sustracción Grupal)</span>
+<i class="fa-solid fa-chevron-right text-[10px]"></i>
+</button>
+</div>
+</div>
+<!-- MÓDULO 10: ACTIVACIÓN POR VOZ -->
+<div class="rounded-xl border border-sketch-amber bg-blueprint-surface/90 p-3 shadow-lg" data-purpose="module-voz" id="modulo-10-voz">
+<div class="flex items-center justify-between border-b border-blueprint-amber/20 pb-1.5 mb-2.5">
+<div class="flex items-center space-x-2">
+<span class="w-5 h-5 rounded bg-blueprint-amber/20 border border-blueprint-amber flex items-center justify-center text-blueprint-amber text-[10px]">10</span>
+<h3 class="text-sm font-hand font-bold text-blueprint-amber tracking-wider">Activación y Comandos de Voz</h3>
+</div>
+<span class="text-[10px] text-slate-400 font-mono">MIC_READY</span>
+</div>
+<!-- Voice activation settings: Establecer sonidos y comandos Play, Pausa, Lectura de valores y objetos -->
+<div class="grid grid-cols-2 gap-2 text-[11px] mb-2 font-hand">
+<button class="p-2 rounded bg-blueprint-card border border-blueprint-amber text-blueprint-amber flex items-center justify-between">
+<span><i class="fa-solid fa-sliders mr-1"></i> Configurar Sonidos</span>
+<i class="fa-solid fa-check text-[10px]"></i>
+</button>
+<button class="p-2 rounded bg-blueprint-card border border-slate-800 text-slate-300 flex items-center justify-between hover:border-blueprint-amber">
+<span><i class="fa-solid fa-volume-high mr-1"></i> Feedback Sonoro</span>
+<span class="text-[10px] font-mono text-blueprint-amber">BEEP</span>
+</button>
+</div>
+<div class="grid grid-cols-3 gap-1.5 text-center font-mono text-[10px]">
+<div class="bg-blueprint-card p-1.5 rounded border border-slate-800">
+<div class="text-blueprint-amber font-bold font-hand text-xs mb-0.5">"PLAY"</div>
+<span class="text-slate-400">Inicia Toma</span>
+</div>
+<div class="bg-blueprint-card p-1.5 rounded border border-slate-800">
+<div class="text-blueprint-amber font-bold font-hand text-xs mb-0.5">"PAUSA"</div>
+<span class="text-slate-400">Detiene Trazo</span>
+</div>
+<div class="bg-blueprint-card p-1.5 rounded border border-slate-800">
+<div class="text-blueprint-amber font-bold font-hand text-xs mb-0.5">"VALORES"</div>
+<span class="text-slate-400">Lectura Audio</span>
+</div>
+</div>
+<div class="mt-2 p-2 rounded bg-blueprint-card border border-slate-800 flex items-center justify-between text-[11px] font-hand">
+<div class="flex items-center space-x-2">
+<i class="fa-solid fa-microphone-lines text-blueprint-amber animate-pulse"></i>
+<span class="text-slate-300">Lectura de objetos en visor:</span>
+</div>
+<span class="font-mono text-blueprint-amber font-bold text-xs">ACTIVO (TTS ON)</span>
+</div>
+</div>
+</section>
+<!-- END: 10FunctionalPanelsSection -->
+</main>
+<!-- BEGIN: BottomTactileHUDDock -->
+<footer class="sticky bottom-0 z-50 bg-[#04080D]/95 backdrop-blur-lg border-t border-[#00FFCC]/20 px-3 py-2 flex flex-col gap-2" data-purpose="bottom-tactile-controls">
+<!-- Bulb Shutter Bar & Exposure Chronometer -->
+<div class="flex items-center justify-between px-1">
+<!-- Shutter Mode Switch -->
+<div class="flex items-center space-x-2">
+<button class="px-2.5 py-1 rounded bg-blueprint-card border border-blueprint-amber/40 text-blueprint-amber font-mono text-[10px] flex items-center gap-1.5">
+<i class="fa-solid fa-lock text-[9px]"></i>
+<span>BULB DESBLOQUEADO</span>
+</button>
+</div>
+<!-- Center Big Shutter Button -->
+<div class="relative -mt-4">
+<button class="w-16 h-16 rounded-full bg-gradient-to-tr from-[#00FFCC] to-[#00aa88] text-[#04080D] flex items-center justify-center shadow-[0_0_20px_rgba(0,255,204,0.5)] active:scale-95 transition-transform border-4 border-[#04080D]" id="main-shutter-trigger">
+<i class="fa-solid fa-play text-xl ml-1 text-[#04080D]"></i>
+</button>
+</div>
+<!-- Chronometer Display -->
+<div class="text-right">
+<span class="text-[9px] text-slate-400 font-mono block">INTEGRACIÓN</span>
+<span class="font-mono font-bold text-xs text-blueprint-cyan tracking-wider">00:00.00</span>
+</div>
+</div>
+<!-- Main Navigation Bar Links -->
+<nav aria-label="Navegación Principal" class="grid grid-cols-5 text-center text-[10px] pt-1 border-t border-slate-900">
+<button class="flex flex-col items-center justify-center text-blueprint-cyan py-1 gap-0.5">
+<i class="fa-solid fa-circle-dot text-sm"></i>
+<span class="font-hand font-bold text-[11px]">Capture</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 py-1 gap-0.5">
+<i class="fa-solid fa-sliders text-sm"></i>
+<span class="font-hand text-[11px]">Exposure</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 py-1 gap-0.5">
+<i class="fa-solid fa-layer-group text-sm"></i>
+<span class="font-hand text-[11px]">Máscaras</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 py-1 gap-0.5">
+<i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+<span class="font-hand text-[11px]">Trails</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 py-1 gap-0.5">
+<i class="fa-solid fa-compass-drafting text-sm"></i>
+<span class="font-hand text-[11px]">Calibrate</span>
+</button>
+</nav>
+</footer>
+<!-- END: BottomTactileHUDDock -->
+<!-- BEGIN: InteractiveUIFeedbackScript -->
+<script data-purpose="hud-interaction">
+    document.addEventListener('DOMContentLoaded', () => {
+      const cleanBtn = document.getElementById('clean-view-btn');
+      const shutterBtn = document.getElementById('main-shutter-trigger');
+      let isRecording = false;
+
+      // Clean view toggle simulation
+      if (cleanBtn) {
+        cleanBtn.addEventListener('click', () => {
+          cleanBtn.classList.toggle('bg-blueprint-cyan');
+          cleanBtn.classList.toggle('text-[#04080D]');
+        });
+      }
+
+      // Shutter Trigger simulation
+      if (shutterBtn) {
+        shutterBtn.addEventListener('click', () => {
+          isRecording = !isRecording;
+          const icon = shutterBtn.querySelector('i');
+          if (isRecording) {
+            shutterBtn.classList.remove('from-[#00FFCC]', 'to-[#00aa88]');
+            shutterBtn.classList.add('from-[#FF007F]', 'to-[#aa0055]');
+            icon.classList.remove('fa-play', 'ml-1');
+            icon.classList.add('fa-stop');
+          } else {
+            shutterBtn.classList.add('from-[#00FFCC]', 'to-[#00aa88]');
+            shutterBtn.classList.remove('from-[#FF007F]', 'to-[#aa0055]');
+            icon.classList.add('fa-play', 'ml-1');
+            icon.classList.remove('fa-stop');
+          }
+        });
+      }
+    });
+  </script>
+<!-- END: InteractiveUIFeedbackScript -->
+</body></html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>LuminaCam Pro</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#131313;color:#e2e2e2;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary-fixed-dim": "#00e0b3", "primary-container": "#00ffcc", "secondary-container": "#ff4a8d", "on-secondary-fixed-variant": "#8f0044", "on-tertiary-fixed": "#271900", "tertiary": "#fffeff", "on-surface": "#e2e2e2", "on-secondary": "#65002e", "error-container": "#93000a", "on-surface-variant": "#b9cbc2", "primary-fixed": "#24ffcd", "surface-container-high": "#2a2a2a", "on-background": "#e2e2e2", "background": "#131313", "on-error": "#690005", "surface-variant": "#353535", "on-error-container": "#ffdad6", "on-primary-fixed": "#002118", "surface-dim": "#131313", "error": "#ffb4ab", "inverse-surface": "#e2e2e2", "on-tertiary-container": "#835d00", "secondary": "#ffb1c4", "on-primary-fixed-variant": "#00513f", "surface-bright": "#393939", "on-primary-container": "#00725a", "tertiary-container": "#ffdda5", "tertiary-fixed": "#ffdea8", "on-primary": "#00382b", "outline-variant": "#3a4a44", "surface-container": "#1f1f1f", "on-secondary-container": "#590028", "secondary-fixed-dim": "#ffb1c4", "surface-tint": "#00e0b3", "surface-container-highest": "#353535", "outline": "#83958d", "inverse-primary": "#006b54", "surface": "#131313", "on-tertiary-fixed-variant": "#5e4200", "surface-container-lowest": "#0e0e0e", "on-tertiary": "#412d00", "secondary-fixed": "#ffd9e1", "surface-container-low": "#1b1b1b", "tertiary-fixed-dim": "#ffba20", "inverse-on-surface": "#303030", "primary": "#fdfffc", "on-secondary-fixed": "#3f001a" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-sm": "0.5rem", "margin": "1rem", "space-xs": "0.25rem", "space-md": "0.75rem", "space-xl": "2rem", "gutter": "0.75rem", "space-lg": "1.25rem" }, fontFamily: { "metric-xl": ["JetBrains Mono"], "headline-lg": ["Space Grotesk"], "body-md": ["Space Grotesk"], "label-sm": ["JetBrains Mono"], "headline-sm": ["Space Grotesk"], "metric-md": ["JetBrains Mono"], "metric-lg": ["JetBrains Mono"], "body-sm": ["Space Grotesk"], "headline-md": ["Space Grotesk"], "headline-lg-mobile": ["Space Grotesk"], "label-md": ["JetBrains Mono"], "body-lg": ["Space Grotesk"] }, fontSize: { "metric-xl": ["28px", { lineHeight: "32px", letterSpacing: "-0.03em", fontWeight: "700" }], "headline-lg": ["32px", { lineHeight: "38px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "label-sm": ["10px", { lineHeight: "12px", letterSpacing: "0.08em", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }], "metric-md": ["14px", { lineHeight: "18px", letterSpacing: "-0.01em", fontWeight: "500" }], "metric-lg": ["20px", { lineHeight: "24px", letterSpacing: "-0.02em", fontWeight: "600" }], "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }], "headline-md": ["22px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "headline-lg-mobile": ["26px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }], "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "500" }], "body-lg": ["16px", { lineHeight: "22px", fontWeight: "400" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col select-none"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.6)]"><div class="h-14 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm overflow-hidden"><div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full text-primary-fixed"><span class="material-symbols-outlined text-[15px]">battery_charging_80</span><span class="font-label-sm text-label-sm">84%</span></div><div class="flex items-center bg-surface-container-low px-2 py-1 rounded-full text-secondary font-label-sm text-label-sm"><span>RAW/DNG</span></div><div class="hidden sm:flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm"><span class="material-symbols-outlined text-[13px]">sd_card</span><span>RAW 1,420</span></div><div class="flex items-center gap-1.5 bg-surface-container px-2.5 py-1 rounded-full text-primary-fixed-dim"><span class="material-symbols-outlined text-[14px] animate-pulse">graphic_eq</span><span class="font-label-sm text-label-sm truncate max-w-[110px]">Escuchando</span></div></div><div class="flex items-center gap-space-xs"><button class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[20px]">tune</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full bg-surface pt-14 pb-28"><div class="flex flex-col w-full pb-8 select-none">
+<!-- Sheet Drag Handle & Title Bar -->
+<div class="flex flex-col items-center pt-2 pb-4 px-margin">
+<div class="w-10 h-1 rounded-full bg-surface-container-highest mb-3"></div>
+<div class="w-full flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[20px]">tune</span>
+<h1 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Parámetros Dinámicos de GPU</h1>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-low text-primary-fixed-dim">
+<span class="material-symbols-outlined text-[13px] animate-pulse">memory</span>
+<span class="font-label-sm text-label-sm">VULKAN 60FPS</span>
+</div>
+</div>
+</div>
+<!-- Main Container -->
+<div class="flex flex-col px-margin gap-space-lg">
+<!-- SECCIÓN 1: UMBRALES DINÁMICOS DE LUZ Y OSCURIDAD -->
+<section class="flex flex-col gap-space-md p-space-md rounded-xl bg-surface-container-lowest/90 backdrop-blur-2xl shadow-xl">
+<!-- Header Sección -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Shader de Luminancia &amp; Ruido</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">CORE v3.4</span>
+</div>
+<!-- Live Histogram / Range Graphic -->
+<div class="relative w-full h-24 rounded-lg bg-surface-container overflow-hidden flex flex-col justify-end p-2">
+<!-- SVG Spectrum Graphic -->
+<svg class="absolute inset-0 w-full h-full opacity-60" preserveaspectratio="none" viewbox="0 0 200 60">
+<defs>
+<lineargradient id="grad-lum" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#00e0b3" stop-opacity="0.1"></stop>
+<stop offset="18%" stop-color="#00ffcc" stop-opacity="0.3"></stop>
+<stop offset="70%" stop-color="#00ffcc" stop-opacity="0.6"></stop>
+<stop offset="92%" stop-color="#ff4a8d" stop-opacity="0.8"></stop>
+<stop offset="100%" stop-color="#ff4a8d" stop-opacity="1"></stop>
+</lineargradient>
+</defs>
+<path d="M 0,55 Q 20,53 35,46 T 70,30 T 110,12 T 145,22 T 175,8 T 200,50 L 200,60 L 0,60 Z" fill="url(#grad-lum)"></path>
+<path d="M 0,55 Q 20,53 35,46 T 70,30 T 110,12 T 145,22 T 175,8 T 200,50" fill="none" stroke="#24ffcd" stroke-width="1.5"></path>
+</svg>
+<!-- Noise Cutoff Zone Overlay (Left) -->
+<div class="absolute left-0 top-0 bottom-0 bg-surface-container-highest/70 backdrop-blur-sm pointer-events-none transition-all duration-75" id="noise-overlay" style="width: 18%;">
+<div class="absolute right-0 top-0 bottom-0 w-[2px] bg-primary-container shadow-[0_0_8px_#00ffcc]"></div>
+<span class="absolute bottom-1 left-1.5 font-label-sm text-label-sm text-on-surface-variant">CORTE ISO</span>
+</div>
+<!-- Clipping Zone Overlay (Right) -->
+<div class="absolute right-0 top-0 bottom-0 bg-secondary-container/20 pointer-events-none transition-all duration-75" id="clipping-overlay" style="width: 8%;">
+<div class="absolute left-0 top-0 bottom-0 w-[2px] bg-secondary-container shadow-[0_0_8px_#ff4a8d]"></div>
+<span class="absolute top-1 right-1.5 font-label-sm text-label-sm text-secondary">ZEBRA</span>
+</div>
+<!-- Live Status Metrics HUD -->
+<div class="relative z-10 flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant pt-1">
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span>Rango Activo: <strong class="font-metric-md text-metric-md text-on-surface" id="active-range-txt">18% – 92%</strong></span>
+</div>
+<span class="text-secondary font-label-sm text-label-sm uppercase">Zebra Activo</span>
+</div>
+</div>
+<!-- Slider 1: Umbral Mínimo de Luminancia -->
+<div class="flex flex-col gap-1.5 pt-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed-dim">filter_alt</span>
+<label class="font-body-sm text-body-sm text-on-surface" for="slider-min-lum">Filtro de Ruido &amp; Luz Parásita</label>
+</div>
+<div class="px-2 py-0.5 rounded bg-surface-container-high font-metric-md text-metric-md text-primary-container">
+<span id="val-min-lum">18</span>% <span class="text-on-surface-variant font-label-sm text-label-sm font-normal">/ 0.18 EV</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Elimina el fondo urbano y granulado térmico del sensor de 1 pulgada.</p>
+<div class="relative flex items-center h-8">
+<input class="w-full accent-[#00ffcc] bg-surface-container-high h-1.5 rounded-lg appearance-none cursor-pointer" id="slider-min-lum" max="50" min="0" oninput="updateMinLum(this.value)" type="range" value="18"/>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant px-0.5">
+<span>0% (Puro Sensor)</span>
+<span>Astro Recom. (16-22%)</span>
+<span>50% (Agresivo)</span>
+</div>
+</div>
+<!-- Slider 2: Umbral Máximo de Sobreexposición (Clipping) -->
+<div class="flex flex-col gap-1.5 pt-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">warning</span>
+<label class="font-body-sm text-body-sm text-on-surface" for="slider-clip">Límite de Clipping (Zebra)</label>
+</div>
+<div class="px-2 py-0.5 rounded bg-surface-container-high font-metric-md text-metric-md text-secondary">
+<span id="val-clip">92</span>% <span class="text-on-surface-variant font-label-sm text-label-sm font-normal">HL</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Genera rayas diagonales en destellos directos de linternas o lásers.</p>
+<div class="relative flex items-center h-8">
+<input class="w-full accent-[#ff4a8d] bg-surface-container-high h-1.5 rounded-lg appearance-none cursor-pointer" id="slider-clip" max="100" min="70" oninput="updateClip(this.value)" type="range" value="92"/>
+</div>
+</div>
+<!-- Slider 3: Tiempo de Reacción / Decaimiento de Acumulación -->
+<div class="flex flex-col gap-1.5 pt-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed-dim">speed</span>
+<label class="font-body-sm text-body-sm text-on-surface" for="slider-attack">Ataque del Filtro Dinámico</label>
+</div>
+<div class="px-2 py-0.5 rounded bg-surface-container-high font-metric-md text-metric-md text-primary-container">
+<span id="val-attack">120</span> <span class="text-on-surface-variant font-label-sm text-label-sm font-normal">ms</span>
+</div>
+</div>
+<div class="relative flex items-center h-8">
+<input class="w-full accent-[#00ffcc] bg-surface-container-high h-1.5 rounded-lg appearance-none cursor-pointer" id="slider-attack" max="500" min="20" oninput="updateAttack(this.value)" step="10" type="range" value="120"/>
+</div>
+</div>
+<!-- Quick Toggle: Aislar solo trazos de luz -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-high">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[20px]">flare</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium">Aislar Trazos de Luz</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Sustrae 100% de la placa base fija</span>
+</div>
+</div>
+<button class="w-12 h-7 rounded-full bg-primary-container p-0.5 flex items-center justify-end transition-colors" id="toggle-isolate" onclick="toggleSwitch(this)">
+<div class="w-6 h-6 rounded-full bg-surface-container-lowest shadow-md"></div>
+</button>
+</div>
+</section>
+<!-- SECCIÓN 2: ASISTENTE Y CONTROL POR VOZ HANDS-FREE -->
+<section class="flex flex-col gap-space-md p-space-md rounded-xl bg-surface-container-lowest/90 backdrop-blur-2xl shadow-xl">
+<!-- Header Asistente -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[20px]">mic</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Voz Hands-Free On-Device</span>
+</div>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-low text-primary-fixed font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+<span>0ms LOCAL</span>
+</div>
+</div>
+<!-- Engine Status Pill & Waveform Interactive Widget -->
+<div class="flex flex-col gap-2 p-3 rounded-lg bg-surface-container">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant uppercase tracking-wider">Motor Vocal Activo</span>
+<span class="text-primary-container font-metric-md text-metric-md" id="voice-status">ESCUCHANDO CONTINUO</span>
+</div>
+<!-- Reactive Waveform Canvas / Animated Visualizer Bars -->
+<div class="w-full h-14 flex items-center justify-between gap-1 px-2 overflow-hidden bg-surface-container-low rounded-lg">
+<div class="w-1.5 rounded-full bg-primary-container h-3 transition-all duration-150 animate-pulse"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-6 transition-all duration-150"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-10 transition-all duration-100 animate-pulse"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-8 transition-all duration-200"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-12 transition-all duration-150 animate-pulse"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-5 transition-all duration-100"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-11 transition-all duration-300 animate-pulse"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-7 transition-all duration-150"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-9 transition-all duration-200 animate-pulse"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-4 transition-all duration-100"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-12 transition-all duration-150 animate-pulse"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-6 transition-all duration-100"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-10 transition-all duration-200 animate-pulse"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-3 transition-all duration-150"></div>
+<div class="w-1.5 rounded-full bg-primary-container h-8 transition-all duration-100 animate-pulse"></div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>Buffer: <span class="text-on-surface font-metric-md text-metric-md">Circular 1.2s</span></span>
+<span>Modelo: <span class="text-primary-fixed-dim font-metric-md text-metric-md">VocalWhisper-Tiny</span></span>
+</div>
+</div>
+<!-- Mic Sensitivity Slider -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">graphic_eq</span>
+<label class="font-body-sm text-body-sm text-on-surface" for="slider-mic">Sensibilidad de Entrada (Ganancia)</label>
+</div>
+<div class="px-2 py-0.5 rounded bg-surface-container-high font-metric-md text-metric-md text-primary-container">
+<span id="val-mic">-12</span> <span class="text-on-surface-variant font-label-sm text-label-sm font-normal">dBFS</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Aumenta para susurrar en silencio campestre; reduce en conciertos o viento.</p>
+<div class="relative flex items-center h-8">
+<input class="w-full accent-[#00ffcc] bg-surface-container-high h-1.5 rounded-lg appearance-none cursor-pointer" id="slider-mic" max="0" min="-30" oninput="updateMic(this.value)" type="range" value="-12"/>
+</div>
+</div>
+<!-- Configurable Commands Grid -->
+<div class="flex flex-col gap-2 pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Comandos Mapeados (Español)</span>
+<div class="grid grid-cols-1 gap-2">
+<!-- Command 1: Iniciar -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-high">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px] text-primary-fixed">play_arrow</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight">“Iniciar” / “Play”</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Comienza / Reanuda trazos</span>
+</div>
+</div>
+<div class="px-2 py-1 rounded bg-surface-container-low font-label-sm text-label-sm text-primary-container flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span>LISTO</span>
+</div>
+</div>
+<!-- Command 2: Pausa -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-high">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px] text-tertiary-fixed-dim">pause</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight">“Pausa”</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Congela buffer &amp; HUD preview</span>
+</div>
+</div>
+<div class="px-2 py-1 rounded bg-surface-container-low font-label-sm text-label-sm text-primary-container flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span>LISTO</span>
+</div>
+</div>
+<!-- Command 3: Guardar -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-high">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">save</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight">“Guardar”</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Finaliza exposición a DNG RAW</span>
+</div>
+</div>
+<div class="px-2 py-1 rounded bg-surface-container-low font-label-sm text-label-sm text-primary-container flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span>LISTO</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Feedback Auditivo Toggle -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-high">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[20px]">volume_up</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium">Beep Auditivo de Confirmación</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tono sutil en altavoz al detectar frase</span>
+</div>
+</div>
+<button class="w-12 h-7 rounded-full bg-primary-container p-0.5 flex items-center justify-end transition-colors" id="toggle-beep" onclick="toggleSwitch(this)">
+<div class="w-6 h-6 rounded-full bg-surface-container-lowest shadow-md"></div>
+</button>
+</div>
+<!-- Botón Probar Micrófono -->
+<button class="w-full py-3 px-4 rounded-lg bg-surface-container-high hover:bg-surface-container-highest transition-colors flex items-center justify-center gap-2 text-on-surface active:scale-[0.99]" id="btn-test-mic" onclick="testMicVoice()">
+<span class="material-symbols-outlined text-[18px] text-primary-container">record_voice_over</span>
+<span class="font-body-md text-body-md font-semibold">Probar Detección Vocal Ahora</span>
+</button>
+</section>
+<!-- Acciones Inferiores -->
+<div class="flex flex-col gap-2 pt-2 pb-6">
+<button class="w-full py-3.5 px-4 rounded-xl bg-primary-container text-on-primary-container font-headline-sm text-headline-sm flex items-center justify-center gap-2 active:scale-[0.99] shadow-[0_0_20px_rgba(0,255,204,0.3)] transition-all">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span>Aplicar y Volver al Visor</span>
+</button>
+<div class="flex items-center justify-center gap-1.5 py-1 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">info</span>
+<span>Parámetros almacenados en sesión RAW actual</span>
+</div>
+</div>
+</div>
+</div>
+<script>
+  function updateMinLum(val) {
+    document.getElementById('val-min-lum').innerText = val;
+    const overlay = document.getElementById('noise-overlay');
+    if (overlay) overlay.style.width = val + '%';
+    const clipVal = document.getElementById('val-clip').innerText;
+    document.getElementById('active-range-txt').innerText = val + '% – ' + clipVal + '%';
+  }
+
+  function updateClip(val) {
+    document.getElementById('val-clip').innerText = val;
+    const overlay = document.getElementById('clipping-overlay');
+    if (overlay) overlay.style.width = (100 - val) + '%';
+    const minVal = document.getElementById('val-min-lum').innerText;
+    document.getElementById('active-range-txt').innerText = minVal + '% – ' + val + '%';
+  }
+
+  function updateAttack(val) {
+    document.getElementById('val-attack').innerText = val;
+  }
+
+  function updateMic(val) {
+    document.getElementById('val-mic').innerText = val;
+  }
+
+  function toggleSwitch(btn) {
+    const isOff = btn.classList.contains('justify-start');
+    if (isOff) {
+      btn.classList.remove('justify-start', 'bg-surface-container');
+      btn.classList.add('justify-end', 'bg-primary-container');
+    } else {
+      btn.classList.remove('justify-end', 'bg-primary-container');
+      btn.classList.add('justify-start', 'bg-surface-container');
+    }
+  }
+
+  function testMicVoice() {
+    const status = document.getElementById('voice-status');
+    const originalText = status.innerText;
+    status.innerText = "¡COMANDO 'INICIAR' DETECTADO!";
+    status.classList.remove('text-primary-container');
+    status.classList.add('text-secondary');
+    
+    setTimeout(() => {
+      status.innerText = originalText;
+      status.classList.remove('text-secondary');
+      status.classList.add('text-primary-container');
+    }, 2000);
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.8)]" data-active-classes="text-primary-fixed font-headline-sm"><div class="h-28 px-margin flex flex-col justify-center gap-2"><div class="flex items-center justify-around"><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="live-viewfinder" href="#"><span class="material-symbols-outlined text-[20px]">camera</span><span class="font-label-sm text-label-sm">Capture</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="exposure-cockpit" href="#"><span class="material-symbols-outlined text-[20px]">exposure</span><span class="font-label-sm text-label-sm">Exposure</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="live-viewfinder" href="#"><div class="w-full h-full rounded-full bg-surface flex items-center justify-center"><div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[22px]">radio_button_checked</span></div></div></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="light-trails-library" href="#"><span class="material-symbols-outlined text-[20px]">auto_awesome_motion</span><span class="font-label-sm text-label-sm">Trails</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="calibration-profile" href="#"><span class="material-symbols-outlined text-[20px]">sensors</span><span class="font-label-sm text-label-sm">Calibrate</span></a></div></div></nav></body></html>

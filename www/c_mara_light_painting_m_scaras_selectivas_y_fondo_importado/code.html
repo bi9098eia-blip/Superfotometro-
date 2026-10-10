@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>LuminaCam Pro</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#131313;color:#e2e2e2;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary-fixed-dim": "#00e0b3", "primary-container": "#00ffcc", "secondary-container": "#ff4a8d", "on-secondary-fixed-variant": "#8f0044", "on-tertiary-fixed": "#271900", "tertiary": "#fffeff", "on-surface": "#e2e2e2", "on-secondary": "#65002e", "error-container": "#93000a", "on-surface-variant": "#b9cbc2", "primary-fixed": "#24ffcd", "surface-container-high": "#2a2a2a", "on-background": "#e2e2e2", "background": "#131313", "on-error": "#690005", "surface-variant": "#353535", "on-error-container": "#ffdad6", "on-primary-fixed": "#002118", "surface-dim": "#131313", "error": "#ffb4ab", "inverse-surface": "#e2e2e2", "on-tertiary-container": "#835d00", "secondary": "#ffb1c4", "on-primary-fixed-variant": "#00513f", "surface-bright": "#393939", "on-primary-container": "#00725a", "tertiary-container": "#ffdda5", "tertiary-fixed": "#ffdea8", "on-primary": "#00382b", "outline-variant": "#3a4a44", "surface-container": "#1f1f1f", "on-secondary-container": "#590028", "secondary-fixed-dim": "#ffb1c4", "surface-tint": "#00e0b3", "surface-container-highest": "#353535", "outline": "#83958d", "inverse-primary": "#006b54", "surface": "#131313", "on-tertiary-fixed-variant": "#5e4200", "surface-container-lowest": "#0e0e0e", "on-tertiary": "#412d00", "secondary-fixed": "#ffd9e1", "surface-container-low": "#1b1b1b", "tertiary-fixed-dim": "#ffba20", "inverse-on-surface": "#303030", "primary": "#fdfffc", "on-secondary-fixed": "#3f001a" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-sm": "0.5rem", "margin": "1rem", "space-xs": "0.25rem", "space-md": "0.75rem", "space-xl": "2rem", "gutter": "0.75rem", "space-lg": "1.25rem" }, fontFamily: { "metric-xl": ["JetBrains Mono"], "headline-lg": ["Space Grotesk"], "body-md": ["Space Grotesk"], "label-sm": ["JetBrains Mono"], "headline-sm": ["Space Grotesk"], "metric-md": ["JetBrains Mono"], "metric-lg": ["JetBrains Mono"], "body-sm": ["Space Grotesk"], "headline-md": ["Space Grotesk"], "headline-lg-mobile": ["Space Grotesk"], "label-md": ["JetBrains Mono"], "body-lg": ["Space Grotesk"] }, fontSize: { "metric-xl": ["28px", { lineHeight: "32px", letterSpacing: "-0.03em", fontWeight: "700" }], "headline-lg": ["32px", { lineHeight: "38px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "label-sm": ["10px", { lineHeight: "12px", letterSpacing: "0.08em", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }], "metric-md": ["14px", { lineHeight: "18px", letterSpacing: "-0.01em", fontWeight: "500" }], "metric-lg": ["20px", { lineHeight: "24px", letterSpacing: "-0.02em", fontWeight: "600" }], "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }], "headline-md": ["22px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }], "headline-lg-mobile": ["26px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }], "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "500" }], "body-lg": ["16px", { lineHeight: "22px", fontWeight: "400" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col select-none"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.6)]"><div class="h-14 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm overflow-hidden"><div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full text-primary-fixed"><span class="material-symbols-outlined text-[15px]">battery_charging_80</span><span class="font-label-sm text-label-sm">84%</span></div><div class="flex items-center bg-surface-container-low px-2 py-1 rounded-full text-secondary font-label-sm text-label-sm"><span>RAW/DNG</span></div><div class="hidden sm:flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm"><span class="material-symbols-outlined text-[13px]">sd_card</span><span>RAW 1,420</span></div><div class="flex items-center gap-1.5 bg-surface-container px-2.5 py-1 rounded-full text-primary-fixed-dim"><span class="material-symbols-outlined text-[14px] animate-pulse">graphic_eq</span><span class="font-label-sm text-label-sm truncate max-w-[110px]">Escuchando</span></div></div><div class="flex items-center gap-space-xs"><button class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[20px]">tune</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full bg-surface pt-14 pb-28"><div class="flex flex-col w-full text-on-surface select-none pb-6">
+<!-- HUD STATUS STRIP (SUB-HEADER CONTEXT) -->
+<div class="px-margin pt-2 pb-2.5 flex items-center justify-between gap-space-sm bg-surface-container-lowest/80 backdrop-blur-md">
+<div class="flex items-center gap-2 overflow-hidden">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-primary-fixed-dim">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim animate-ping"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">HUD RETÍCULA ACTIVA</span>
+</div>
+<div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-secondary">
+<span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+<span class="font-label-sm text-label-sm">ESCUDO: ON</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-md">FBO CAPA 1/2</span>
+<button class="w-8 h-8 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">close_fullscreen</span>
+</button>
+</div>
+</div>
+<!-- LIVE SENSOR VIEWFINDER & MASKING CANVAS -->
+<div class="relative w-full px-margin py-1">
+<div class="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-surface-container-lowest shadow-2xl flex flex-col justify-between p-3">
+<!-- LAYER 0: IMPORTED BACKGROUND PLATE SIMULATION -->
+<img class="absolute inset-0 w-full h-full object-cover opacity-85 transition-opacity duration-300 pointer-events-none" data-alt="Deep night astrophotography background plate of a solitary ancient cypress tree silhouette against a crystal-clear cosmic Milky Way sky, low ISO 100 long exposure, pristine star fields, deep pitch black sky with subtle cyan nebulae, professional RAW digital negative baseline." id="bg-plate-preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2083sSYh-c4LZLDBkEsV2H1AiqzkzLjHLs20EKyWh5sMkEin6CO-wDGccp-zV8dx2I9W09prnEx_5W2qdIXWl_6rHnjHgA_tL5RAvbmWzvPQfg0Mn_C7jV1aLTotcla8RTyjDZrnRQhXRHAi_L66Glkc5v0gcrSkOFPwA--qV0EHQahgzXboQVvuK3lBsG9YK837_ijxbpypDaNr3KiaYT7_Eq0uNIe-McfmQx2PYAI-Q6k2Eefk5Zw"/>
+<!-- LAYER 1: LIGHT PAINTING TRAILS (ACCUMULATION) -->
+<div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-surface-container-lowest/90 via-transparent to-surface-container-lowest/30"></div>
+<!-- SVG LIGHT STREAKS ACCUMULATED -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none" viewbox="0 0 400 500">
+<!-- Glowing kinetic trails flowing around the subject -->
+<path d="M-20 420 C 120 400, 80 200, 210 180 S 380 120, 420 80" opacity="0.95" stroke="#00ffcc" stroke-dasharray="1 1" stroke-linecap="round" stroke-width="4" style="filter: drop-shadow(0 0 10px #00ffcc) drop-shadow(0 0 20px #00ffcc);"></path>
+<path d="M-10 440 C 130 420, 100 220, 230 190 S 370 140, 410 100" opacity="0.8" stroke="#00e0b3" stroke-width="2" style="filter: drop-shadow(0 0 6px #00ffcc);"></path>
+<path d="M420 380 C 310 320, 290 280, 280 240 S 320 180, 260 120" opacity="0.85" stroke="#ff4a8d" stroke-linecap="round" stroke-width="3" style="filter: drop-shadow(0 0 8px #ff4a8d);"></path>
+<!-- Star particles -->
+<circle cx="90" cy="80" fill="#ffffff" opacity="0.7" r="1.5"></circle>
+<circle cx="280" cy="60" fill="#ffffff" opacity="0.5" r="1"></circle>
+<circle cx="340" cy="110" fill="#24ffcd" opacity="0.9" r="2" style="filter: drop-shadow(0 0 4px #24ffcd);"></circle>
+</svg>
+<!-- LAYER 2: INTERACTIVE NEGATIVE MASK (SHIELD) OVERLAY -->
+<div class="absolute inset-0 pointer-events-none flex items-center justify-center">
+<!-- Mask Protected Figure Zone SVG -->
+<svg class="w-full h-full" viewbox="0 0 400 500">
+<defs>
+<pattern height="8" id="shield-hatch" patterntransform="rotate(45 0 0)" patternunits="userSpaceOnUse" width="8">
+<line opacity="0.5" stroke="#ff4a8d" stroke-width="1.5" x1="0" x2="0" y1="0" y2="8"></line>
+</pattern>
+<filter height="140%" id="shield-glow" width="140%" x="-20%" y="-20%">
+<fedropshadow dx="0" dy="0" flood-color="#ff4a8d" flood-opacity="0.8" stddeviation="6"></fedropshadow>
+</filter>
+</defs>
+<!-- Silhouette mask of person/subject protected from torch flares -->
+<g filter="url(#shield-glow)">
+<!-- Head & Torso Silhouette Shape with Feathered boundary -->
+<path d="M195 190 C182 190 172 200 172 214 C172 226 180 236 190 239 C168 248 152 270 148 305 L144 380 C144 385 148 390 154 390 L238 390 C244 390 248 385 248 380 L244 305 C240 270 224 248 202 239 C212 236 220 226 220 214 C220 200 210 190 197 190 Z" fill="#ff4a8d" fill-opacity="0.32" stroke="#ff4a8d" stroke-dasharray="4 2" stroke-width="2"></path>
+<path d="M195 190 C182 190 172 200 172 214 C172 226 180 236 190 239 C168 248 152 270 148 305 L144 380 C144 385 148 390 154 390 L238 390 C244 390 248 385 248 380 L244 305 C240 270 224 248 202 239 C212 236 220 226 220 214 C220 200 210 190 197 190 Z" fill="url(#shield-hatch)"></path>
+</g>
+<!-- Mask Reticle Nodes & Measurement Brackets -->
+<circle cx="196" cy="214" fill="#ffffff" r="3"></circle>
+<circle cx="148" cy="305" fill="#ff4a8d" r="3"></circle>
+<circle cx="244" cy="305" fill="#ff4a8d" r="3"></circle>
+<!-- Crosshair Guide -->
+<line opacity="0.6" stroke="#ffffff" stroke-width="0.75" x1="186" x2="206" y1="214" y2="214"></line>
+<line opacity="0.6" stroke="#ffffff" stroke-width="0.75" x1="196" x2="196" y1="204" y2="224"></line>
+</svg>
+<!-- Floating Tactical Tag Anchored to Mask -->
+<div class="absolute top-[48%] left-[28%] flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-container-lowest/90 backdrop-blur-md shadow-lg pointer-events-auto">
+<span class="material-symbols-outlined text-secondary text-[14px]">gpp_good</span>
+<span class="font-label-sm text-label-sm text-secondary tracking-wider uppercase font-semibold">ZONA PROTEGIDA (-100% EV)</span>
+</div>
+</div>
+<!-- VIEWFINDER TOP HUD OVERLAY -->
+<div class="relative z-10 flex items-center justify-between pointer-events-auto">
+<!-- Live Mask Mode Badge -->
+<div class="flex items-center gap-2 bg-surface-container-lowest/85 backdrop-blur-md px-3 py-1.5 rounded-full shadow-md">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-container"></div>
+<span class="font-label-sm text-label-sm text-secondary font-medium">MÁSCARA NEGATIVO (ESCUDO)</span>
+</div>
+<!-- Feathering / Edge Tag -->
+<div class="flex items-center gap-1.5 bg-surface-container-lowest/85 backdrop-blur-md px-2.5 py-1.5 rounded-full shadow-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">blur_on</span>
+<span class="font-label-sm text-label-sm font-metric-md">CALADO 35%</span>
+</div>
+</div>
+<!-- VIEWFINDER FOCUS RETICLE CENTER -->
+<div class="relative z-10 self-center pointer-events-none flex flex-col items-center gap-1 opacity-70">
+<div class="w-12 h-12 flex items-center justify-center">
+<div class="w-full h-full border-t border-b border-primary-container/40 flex items-center justify-center">
+<div class="h-full w-full border-l border-r border-primary-container/40 flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-fixed"></span>
+</div>
+</div>
+</div>
+</div>
+<!-- VIEWFINDER BOTTOM TELEMETRY -->
+<div class="relative z-10 flex items-end justify-between pointer-events-auto">
+<div class="flex flex-col gap-0.5 bg-surface-container-lowest/85 backdrop-blur-md px-2.5 py-1.5 rounded-lg shadow-md">
+<span class="font-label-sm text-label-sm text-on-surface-variant">TIEMPO EXP</span>
+<span class="font-metric-md text-metric-md text-primary-fixed">00:02:44.8</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 bg-surface-container-lowest/85 backdrop-blur-md px-2.5 py-1.5 rounded-lg text-primary-fixed shadow-md">
+<span class="material-symbols-outlined text-[15px]">brush</span>
+<span class="font-metric-md text-metric-md">32 px</span>
+</div>
+<button class="w-9 h-9 rounded-lg bg-surface-container-lowest/85 backdrop-blur-md flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors shadow-md">
+<span class="material-symbols-outlined text-[18px]">layers</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- FLOATING MASKING TOOLBAR (PRIMARY CONTROLS) -->
+<div class="px-margin mt-3 flex flex-col gap-2.5">
+<!-- MODE TOGGLE SEGMENT (POSITIVE VS NEGATIVE MASK) -->
+<div class="grid grid-cols-2 p-1 rounded-xl bg-surface-container-low shadow-sm">
+<button class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-on-surface-variant hover:text-on-surface transition-all" id="btn-mode-expose">
+<span class="material-symbols-outlined text-[18px]">flare</span>
+<div class="flex flex-col text-left">
+<span class="font-label-md text-label-md font-semibold leading-tight">Máscara Exponer</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Paso de Luz Exclusivo</span>
+</div>
+</button>
+<button class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-secondary-container text-on-secondary shadow-md transition-all" id="btn-mode-shield">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+<div class="flex flex-col text-left">
+<span class="font-label-md text-label-md font-bold leading-tight">Máscara Negativo</span>
+<span class="font-label-sm text-label-sm text-on-secondary opacity-90">Escudo Anti-Destellos</span>
+</div>
+</button>
+</div>
+<!-- DRAWING TOOLS PALETTE (BRUSH, ERASER, LASSO, INVERT, CLEAR) -->
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container shadow-sm">
+<div class="flex items-center gap-1">
+<!-- Brush Tool (Active) -->
+<button class="flex flex-col items-center justify-center w-12 h-12 rounded-lg bg-surface-container-highest text-primary-fixed shadow-inner transition-colors">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">draw</span>
+<span class="font-label-sm text-label-sm mt-0.5">Pincel</span>
+</button>
+<!-- Eraser Tool -->
+<button class="flex flex-col items-center justify-center w-12 h-12 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]">ink_eraser</span>
+<span class="font-label-sm text-label-sm mt-0.5">Borrar</span>
+</button>
+<!-- Lasso Tool -->
+<button class="flex flex-col items-center justify-center w-12 h-12 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]">gesture</span>
+<span class="font-label-sm text-label-sm mt-0.5">Lazo</span>
+</button>
+</div>
+<div class="h-8 w-px bg-surface-container-high my-auto"></div>
+<div class="flex items-center gap-1">
+<!-- Invert Mask -->
+<button class="flex flex-col items-center justify-center w-12 h-12 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">invert_colors</span>
+<span class="font-label-sm text-label-sm mt-0.5">Invertir</span>
+</button>
+<!-- Clear Mask -->
+<button class="flex flex-col items-center justify-center w-12 h-12 rounded-lg text-error hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete_sweep</span>
+<span class="font-label-sm text-label-sm mt-0.5">Limpiar</span>
+</button>
+</div>
+</div>
+<!-- PRECISION SLIDERS: BRUSH SIZE & FEATHERING -->
+<div class="p-3 rounded-xl bg-surface-container-low flex flex-col gap-3 shadow-sm">
+<!-- Brush Size Slider -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">line_weight</span>
+<span class="font-label-md text-label-md">Tamaño de Pincel</span>
+</div>
+<span class="font-metric-md text-metric-md text-primary-fixed" id="size-val">32 px</span>
+</div>
+<div class="relative flex items-center h-6">
+<input class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary-container" max="120" min="4" oninput="document.getElementById('size-val').innerText = this.value + ' px'" type="range" value="32"/>
+</div>
+</div>
+<!-- Mask Edge Feather Slider -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">blur_linear</span>
+<span class="font-label-md text-label-md">Calado / Difuminado (Feather)</span>
+</div>
+<span class="font-metric-md text-metric-md text-secondary" id="feather-val">35%</span>
+</div>
+<div class="relative flex items-center h-6">
+<input class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-secondary-container" max="100" min="0" oninput="document.getElementById('feather-val').innerText = this.value + '%'" type="range" value="35"/>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 2: IMPORTED BACKGROUND PLATE / BASE LAYER CARD -->
+<div class="px-margin mt-4 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed text-[18px]">photo_library</span>
+<span class="font-headline-sm text-headline-sm">Capa de Fondo Importada</span>
+</div>
+<div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">
+<span class="font-label-sm text-label-sm font-bold">FBO CAPA 0</span>
+</div>
+</div>
+<!-- BACKGROUND PLATE CARD -->
+<div class="p-3 rounded-xl bg-surface-container flex flex-col gap-3 shadow-md">
+<div class="flex items-center gap-3">
+<!-- Thumbnail -->
+<div class="relative w-16 h-16 rounded-lg overflow-hidden bg-surface-container-highest flex-shrink-0 shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Micro thumbnail of starry dark night sky with silhouette landscape photograph taken on mirrorless camera, astrophotography deep blue and cyan hues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCE8xZcY046U084Ow4f4_Lm4CqTqJiRH1u2sHSoj1ujystsstntNNSyqa344h79p1u4RvaSMXGq6pDwo27PikWeD0F7gTDEMb_6yxVlrKkaRZSOpvjrEHIBn0GRanIeXN0bdRJvvlx-1ib6J2-cSpbf7Og3PtgOkKmvYmUkteiCGHWENOFbEDg-xzZ8xDPEYc3ZGOyf3EYUjLCS7EtyAhujOE95aEJ_pJbLAswFwYVZMPMNeZX1dwHkw"/>
+<div class="absolute inset-0 bg-primary-container/10"></div>
+</div>
+<!-- File Info & Switcher -->
+<div class="flex flex-col justify-center min-w-0 flex-1">
+<div class="flex items-center gap-1.5">
+<span class="font-metric-md text-metric-md truncate font-semibold text-primary">fondo_nocturno_ciudad_iso100.dng</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm mt-0.5">
+<span>RAW 48 MP</span>
+<span>•</span>
+<span>ISO 100</span>
+<span>•</span>
+<span>15s exp</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary-fixed-dim mt-1">Capa Base: Fijada</span>
+</div>
+<!-- Replace / Trash Actions -->
+<div class="flex flex-col gap-1">
+<button class="w-8 h-8 rounded-lg bg-surface-container-high hover:bg-surface-container-highest flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">sync_alt</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-high hover:bg-surface-container-highest flex items-center justify-center text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Blend Controls -->
+<div class="pt-2 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Opacidad de Fusión (Blend Opacity)</span>
+<span class="font-metric-md text-metric-md text-primary-fixed" id="opacity-val">85%</span>
+</div>
+<div class="relative flex items-center h-5">
+<input class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary-container" max="100" min="0" oninput="document.getElementById('opacity-val').innerText = this.value + '%'; document.getElementById('bg-plate-preview').style.opacity = this.value / 100;" type="range" value="85"/>
+</div>
+</div>
+<!-- Integration Mode Pills -->
+<div class="grid grid-cols-3 gap-1.5 pt-1">
+<button class="py-1.5 px-2 rounded-lg bg-surface-container-highest text-primary-fixed flex flex-col items-center justify-center text-center">
+<span class="font-label-sm text-label-sm font-bold">Fondo Fijo</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant scale-90">Composición</span>
+</button>
+<button class="py-1.5 px-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface flex flex-col items-center justify-center text-center">
+<span class="font-label-sm text-label-sm font-semibold">Ghosting</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant scale-90">Guía Trazos</span>
+</button>
+<button class="py-1.5 px-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface flex flex-col items-center justify-center text-center">
+<span class="font-label-sm text-label-sm font-semibold">Passthrough</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant scale-90">Solo Sensor</span>
+</button>
+</div>
+</div>
+</div>
+<!-- ACTION COCKPIT FOOTER (BOTTOM CONTROL PANEL) -->
+<div class="px-margin mt-4 flex flex-col gap-2.5">
+<!-- Primary Execution Button: REANUDAR PINTURA DE LUZ -->
+<div class="flex items-center gap-2">
+<!-- Secondary Shutter / Clear Preset -->
+<button class="h-14 px-4 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface flex flex-col items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+<span class="font-label-sm text-label-sm mt-0.5">Previsualizar</span>
+</button>
+<!-- Shutter Resume Play Trigger -->
+<button class="flex-1 h-14 rounded-xl bg-primary-container text-on-primary font-headline-sm text-headline-sm flex items-center justify-center gap-2.5 shadow-lg shadow-primary-container/20 hover:opacity-95 active:scale-[0.98] transition-all">
+<div class="w-8 h-8 rounded-full bg-on-primary/15 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[22px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+<span>Reanudar Pintura</span>
+</button>
+<!-- Save Adjustment Preset -->
+<button class="h-14 px-4 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-primary-fixed flex flex-col items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[20px]">save</span>
+<span class="font-label-sm text-label-sm mt-0.5">Guardar</span>
+</button>
+</div>
+<!-- Quick Status Note -->
+<div class="flex items-center justify-center gap-2 text-on-surface-variant py-1">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span class="font-label-sm text-label-sm">Sujeto protegido: los fotones incidentes se descartarán automáticamente</span>
+</div>
+</div>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+  (function() {
+    const btnShield = document.getElementById('btn-mode-shield');
+    const btnExpose = document.getElementById('btn-mode-expose');
+    
+    if(btnShield && btnExpose) {
+      btnExpose.addEventListener('click', () => {
+        btnExpose.className = "flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-primary-container text-on-primary shadow-md transition-all";
+        btnExpose.querySelector('span:last-child').className = "font-label-sm text-label-sm text-on-primary opacity-90";
+        
+        btnShield.className = "flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-on-surface-variant hover:text-on-surface transition-all";
+        btnShield.querySelector('span:last-child').className = "font-label-sm text-label-sm text-on-surface-variant";
+      });
+
+      btnShield.addEventListener('click', () => {
+        btnShield.className = "flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-secondary-container text-on-secondary shadow-md transition-all";
+        btnShield.querySelector('span:last-child').className = "font-label-sm text-label-sm text-on-secondary opacity-90";
+
+        btnExpose.className = "flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-on-surface-variant hover:text-on-surface transition-all";
+        btnExpose.querySelector('span:last-child').className = "font-label-sm text-label-sm text-on-surface-variant";
+      });
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.8)]" data-active-classes="text-primary-fixed font-headline-sm"><div class="h-28 px-margin flex flex-col justify-center gap-2"><div class="flex items-center justify-around"><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="live-viewfinder" href="#"><span class="material-symbols-outlined text-[20px]">camera</span><span class="font-label-sm text-label-sm">Capture</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="exposure-cockpit" href="#"><span class="material-symbols-outlined text-[20px]">exposure</span><span class="font-label-sm text-label-sm">Exposure</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="live-viewfinder" href="#"><div class="w-full h-full rounded-full bg-surface flex items-center justify-center"><div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[22px]">radio_button_checked</span></div></div></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="light-trails-library" href="#"><span class="material-symbols-outlined text-[20px]">auto_awesome_motion</span><span class="font-label-sm text-label-sm">Trails</span></a><a class="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-on-surface-variant" data-path="calibration-profile" href="#"><span class="material-symbols-outlined text-[20px]">sensors</span><span class="font-label-sm text-label-sm">Calibrate</span></a></div></div></nav></body></html>
