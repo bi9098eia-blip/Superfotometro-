@@ -1,60 +1,34 @@
-name: Build Android APK - Superfotometro
+name: Compilar APK en la Nube
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
 
 jobs:
   build:
-    name: Build APK
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Descargar código del repositorio
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Configurar Python
+        uses: actions/setup-python@v4
         with:
-          node-version: 20
-          cache: npm
+          python-version: '3.10'
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-          cache: gradle
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Ensure Android project exists
+      - name: Instalar dependencias del sistema y Buildozer
         run: |
-          if [ ! -d android ]; then
-            npx cap add android
-          fi
+          sudo apt update
+          sudo apt install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libstdc++6 make
+          pip install --upgrade pip
+          pip install buildozer cython
 
-      - name: Sync Capacitor Android project
-        run: npx cap sync android
-
-      - name: Make Gradle executable
+      - name: Compilar APK (Modo Debug)
         run: |
-          if [ -f android/gradlew ]; then
-            chmod +x android/gradlew
-          fi
+          buildozer -v android debug
 
-      - name: Build debug APK
-        working-directory: android
-        run: ./gradlew assembleDebug
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+      - name: Subir APK generado como Artifact
+        uses: actions/upload-artifact@v3
         with:
           name: superfotometro-debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: bin/*.apk
